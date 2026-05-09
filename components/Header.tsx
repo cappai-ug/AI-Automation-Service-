@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -18,19 +19,15 @@ export default function Header() {
       <nav className="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo - Fixed sizing */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0 min-w-fit">
-            <div className="w-8 h-8 bg-gradient-to-br from-accent to-secondary rounded-lg flex items-center justify-center flex-shrink-0">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="2.5" fill="white"/>
-                <circle cx="16" cy="14" r="2.5" fill="white"/>
-                <circle cx="12" cy="20" r="2.5" fill="white"/>
-                <circle cx="8" cy="14" r="2.5" fill="white"/>
-                <path d="M12 8 Q14 10 16 14 Q14 18 12 20 Q10 18 8 14 Q10 10 12 8" stroke="white" strokeWidth="1.5" fill="none"/>
-              </svg>
-            </div>
-            <span className="font-bold text-base sm:text-lg text-navy whitespace-nowrap">
-              OPTIMIZED
-            </span>
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0 min-w-fit">
+            <Image
+              src="/images/logo.svg"
+              alt="OPTIMIZED Logo"
+              width={40}
+              height={40}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation - Hidden on mobile */}
