@@ -45,7 +45,7 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-4 ${variant === 'modal' ? 'max-w-md' : 'max-w-2xl'}`}>
+    <form onSubmit={handleSubmit} className={`space-y-3 sm:space-y-4 w-full ${variant === 'modal' ? 'max-w-md' : 'max-w-2xl'}`}>
       <div>
         <input
           type="email"
@@ -54,7 +54,7 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
           required
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm sm:text-base"
         />
       </div>
 
@@ -66,7 +66,7 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
           required
           value={formData.company}
           onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm sm:text-base"
         />
       </div>
 
@@ -78,14 +78,14 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
           rows={3}
           value={formData.useCase}
           onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent resize-none"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent resize-none text-sm sm:text-base"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
       >
         {loading ? 'Wird gesendet...' : 'Zur Warteliste hinzufügen'}
       </button>
@@ -102,9 +102,9 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
         </div>
       )}
 
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs sm:text-sm text-gray-500 text-center leading-relaxed">
         Wir respektieren Ihre Privatsphäre. Lesen Sie unsere{' '}
-        <a href="/datenschutz" className="text-primary-600 hover:underline">Datenschutzerklärung</a>.
+        <a href="/datenschutz" className="text-primary-600 hover:underline font-semibold">Datenschutzerklärung</a>.
       </p>
     </form>
   )
