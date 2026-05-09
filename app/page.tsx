@@ -22,9 +22,9 @@ export default function Home() {
               Sparen Sie Zeit und Kosten durch intelligente Automatisierung. Von Dokumentenverarbeitung bis zur Kundenservice-KI – wir kümmern uns um die Technologie, Sie um Ihr Geschäft.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })} className="btn-primary">
+              <a href="#waitlist" className="btn-primary text-center">
                 Jetzt beitreten
-              </button>
+              </a>
               <a href="#services" className="btn-secondary text-center">
                 Mehr erfahren
               </a>
