@@ -23,9 +23,9 @@ export default function Header() {
             <Image
               src="/images/logo.svg"
               alt="OPTIMIZED Logo"
-              width={200}
-              height={50}
-              className="h-10 w-auto"
+              width={640}
+              height={160}
+              className="h-12 sm:h-14 w-auto"
               priority
             />
           </Link>
