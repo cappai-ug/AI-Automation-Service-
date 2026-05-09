@@ -8,27 +8,6 @@ import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import WaitlistForm from '@/components/WaitlistForm'
 
-// Animated text reveal component
-const TextReveal = ({ children, className = '' }: { children: string; className?: string }) => {
-  const words = children.split(' ')
-  return (
-    <span className={className}>
-      {words.map((word, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.1, duration: 0.5 }}
-          viewport={{ once: true }}
-          className="inline-block mr-2"
-        >
-          {word}
-        </motion.span>
-      ))}
-    </span>
-  )
-}
-
 // Counter component
 const Counter = ({ end, suffix = '' }: { end: number; suffix?: string }) => {
   const [count, setCount] = useState(0)
@@ -116,12 +95,22 @@ export default function Home() {
             transition={{ duration: 1, ease: 'easeOut' }}
           >
             <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 leading-tight text-white">
-              <TextReveal className="block">
+              <motion.div
+                className="block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
                 KI-Automatisierung
-              </TextReveal>
-              <TextReveal className="block">
+              </motion.div>
+              <motion.div
+                className="block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 <span className="text-cyan-300">für Ihr Geschäft</span>
-              </TextReveal>
+              </motion.div>
             </h1>
           </motion.div>
 
