@@ -255,7 +255,7 @@ export default function Home() {
       </section>
 
       {/* ===== CASE STUDIES ===== */}
-      <section className="py-32 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-32 bg-gradient-to-b from-soft-white to-white">
         <div className="container-max">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -305,12 +305,12 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="group relative p-8 rounded-2xl glass border border-gray-200 hover-lift overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative z-10">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{study.company}</h3>
                   <div className="flex items-center gap-2 mb-6">
-                    <span className="text-2xl font-bold text-primary-600">{study.improvement}</span>
+                    <span className="text-2xl font-bold text-accent">{study.improvement}</span>
                     <span className="text-sm text-gray-600">in {study.process}</span>
                   </div>
 
@@ -321,7 +321,7 @@ export default function Home() {
                     </div>
                     <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-primary-500 to-primary-600"
+                        className="h-full bg-gradient-to-r from-accent to-blue-600"
                         initial={{ width: '20%' }}
                         whileInView={{ width: '95%' }}
                         transition={{ delay: 0.3, duration: 1 }}
@@ -330,12 +330,12 @@ export default function Home() {
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-600">Nachher:</span>
-                      <span className="font-semibold text-primary-600">{study.after}</span>
+                      <span className="font-semibold text-accent">{study.after}</span>
                     </div>
                   </div>
 
                   <div className="mt-6 pt-6 border-t border-gray-200">
-                    <p className="text-sm font-semibold text-primary-600">{study.metric}</p>
+                    <p className="text-sm font-semibold text-accent">{study.metric}</p>
                   </div>
                 </div>
               </motion.div>
@@ -390,7 +390,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className={`relative rounded-2xl p-8 transition-all duration-300 ${
                   plan.highlight
-                    ? 'bg-gradient-to-br from-primary-600 to-primary-700 text-white shadow-2xl transform scale-105 hover-lift'
+                    ? 'bg-gradient-to-br from-accent to-blue-600 text-white shadow-2xl transform scale-105 hover-lift'
                     : 'bg-white border-2 border-gray-200 hover-lift'
                 }`}
               >
@@ -421,8 +421,8 @@ export default function Home() {
                   href="#waitlist"
                   className={`w-full block text-center py-3 px-6 rounded-full font-bold transition-all ${
                     plan.highlight
-                      ? 'bg-white text-primary-600 hover:bg-gray-100'
-                      : 'bg-primary-600 text-white hover:bg-primary-700'
+                      ? 'bg-white text-accent hover:bg-gray-100'
+                      : 'bg-accent text-white hover:bg-blue-600'
                   }`}
                 >
                   Jetzt starten
@@ -434,7 +434,7 @@ export default function Home() {
       </section>
 
       {/* ===== SERVICES ===== */}
-      <section id="services" className="py-32 bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 text-white">
+      <section id="services" className="py-32 bg-gradient-to-br from-navy via-blue-950 to-navy text-white">
         <div className="container-max">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -444,7 +444,7 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-white">
-              Unsere <span className="text-cyan-300">Services</span>
+              Unsere <span className="text-secondary">Services</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Zwei flexible Modelle für Ihre Automatisierungsbedürfnisse
@@ -488,13 +488,13 @@ export default function Home() {
                       viewport={{ once: true }}
                       className="flex items-center gap-3"
                     >
-                      <span className="text-primary-400 text-xl">→</span>
+                      <span className="text-secondary text-xl">→</span>
                       <span>{benefit}</span>
                     </motion.li>
                   ))}
                 </ul>
 
-                <a href="#waitlist" className="btn-primary bg-white text-primary-600 hover:bg-gray-100 w-full text-center">
+                <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full text-center inline-block">
                   Mehr Informationen
                 </a>
               </motion.div>
@@ -504,7 +504,7 @@ export default function Home() {
       </section>
 
       {/* ===== CTA SECTION ===== */}
-      <section id="waitlist" className="py-32 bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 relative overflow-hidden">
+      <section id="waitlist" className="py-32 bg-gradient-to-r from-accent via-blue-600 to-blue-700 relative overflow-hidden">
         {/* Animated background */}
         <motion.div
           className="absolute inset-0 opacity-30"
@@ -526,9 +526,9 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-5xl font-bold text-white mb-4">
-              Bereit für <span className="text-yellow-300">AI-Automatisierung?</span>
+              Bereit für <span className="text-secondary">AI-Automatisierung?</span>
             </h2>
-            <p className="text-xl text-primary-100">
+            <p className="text-xl text-white/90">
               Starten Sie mit einer kostenlosen Beratung und sehen Sie, wie viel Sie sparen können
             </p>
           </motion.div>
@@ -572,7 +572,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="group bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200 hover-lift"
+                className="group bg-gradient-to-r from-soft-white to-gray-100 p-6 rounded-xl border border-gray-200 hover-lift"
               >
                 <h4 className="font-bold text-gray-900 text-lg mb-2">{item.q}</h4>
                 <p className="text-gray-600">{item.a}</p>
