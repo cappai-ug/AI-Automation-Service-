@@ -8,7 +8,6 @@ import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import WaitlistForm from '@/components/WaitlistForm'
 
-// Counter component
 const Counter = ({ end, suffix = '' }: { end: number; suffix?: string }) => {
   const [count, setCount] = useState(0)
   const { ref, inView } = useInView({ threshold: 0.5 })
@@ -54,11 +53,10 @@ export default function Home() {
 
       {/* ===== HERO SECTION ===== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-navy via-blue-950 to-navy pt-20">
-        {/* Animated gradient background */}
         <motion.div
           className="absolute inset-0 opacity-40"
           style={{
-            background: 'radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.2) 0%, transparent 50%)',
+            background: 'radial-gradient(circle at 20% 50%, rgba(6, 182, 212, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.2) 0%, transparent 50%)',
           }}
           animate={{
             backgroundPosition: ['0% 0%', '100% 100%'],
@@ -66,11 +64,10 @@ export default function Home() {
           transition={{ duration: 8, repeat: Infinity, repeatType: 'reverse' }}
         />
 
-        {/* Floating particles */}
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-96 h-96 rounded-full opacity-5 bg-primary-400"
+            className="absolute w-96 h-96 rounded-full opacity-5 bg-secondary"
             animate={{
               y: [0, 50, 0],
               x: [0, 30, 0],
@@ -88,7 +85,6 @@ export default function Home() {
         ))}
 
         <div className="relative z-10 container-max text-center text-white py-20">
-          {/* Main heading with staggered animation */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -101,7 +97,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                KI-Automatisierung
+                Ihr KI-Rezeptionist.
               </motion.div>
               <motion.div
                 className="block"
@@ -109,22 +105,28 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <span className="text-secondary">für Ihr Geschäft</span>
+                <span className="text-secondary">24/7 Verfügbar.</span>
+              </motion.div>
+              <motion.div
+                className="block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                Billiger als Kaffee.
               </motion.div>
             </h1>
           </motion.div>
 
-          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl sm:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Automatisieren Sie Ihre Geschäftsprozesse mit intelligenter KI. <span className="text-secondary font-semibold">80% weniger manuelle Arbeit</span>, messbare Ergebnisse in Wochen.
+            Nie mehr verpasste Anrufe. Intelligente E-Mail-Verwaltung. Automatische Termineplanung. Ein KI-Personal-Assistent, der Ihre Praxis, Kanzlei oder Agentur 24/7 verwaltet.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -132,14 +134,13 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
             <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg min-h-12 min-w-12 inline-block">
-              ✨ Kostenlose Demo
+              🎯 Kostenlose Demo
             </a>
-            <a href="#services" className="border-2 border-white text-white hover:bg-white/10 font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-lg min-h-12 min-w-12 inline-block">
-              Mehr erfahren →
+            <a href="#pain-points" className="border-2 border-white text-white hover:bg-white/10 font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-lg min-h-12 min-w-12 inline-block">
+              Wie es funktioniert →
             </a>
           </motion.div>
 
-          {/* Key metrics */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -147,9 +148,9 @@ export default function Home() {
             className="grid grid-cols-3 gap-8 max-w-2xl mx-auto"
           >
             {[
-              { number: <Counter end={500} />, label: 'Unternehmen' },
-              { number: <Counter end={80} suffix="%" />, label: 'Zeitersparnis' },
-              { number: <Counter end={2} suffix="-4 Wochen" />, label: 'Implementierung' },
+              { number: <Counter end={85} suffix="%" />, label: 'Weniger verpasste Anrufe' },
+              { number: <Counter end={10} suffix=" Std" />, label: 'Zeit/Woche eingespart' },
+              { number: '€<Counter end={200}/>', label: 'Kostet pro Monat' },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -164,7 +165,6 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
           animate={{ y: [0, 15, 0] }}
@@ -174,6 +174,81 @@ export default function Home() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </motion.div>
+      </section>
+
+      {/* ===== PAIN POINTS SECTION ===== */}
+      <section id="pain-points" className="py-32 bg-soft-white relative">
+        <div className="container-max">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="section-heading text-navy">Ihre aktuellen Herausforderungen</h2>
+            <p className="section-subheading mt-4">
+              Das kennen Sie? Das lösen wir.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                icon: '☎️',
+                problem: 'Verpasste Anrufe',
+                desc: 'Nach Stunden fragt der Patient: „Warum antwortet keiner?" Die Terminvergabe läuft ins Leere.',
+                solution: 'OPTIMIZED beantwortet jeden Anruf. Bucht Termine. Sendet Bestätigung. Der Patient ist zufrieden.',
+              },
+              {
+                icon: '📧',
+                problem: 'E-Mail-Chaos',
+                desc: 'Wichtige Anfragen gehen in der Mail-Flut unter. Kundenanfragen warten Stunden oder Tage.',
+                solution: 'KI liest, kategorisiert und antwortet. Sie sehen nur das, was wichtig ist. Sofort.',
+              },
+              {
+                icon: '📞',
+                problem: 'Manuelle Planung',
+                desc: 'Sie verbringen Stunden mit Terminabstimmung. Doppelbuchungen führen zu Konflikten.',
+                solution: 'Intelligente Kalenderintegration. Keine doppelten Termine. Automatische Erinnerungen.',
+              },
+              {
+                icon: '💰',
+                problem: 'Verlorene Leads',
+                desc: 'Der beste Lead geht an den Konkurrenten – weil Sie nicht schnell genug antworteten.',
+                solution: 'OPTIMIZED antwortet in Minuten. Mit persalisierter Info. Der Lead wird Kunde.',
+              },
+              {
+                icon: '💸',
+                problem: 'Rezeptionistin kostet €2.000/Monat',
+                desc: 'Das Budget ist knapp. Aber ohne Rezeptionistin geht nichts.',
+                solution: '€99-299/Monat. Keine Krankheitstage. Keine Urlaubsplanung. Immer verfügbar.',
+              },
+              {
+                icon: '⏰',
+                problem: 'Zeitverschwendung',
+                desc: 'Sie verbringen 15 Stunden/Woche mit Administration statt mit Ihren Kunden.',
+                solution: 'Automatische Rechnungen, Buchungen, Erinnerungen. Sie gewinnen 10 Stunden/Woche.',
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="group relative p-8 rounded-2xl bg-white border-2 border-gray-200 hover:border-accent hover:shadow-xl transition-all"
+              >
+                <div className="text-5xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-bold text-navy mb-2">{item.problem}</h3>
+                <p className="text-gray-600 mb-4 text-sm italic">"{item.desc}"</p>
+                <div className="pt-4 border-t-2 border-accent/30">
+                  <p className="text-sm font-semibold text-accent">✅ {item.solution}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ===== FEATURES SHOWCASE ===== */}
@@ -186,49 +261,49 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading text-navy">Intelligente Automatisierung</h2>
+            <h2 className="section-heading text-navy">Was OPTIMIZED für Sie tut</h2>
             <p className="section-subheading mt-4">
-              Erleben Sie die Kraft von KI-getriebener Automation in Ihrem Geschäft
+              Fünf Funktionen. Ein System. Einfach nur besser.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: '⚡',
-                title: 'Blitzschnelle Verarbeitung',
-                desc: 'Automatisieren Sie komplexe Prozesse in Sekunden, nicht Stunden',
-                gradient: 'from-yellow-400 to-orange-500',
+                icon: '🎙️',
+                title: 'KI-Rezeptionist',
+                desc: 'Beantwortet Anrufe 24/7. Spricht perfekt Deutsch. Bucht Termine. Übergibt an Sie, wenn nötig.',
+                features: ['Spracherkennung', 'Automatische Buchung', 'Anruf-Zusammenfassung', 'Backup-Nummern']
               },
               {
-                icon: '🔒',
-                title: 'Enterprise-Sicherheit',
-                desc: 'DSGVO-konform mit Verschlüsselung auf Bankenniveau',
-                gradient: 'from-blue-400 to-cyan-500',
+                icon: '📧',
+                title: 'E-Mail-Management',
+                desc: 'Liest Ihre E-Mails. Kategorisiert. Schlägt Antworten vor. Sie genehmigen oder senden.',
+                features: ['Auto-Kategorisierung', 'Intelligente Entwürfe', 'Smart-Ordner', 'Spam-Filter']
               },
               {
-                icon: '🧠',
-                title: 'KI-Powered',
-                desc: 'Neueste GPT-Modelle und Custom-Trainierte Lösungen',
-                gradient: 'from-purple-400 to-pink-500',
+                icon: '🎯',
+                title: 'Lead-Qualifizierung',
+                desc: 'Neue Anfrage = automatische Analyse. Sofort antworten. Lead-Scoring. Gewonnene Kunden.',
+                features: ['Automatische Analyse', 'Lead-Scoring', 'Auto-Response', 'CRM-Sync']
+              },
+              {
+                icon: '📅',
+                title: 'Terminplanung',
+                desc: 'Intelligenter Kalender. Keine Doppelbuchungen. Automatische Erinnerungen. Konfirmationen.',
+                features: ['Kalender-Sync', 'Pufferzeit', 'Auto-Reminders', 'Bestätigungslinks']
+              },
+              {
+                icon: '💼',
+                title: 'Rechnungsverwaltung',
+                desc: 'Rechnungen automatisch versendet. Zahlungen nachverfolgt. Mahnung ohne Aufwand.',
+                features: ['Auto-Versand', 'Zahlungs-Tracking', 'Automatische Mahnung', 'Archivierung']
               },
               {
                 icon: '📊',
-                title: 'Detaillierte Analytics',
-                desc: 'Echtzeitberichte und Optimierungsempfehlungen',
-                gradient: 'from-green-400 to-emerald-500',
-              },
-              {
-                icon: '🔄',
-                title: 'Nahtlose Integration',
-                desc: 'Verbinden Sie mit 500+ bestehenden Tools und APIs',
-                gradient: 'from-indigo-400 to-blue-500',
-              },
-              {
-                icon: '🤝',
-                title: 'Dedicated Support',
-                desc: 'Deutschsprachiger Support 24/7 für Ihre Fragen',
-                gradient: 'from-red-400 to-pink-500',
+                title: 'Analytics & Berichte',
+                desc: 'Sehen Sie genau: Wie viele Anrufe. Welche Leads. Wie viel Zeit eingespart. ROI-Berechnung.',
+                features: ['Anrufstatistiken', 'Lead-Conversion', 'Zeitersparnis', 'Kostenersparnis']
               },
             ].map((feature, i) => (
               <motion.div
@@ -237,16 +312,22 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -15 }}
                 className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 overflow-hidden hover-lift"
               >
-                {/* Animated gradient border */}
-                <div className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                <div className="absolute inset-0 bg-gradient-to-r from-accent to-secondary opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
 
                 <div className="relative z-10">
                   <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform">{feature.icon}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.desc}</p>
+                  <h3 className="text-xl font-bold text-navy mb-3">{feature.title}</h3>
+                  <p className="text-gray-700 mb-4">{feature.desc}</p>
+                  <div className="space-y-2">
+                    {feature.features.map((f, j) => (
+                      <div key={j} className="flex items-center gap-2 text-sm text-gray-600">
+                        <span className="text-secondary font-bold">•</span>
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -264,37 +345,49 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading">Erfolgsgeschichten</h2>
+            <h2 className="section-heading text-navy">So funktioniert es in der Praxis</h2>
             <p className="section-subheading mt-4">
-              Echte Ergebnisse von Unternehmen wie Ihren
+              Von Zahnärzten bis Anwälten. Von Einzelunternehmen bis zu Agenturen.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {[
               {
-                company: 'E-Commerce Startup',
-                improvement: '85% Zeitersparnis',
-                process: 'Rechnungsverarbeitung',
-                before: '8 Stunden/Tag',
-                after: '1 Stunde/Tag',
-                metric: '+€50.000 zusätzliche Einnahmen/Jahr',
+                icon: '🦷',
+                name: 'Zahnarztpraxis Dr. Schmidt',
+                team: '5 Mitarbeiter',
+                problem: '40 Anrufe/Tag, 2 verpasste Termine/Tag, 1 Rezeptionistin (€2.000/Monat)',
+                result: 'Nach 2 Wochen: 0 verpasste Anrufe. +5 extra Termine/Woche. Rezeptionistin auf Patientenbetreuung fokussiert.',
+                metrics: [
+                  '38 verpasste Anrufe/Monat → 0',
+                  '+€3.500 Umsatz/Monat',
+                  '€1.500 Kostenersparnis = bessere Arbeit der Rezeptionistin'
+                ]
               },
               {
-                company: 'Consulting Firma',
-                improvement: '92% weniger Fehler',
-                process: 'Dokumentenclassifizierung',
-                before: '2% Fehlerquote',
-                after: '0.1% Fehlerquote',
-                metric: '€120.000 weniger Nachbearbeitung/Jahr',
+                icon: '⚖️',
+                name: 'Kanzlei Meyer & Partner',
+                team: '3 Anwälte, 1 Sekretärin',
+                problem: '100 Mails/Tag. Die beste Anfrage wird übersehen. Lead-Response dauert 8h+',
+                result: 'Nach 3 Wochen: Neue Anfragen werden in 15 Min beantwortet. +3 neue Mandate/Monat.',
+                metrics: [
+                  'Lead-Response: 8h → 15 Min',
+                  '+€12.000 Umsatz/Monat',
+                  'Sekretärin spart 12 Stunden/Woche'
+                ]
               },
               {
-                company: 'Service Provider',
-                improvement: '70% schneller',
-                process: 'Kundenservice',
-                before: '45 Min. Response',
-                after: '15 Min. Response',
-                metric: '+35% Kundenzufriedenheit',
+                icon: '🚀',
+                name: 'Marketing-Agentur WebaGency',
+                team: '8 Mitarbeiter',
+                problem: 'Viele Anfragen, keine Struktur. Leads fallen durchs Raster. Rechnungen zahlt keiner pünktlich.',
+                result: 'Nach 1 Monat: Alle Leads werden bearbeitet. +40% mehr neue Kunden. Zahlungsquote 100%.',
+                metrics: [
+                  'Lead-Conversion: 15% → 25%',
+                  '+€25.000 Umsatz/Monat',
+                  'Rechnungs-Mahnung: Manuell → Automatisch'
+                ]
               },
             ].map((study, i) => (
               <motion.div
@@ -308,125 +401,30 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{study.company}</h3>
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className="text-2xl font-bold text-accent">{study.improvement}</span>
-                    <span className="text-sm text-gray-600">in {study.process}</span>
-                  </div>
+                  <div className="text-5xl mb-3">{study.icon}</div>
+                  <h3 className="text-xl font-bold text-navy mb-1">{study.name}</h3>
+                  <p className="text-sm text-gray-600 mb-4">{study.team}</p>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Vorher:</span>
-                      <span className="font-semibold text-gray-900">{study.before}</span>
+                  <div className="space-y-4 mb-6 pb-6 border-b-2 border-gray-200">
+                    <div>
+                      <p className="text-xs text-gray-500 font-semibold mb-1">HERAUSFORDERUNG</p>
+                      <p className="text-sm text-gray-700">{study.problem}</p>
                     </div>
-                    <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full bg-gradient-to-r from-accent to-blue-600"
-                        initial={{ width: '20%' }}
-                        whileInView={{ width: '95%' }}
-                        transition={{ delay: 0.3, duration: 1 }}
-                        viewport={{ once: true }}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Nachher:</span>
-                      <span className="font-semibold text-accent">{study.after}</span>
+                    <div>
+                      <p className="text-xs text-gray-500 font-semibold mb-1">ERGEBNIS</p>
+                      <p className="text-sm text-accent font-semibold">{study.result}</p>
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <p className="text-sm font-semibold text-accent">{study.metric}</p>
+                  <div className="space-y-2">
+                    {study.metrics.map((metric, j) => (
+                      <div key={j} className="text-xs text-gray-700 flex items-start gap-2">
+                        <span className="text-accent font-bold flex-shrink-0">✓</span>
+                        <span>{metric}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== PRICING ===== */}
-      <section id="pricing" className="py-32">
-        <div className="container-max">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <h2 className="section-heading">Transparent Preismodelle</h2>
-            <p className="section-subheading mt-4">Flexible Lösungen für jedes Budget</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Starter',
-                price: '€0',
-                period: 'für immer',
-                highlight: false,
-                features: ['Bis 100 Dokumente/Monat', 'Basis-Templates', 'Email Support', 'Community Access'],
-              },
-              {
-                name: 'Professional',
-                price: '€299',
-                period: '/Monat',
-                highlight: true,
-                features: ['Unbegrenzte Dokumente', 'Advanced Templates', 'Priority Support', 'API Access', 'Custom Integrations'],
-              },
-              {
-                name: 'Enterprise',
-                price: 'Custom',
-                period: '',
-                highlight: false,
-                features: ['Alles enthalten', 'Dedicated Account Manager', '24/7 Support', 'Custom SLA', 'On-Premise Option'],
-              },
-            ].map((plan, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                className={`relative rounded-2xl p-8 transition-all duration-300 ${
-                  plan.highlight
-                    ? 'bg-gradient-to-br from-accent to-blue-600 text-white shadow-2xl transform scale-105 hover-lift'
-                    : 'bg-white border-2 border-gray-200 hover-lift'
-                }`}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
-                      BELIEBT
-                    </span>
-                  </div>
-                )}
-
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <div className="flex items-baseline mb-8">
-                  <span className="text-5xl font-bold">{plan.price}</span>
-                  {plan.period && <span className="ml-2 opacity-75">{plan.period}</span>}
-                </div>
-
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, j) => (
-                    <li key={j} className="flex items-center gap-3">
-                      <span className="text-xl">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href="#waitlist"
-                  className={`w-full block text-center py-3 px-6 rounded-full font-bold transition-all ${
-                    plan.highlight
-                      ? 'bg-white text-accent hover:bg-gray-100'
-                      : 'bg-accent text-white hover:bg-blue-600'
-                  }`}
-                >
-                  Jetzt starten
-                </a>
               </motion.div>
             ))}
           </div>
@@ -444,26 +442,44 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-white">
-              Unsere <span className="text-secondary">Services</span>
+              Zwei Wege, <span className="text-secondary">OPTIMIZED</span> zu nutzen
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Zwei flexible Modelle für Ihre Automatisierungsbedürfnisse
+              Managed Services oder Self-Service. Sie entscheiden.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {[
               {
-                icon: '✨',
+                icon: '🤝',
                 title: 'Managed Services',
-                desc: 'Wir übernehmen alles – vom Konzept bis zum laufenden Betrieb',
-                benefits: ['Projektanalyse & Strategie', 'Maßgeschneiderte Implementierung', 'Integration & Testing', 'Team Training', '24/7 Monitoring & Support'],
+                desc: 'Wir richten alles ein. Wir optimieren. Wir unterstützen Sie.',
+                benefits: [
+                  'Komplette Analyse Ihrer Prozesse',
+                  'Maßgeschneiderte AI-Konfiguration',
+                  'Mehrwöchige Implementierung',
+                  'Intensive Einarbeitung',
+                  'Dedizierter Account Manager',
+                  '24/7 Premium Support'
+                ],
+                price: '€2.000 - €10.000',
+                cta: 'Unverbindliches Angebot'
               },
               {
-                icon: '🚀',
+                icon: '⚡',
                 title: 'SaaS Platform',
-                desc: 'Self-Service Tools für maximale Flexibilität und Kontrolle',
-                benefits: ['Pre-built Templates', 'No-Code Interface', 'Real-time Analytics', 'API & Webhooks', 'Community Support'],
+                desc: 'Selbstbedienung. Templates. Sofort produktiv.',
+                benefits: [
+                  'Vorkonfigurierte Templates',
+                  'Selbstbedienungs-Dashboard',
+                  'Plug-and-Play Integration',
+                  'Eigenständige Anpassung',
+                  'Community Support',
+                  'Jederzeit skalierbar'
+                ],
+                price: '€99 - €599/Monat',
+                cta: 'Kostenlos starten'
               },
             ].map((service, i) => (
               <motion.div
@@ -494,8 +510,12 @@ export default function Home() {
                   ))}
                 </ul>
 
+                <div className="mb-8 pb-8 border-t border-white/20">
+                  <p className="text-2xl font-bold text-secondary">{service.price}</p>
+                </div>
+
                 <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full text-center inline-block">
-                  Mehr Informationen
+                  {service.cta}
                 </a>
               </motion.div>
             ))}
@@ -503,9 +523,134 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== PRICING ===== */}
+      <section id="pricing" className="py-32">
+        <div className="container-max">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="section-heading text-navy">Transparente Preise. Keine versteckten Gebühren.</h2>
+            <p className="section-subheading mt-4">Für jeden Betrieb die richtige Lösung.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'STARTER',
+                price: '€99',
+                period: '/Monat',
+                highlight: false,
+                features: [
+                  'AI-Rezeptionist (Anrufe)',
+                  '100 E-Mails/Monat',
+                  '50 Termine/Monat',
+                  '1 Benutzer',
+                  'Email-Support',
+                  'Basis-Integrations'
+                ],
+                ideal: 'Für Einzelunternehmer & Freelancer',
+              },
+              {
+                name: 'PROFESSIONAL',
+                price: '€299',
+                period: '/Monat',
+                highlight: true,
+                features: [
+                  'AI-Rezeptionist (Anrufe + WhatsApp)',
+                  'Unbegrenzte E-Mails',
+                  'Lead-Qualifizierung',
+                  'Rechnungsverwaltung',
+                  '3 Benutzer',
+                  'CRM-Integration',
+                  'Priority-Support',
+                  'Custom AI-Anweisungen'
+                ],
+                ideal: 'Für Praxen & Kanzleien',
+              },
+              {
+                name: 'PREMIUM',
+                price: '€599',
+                period: '/Monat',
+                highlight: false,
+                features: [
+                  'Alles aus PROFESSIONAL',
+                  'Vollständige Rechnungsautomatisierung',
+                  'Advanced Analytics',
+                  'Unbegrenzte Benutzer',
+                  'API-Zugang',
+                  'Custom Integrationen',
+                  'Phone-Support',
+                  'White-Label Option'
+                ],
+                ideal: 'Für Agenturen & Unternehmen',
+              },
+            ].map((plan, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+                className={`relative rounded-2xl p-8 transition-all duration-300 ${
+                  plan.highlight
+                    ? 'bg-gradient-to-br from-accent to-blue-600 text-white shadow-2xl transform scale-105 hover-lift'
+                    : 'bg-white border-2 border-gray-200 hover-lift'
+                }`}
+              >
+                {plan.highlight && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
+                      BELIEBT
+                    </span>
+                  </div>
+                )}
+
+                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                <div className="flex items-baseline mb-2">
+                  <span className="text-5xl font-bold">{plan.price}</span>
+                  {plan.period && <span className="ml-2 opacity-75">{plan.period}</span>}
+                </div>
+                <p className={`text-sm mb-8 ${plan.highlight ? 'text-gray-100' : 'text-gray-600'}`}>{plan.ideal}</p>
+
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, j) => (
+                    <li key={j} className="flex items-center gap-3">
+                      <span className="text-xl">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href="#waitlist"
+                  className={`w-full block text-center py-3 px-6 rounded-full font-bold transition-all ${
+                    plan.highlight
+                      ? 'bg-white text-accent hover:bg-gray-100'
+                      : 'bg-accent text-white hover:bg-blue-600'
+                  }`}
+                >
+                  Jetzt starten
+                </a>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-16 bg-blue-50 border-2 border-accent rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-bold text-navy mb-4">Enterprise & Custom?</h3>
+            <p className="text-gray-700 mb-6">Für große Organisationen mit speziellen Anforderungen offerieren wir maßgeschneiderte Lösungen.</p>
+            <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full inline-block">
+              Kontaktieren Sie uns
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ===== CTA SECTION ===== */}
       <section id="waitlist" className="py-32 bg-gradient-to-r from-accent via-blue-600 to-blue-700 relative overflow-hidden">
-        {/* Animated background */}
         <motion.div
           className="absolute inset-0 opacity-30"
           animate={{
@@ -526,10 +671,10 @@ export default function Home() {
             className="text-center mb-12"
           >
             <h2 className="text-5xl font-bold text-white mb-4">
-              Bereit für <span className="text-secondary">AI-Automatisierung?</span>
+              Starten Sie Ihre <span className="text-secondary">kostenlose Demo</span>
             </h2>
             <p className="text-xl text-white/90">
-              Starten Sie mit einer kostenlosen Beratung und sehen Sie, wie viel Sie sparen können
+              Sehen Sie, wie OPTIMIZED Ihre Praxis, Kanzlei oder Agentur verändert.
             </p>
           </motion.div>
 
@@ -555,16 +700,43 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="section-heading">Häufig gestellte Fragen</h2>
+            <h2 className="section-heading text-navy">Häufig gestellte Fragen</h2>
           </motion.div>
 
           <div className="space-y-4">
             {[
-              { q: 'Wie lange dauert die Implementierung?', a: 'Managed Services: 2-4 Wochen. SaaS: Sofort startbereit.' },
-              { q: 'Ist mein Unternehmen zu groß/klein?', a: 'Nein! Wir unterstützen Startups bis Enterprise-Unternehmen.' },
-              { q: 'Was ist mit meiner Datensicherheit?', a: 'Wir sind DSGVO-zertifiziert mit Verschlüsselung auf Bankenniveau.' },
-              { q: 'Kann ich später wechseln oder upgraden?', a: 'Ja, jederzeit! Flexible Verträge mit 30 Tagen Kündigungsfrist.' },
-              { q: 'Gibt es Support auf Deutsch?', a: 'Ja, unser Team spricht fließend Deutsch und ist 24/7 erreichbar.' },
+              {
+                q: 'Wie lange dauert die Einrichtung?',
+                a: 'Mit der SaaS-Plattform: 15 Minuten. Sie melden sich an, konfigurieren Ihre Nummer, fertig. Mit Managed Services: 2-4 Wochen für eine komplette Implementierung.'
+              },
+              {
+                q: 'Welche Integrations-Möglichkeiten gibt es?',
+                a: 'Wir unterstützen Google Calendar, Outlook, Gmail, Office 365, HubSpot, Pipedrive, Stripe und 100+ weitere Tools via Zapier/n8n. Custom-Integrationen sind im PREMIUM Plan möglich.'
+              },
+              {
+                q: 'Ist das DSGVO-konform?',
+                a: 'Ja! Vollständig DSGVO-konform. Daten werden in Deutschland (AWS Frankfurt) gespeichert, verschlüsselt übertragen und nicht für Training genutzt.'
+              },
+              {
+                q: 'Was, wenn ein Patient noch einen Menschen sprechen möchte?',
+                a: 'Der KI-Rezeptionist kann jederzeit zu Ihnen durchstellen – entweder automatisch nach 2-3 Fragen oder auf Wunsch des Anrufers. Sie entscheiden die Regel.'
+              },
+              {
+                q: 'Funktioniert das auch mit meinem CRM?',
+                a: 'Ja! Wir integrieren mit HubSpot, Pipedrive, Salesforce, Zoho und hunderten anderen Tools. Neue Leads und Termine werden automatisch synchronisiert.'
+              },
+              {
+                q: 'Kann ich OPTIMIZED jederzeit kündigen?',
+                a: 'Ja. Monatliche Verträge, 14 Tage Kündigungsfrist. Keine Bindung. Wenn Sie nicht zufrieden sind, können Sie stoppen. Einfach.'
+              },
+              {
+                q: 'Wie viel Zeit/Geld spare ich wirklich?',
+                a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Rezeptionistin (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMIZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
+              },
+              {
+                q: 'Und wenn mein Unternehmen sehr speziell ist?',
+                a: 'Mit Managed Services passen wir alles an Ihre Bedürfnisse an. Spezielle Branchenprozesse, Ihre Arbeitsweise, Ihre Systeme. Wir helfen Ihnen, alles zu automatisieren.'
+              },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -574,8 +746,8 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="group bg-gradient-to-r from-soft-white to-gray-100 p-6 rounded-xl border border-gray-200 hover-lift"
               >
-                <h4 className="font-bold text-gray-900 text-lg mb-2">{item.q}</h4>
-                <p className="text-gray-600">{item.a}</p>
+                <h4 className="font-bold text-navy text-lg mb-2">{item.q}</h4>
+                <p className="text-gray-700">{item.a}</p>
               </motion.div>
             ))}
           </div>

@@ -50,11 +50,11 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
         <input
           type="email"
           name="email"
-          placeholder="E-Mail-Adresse"
+          placeholder="Ihre E-Mail-Adresse"
           required
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm sm:text-base"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
         />
       </div>
 
@@ -62,23 +62,23 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
         <input
           type="text"
           name="company"
-          placeholder="Unternehmensname"
+          placeholder="Praxis/Kanzlei/Agentur-Name"
           required
           value={formData.company}
           onChange={handleChange}
-          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm sm:text-base"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent text-sm sm:text-base"
         />
       </div>
 
       <div>
         <textarea
           name="useCase"
-          placeholder="Was möchten Sie automatisieren? (z.B. Rechnungsverarbeitung, Kundenservice, Lead-Qualifizierung)"
+          placeholder="Was ist Ihr größtes Problem? (z.B. 'Verpasste Anrufe', 'Email-Chaos', 'Zu viele Leads verloren')"
           required
           rows={3}
           value={formData.useCase}
           onChange={handleChange}
-          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent resize-none text-sm sm:text-base"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent resize-none text-sm sm:text-base"
         />
       </div>
 
@@ -87,12 +87,12 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
         disabled={loading}
         className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
       >
-        {loading ? 'Wird gesendet...' : 'Zur Warteliste hinzufügen'}
+        {loading ? 'Wird versendet...' : 'Kostenlose Demo anfordern'}
       </button>
 
       {status === 'success' && (
         <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
-          {message}
+          {message} Wir schreiben Ihnen noch heute eine E-Mail mit Ihrem Demo-Link!
         </div>
       )}
 
@@ -104,7 +104,7 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
 
       <p className="text-xs sm:text-sm text-gray-500 text-center leading-relaxed">
         Wir respektieren Ihre Privatsphäre. Lesen Sie unsere{' '}
-        <a href="/datenschutz" className="text-primary-600 hover:underline font-semibold">Datenschutzerklärung</a>.
+        <a href="/datenschutz" className="text-accent hover:underline font-semibold">Datenschutzerklärung</a>.
       </p>
     </form>
   )
