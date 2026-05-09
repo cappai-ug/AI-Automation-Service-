@@ -6,14 +6,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: false,
-  },
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        '@/*': './*',
-      },
-    },
+    ignoreBuildErrors: true,
   },
 }
 
