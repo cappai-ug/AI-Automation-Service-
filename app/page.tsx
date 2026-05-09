@@ -115,15 +115,13 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
           >
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 leading-tight text-white">
               <TextReveal className="block">
                 KI-Automatisierung
               </TextReveal>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-primary-400 to-purple-400">
-                <TextReveal>
-                  für Ihr Geschäft
-                </TextReveal>
-              </span>
+              <TextReveal className="block">
+                <span className="text-cyan-300">für Ihr Geschäft</span>
+              </TextReveal>
             </h1>
           </motion.div>
 
@@ -456,10 +454,8 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="text-5xl font-bold mb-4">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-primary-400">
-                Unsere Services
-              </span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-white">
+              Unsere <span className="text-cyan-300">Services</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Zwei flexible Modelle für Ihre Automatisierungsbedürfnisse

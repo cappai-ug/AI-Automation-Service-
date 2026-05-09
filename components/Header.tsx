@@ -8,55 +8,63 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const menuVariants = {
-    closed: { opacity: 0, y: -20, transition: { duration: 0.2 } },
-    open: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+    closed: { opacity: 0, height: 0, transition: { duration: 0.2 } },
+    open: { opacity: 1, height: 'auto', transition: { duration: 0.3 } }
   }
 
   return (
-    <header className="sticky top-0 bg-white border-b border-gray-200 z-50 shadow-sm">
-      <nav className="container-max flex items-center justify-between h-14 sm:h-16 px-3 sm:px-6">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-          <div className="w-7 sm:w-8 h-7 sm:h-8 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-base sm:text-lg">C</span>
+    <header className="sticky top-0 bg-white border-b border-gray-200 z-50 shadow-sm w-full">
+      {/* Navigation Bar */}
+      <nav className="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Logo - Fixed sizing */}
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0 min-w-fit">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-sm">C</span>
+            </div>
+            <span className="font-bold text-base sm:text-lg text-primary-600 whitespace-nowrap">
+              Cappai
+            </span>
+          </Link>
+
+          {/* Desktop Navigation - Hidden on mobile */}
+          <div className="hidden md:flex items-center gap-8 lg:gap-12">
+            <Link href="#features" className="text-gray-700 hover:text-primary-600 transition-colors text-sm lg:text-base font-medium">
+              Features
+            </Link>
+            <Link href="#services" className="text-gray-700 hover:text-primary-600 transition-colors text-sm lg:text-base font-medium">
+              Services
+            </Link>
+            <Link href="#pricing" className="text-gray-700 hover:text-primary-600 transition-colors text-sm lg:text-base font-medium">
+              Preise
+            </Link>
+            <Link href="#contact" className="text-gray-700 hover:text-primary-600 transition-colors text-sm lg:text-base font-medium">
+              Kontakt
+            </Link>
           </div>
-          <span className="font-bold text-sm sm:text-lg bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent whitespace-nowrap">
-            Cappai
-          </span>
-        </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-          <Link href="#features" className="text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
-            Features
-          </Link>
-          <Link href="#services" className="text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
-            Services
-          </Link>
-          <Link href="#pricing" className="text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
-            Preise
-          </Link>
-          <Link href="#contact" className="text-gray-700 hover:text-primary-600 transition-colors font-medium text-sm">
-            Kontakt
-          </Link>
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            <svg
+              className="w-6 h-6 text-gray-900"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
         </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0 ml-auto"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          <svg className="w-5 sm:w-6 h-5 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-            />
-          </svg>
-        </button>
       </nav>
 
       {/* Mobile Menu */}
@@ -67,33 +75,33 @@ export default function Header() {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className="lg:hidden border-t border-gray-200 bg-white"
+            className="md:hidden overflow-hidden border-t border-gray-200 bg-white"
           >
-            <div className="container-max py-3 px-3 space-y-1">
+            <div className="px-4 sm:px-6 py-4 space-y-2">
               <Link
                 href="#features"
-                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-sm"
+                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
               </Link>
               <Link
                 href="#services"
-                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-sm"
+                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
               </Link>
               <Link
                 href="#pricing"
-                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-sm"
+                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Preise
               </Link>
               <Link
                 href="#contact"
-                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-sm"
+                className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Kontakt
