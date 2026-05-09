@@ -150,7 +150,7 @@ export default function Home() {
             {[
               { number: <Counter end={85} suffix="%" />, label: 'Weniger verpasste Anrufe' },
               { number: <Counter end={10} suffix=" Std" />, label: 'Zeit/Woche eingespart' },
-              { number: '€<Counter end={200}/>', label: 'Kostet pro Monat' },
+              { number: '€199', label: 'Kostet pro Monat' },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -216,7 +216,7 @@ export default function Home() {
                 icon: '💰',
                 problem: 'Verlorene Leads',
                 desc: 'Der beste Lead geht an den Konkurrenten – weil Sie nicht schnell genug antworteten.',
-                solution: 'OPTIMIZED antwortet in Minuten. Mit persalisierter Info. Der Lead wird Kunde.',
+                solution: 'OPTIMIZED antwortet in Minuten. Mit personalisierter Info. Der Lead wird Kunde.',
               },
               {
                 icon: '💸',
@@ -290,7 +290,7 @@ export default function Home() {
               {
                 icon: '📅',
                 title: 'Terminplanung',
-                desc: 'Intelligenter Kalender. Keine Doppelbuchungen. Automatische Erinnerungen. Konfirmationen.',
+                desc: 'Intelligenter Kalender. Keine Doppelbuchungen. Automatische Erinnerungen. Bestätigungen.',
                 features: ['Kalender-Sync', 'Pufferzeit', 'Auto-Reminders', 'Bestätigungslinks']
               },
               {
@@ -463,7 +463,7 @@ export default function Home() {
                   'Dedizierter Account Manager',
                   '24/7 Premium Support'
                 ],
-                price: '€2.000 - €10.000',
+                price: 'Preis auf Anfrage',
                 cta: 'Unverbindliches Angebot'
               },
               {
