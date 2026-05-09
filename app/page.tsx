@@ -53,7 +53,7 @@ export default function Home() {
       <CookieBanner />
 
       {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 pt-20">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-navy via-blue-950 to-navy pt-20">
         {/* Animated gradient background */}
         <motion.div
           className="absolute inset-0 opacity-40"
@@ -109,7 +109,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <span className="text-cyan-300">für Ihr Geschäft</span>
+                <span className="text-secondary">für Ihr Geschäft</span>
               </motion.div>
             </h1>
           </motion.div>
@@ -121,7 +121,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-xl sm:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Automatisieren Sie Ihre Geschäftsprozesse mit intelligenter KI. <span className="text-primary-300 font-semibold">80% weniger manuelle Arbeit</span>, messbare Ergebnisse in Wochen.
+            Automatisieren Sie Ihre Geschäftsprozesse mit intelligenter KI. <span className="text-secondary font-semibold">80% weniger manuelle Arbeit</span>, messbare Ergebnisse in Wochen.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -131,10 +131,10 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
-            <a href="#waitlist" className="btn-primary bg-white text-primary-700 hover:bg-gray-100 text-lg">
+            <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg min-h-12 min-w-12 inline-block">
               ✨ Kostenlose Demo
             </a>
-            <a href="#services" className="btn-secondary border-white text-white hover:bg-white/10 text-lg">
+            <a href="#services" className="border-2 border-white text-white hover:bg-white/10 font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 text-lg min-h-12 min-w-12 inline-block">
               Mehr erfahren →
             </a>
           </motion.div>
@@ -157,7 +157,7 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.8 + i * 0.1 }}
               >
-                <div className="text-3xl sm:text-4xl font-bold text-primary-300">{stat.number}</div>
+                <div className="text-3xl sm:text-4xl font-bold text-secondary">{stat.number}</div>
                 <div className="text-sm text-gray-400 mt-2">{stat.label}</div>
               </motion.div>
             ))}
@@ -186,7 +186,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading text-gradient">Intelligente Automatisierung</h2>
+            <h2 className="section-heading text-navy">Intelligente Automatisierung</h2>
             <p className="section-subheading mt-4">
               Erleben Sie die Kraft von KI-getriebener Automation in Ihrem Geschäft
             </p>

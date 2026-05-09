@@ -2,16 +2,22 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-navy text-white">
       <div className="container-max py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
           {/* Company Info */}
           <div className="text-center sm:text-left">
-            <div className="flex items-center gap-2 mb-4 justify-center sm:justify-start">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-sm">C</span>
+            <div className="flex items-center gap-3 mb-4 justify-center sm:justify-start">
+              <div className="w-8 h-8 bg-gradient-to-br from-accent to-secondary rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="8" r="2.5" fill="white"/>
+                  <circle cx="16" cy="14" r="2.5" fill="white"/>
+                  <circle cx="12" cy="20" r="2.5" fill="white"/>
+                  <circle cx="8" cy="14" r="2.5" fill="white"/>
+                  <path d="M12 8 Q14 10 16 14 Q14 18 12 20 Q10 18 8 14 Q10 10 12 8" stroke="white" strokeWidth="1.5" fill="none"/>
+                </svg>
               </div>
-              <span className="font-bold text-base sm:text-lg">Cappai</span>
+              <span className="font-bold text-base sm:text-lg">OPTIMIZED</span>
             </div>
             <p className="text-gray-400 text-sm">KI-Automatisierung für deutsche Unternehmen.</p>
           </div>
@@ -55,8 +61,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-gray-400 text-xs sm:text-sm">
-          <p>&copy; 2024 Cappai UG (haftungsbeschränkt). Alle Rechte vorbehalten.</p>
+        <div className="border-t border-gray-700 pt-6 sm:pt-8 text-center text-gray-400 text-xs sm:text-sm">
+          <p>&copy; 2024 OPTIMIZED (haftungsbeschränkt). Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </footer>
