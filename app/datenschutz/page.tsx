@@ -1,3 +1,4 @@
+import React from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -7,7 +8,7 @@ export const metadata = {
 
 export default function Datenschutz() {
   return (
-    <main>
+    <React.Fragment>
       <Header />
       <div className="container-max py-20">
         <h1 className="text-4xl font-bold mb-8">Datenschutzerklärung</h1>
@@ -93,7 +94,7 @@ export default function Datenschutz() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold mb-4">4. Server-Log-Dateien</h3>
+            <h2 className="text-2xl font-bold mb-4">4. Server-Log-Dateien</h2>
             <p>
               Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:
             </p>
@@ -137,6 +138,6 @@ export default function Datenschutz() {
         </div>
       </div>
       <Footer />
-    </main>
+    </React.Fragment>
   )
 }
