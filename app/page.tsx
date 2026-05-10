@@ -97,7 +97,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Ihr KI-Rezeptionist.
+                KI-Automatisierung
               </motion.div>
               <motion.div
                 className="block"
@@ -105,15 +105,15 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <span className="text-secondary">24/7 Verfügbar.</span>
+                <span className="text-secondary">für Ihr Geschäft.</span>
               </motion.div>
               <motion.div
-                className="block"
+                className="block text-4xl sm:text-5xl lg:text-6xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                Billiger als Kaffee.
+                Einfach. Effektiv. Intelligent.
               </motion.div>
             </h1>
           </motion.div>
@@ -124,7 +124,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl sm:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Nie mehr verpasste Anrufe. Intelligente E-Mail-Verwaltung. Automatische Termineplanung. Ein KI-Personal-Assistent, der Ihre Praxis, Kanzlei oder Agentur 24/7 verwaltet.
+            Automatisieren Sie Ihre Geschäftsprozesse mit KI. Von <span className="text-secondary font-semibold">Anrufbearbeitung bis Rechnungsverwaltung</span> – OPTIMIZED übernimmt die repetitiven Aufgaben, damit Sie sich auf das konzentrieren, was zählt.
           </motion.p>
 
           <motion.div
@@ -186,9 +186,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading text-navy">Ihre aktuellen Herausforderungen</h2>
+            <h2 className="section-heading text-navy">Das Problem erkennt sich wieder</h2>
             <p className="section-subheading mt-4">
-              Das kennen Sie? Das lösen wir.
+              Welcher dieser Punkte trifft auf Ihr Unternehmen zu?
             </p>
           </motion.div>
 
@@ -442,10 +442,10 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-white">
-              Zwei Wege, <span className="text-secondary">OPTIMIZED</span> zu nutzen
+              So nutzen Sie <span className="text-secondary">OPTIMIZED</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Managed Services oder Self-Service. Sie entscheiden.
+              Voll verwaltet oder selbstbedient. Von uns eingerichtet oder selbst konfiguriert.
             </p>
           </motion.div>
 
