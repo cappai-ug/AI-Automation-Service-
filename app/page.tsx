@@ -534,118 +534,291 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="section-heading text-navy">Transparente Preise. Keine versteckten Gebühren.</h2>
-            <p className="section-subheading mt-4">Für jeden Betrieb die richtige Lösung.</p>
+            <p className="section-subheading mt-4 text-center">Für jeden Betrieb die richtige Lösung.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'STARTER',
-                price: '€99',
-                period: '/Monat',
-                highlight: false,
-                features: [
-                  'AI-Rezeptionist (Anrufe)',
-                  '100 E-Mails/Monat',
-                  '50 Termine/Monat',
-                  '1 Benutzer',
-                  'Email-Support',
-                  'Basis-Integrations'
-                ],
-                ideal: 'Für Einzelunternehmer & Freelancer',
-              },
-              {
-                name: 'PROFESSIONAL',
-                price: '€299',
-                period: '/Monat',
-                highlight: true,
-                features: [
-                  'AI-Rezeptionist (Anrufe + WhatsApp)',
-                  'Unbegrenzte E-Mails',
-                  'Lead-Qualifizierung',
-                  'Rechnungsverwaltung',
-                  '3 Benutzer',
-                  'CRM-Integration',
-                  'Priority-Support',
-                  'Custom AI-Anweisungen'
-                ],
-                ideal: 'Für Praxen & Kanzleien',
-              },
-              {
-                name: 'PREMIUM',
-                price: '€599',
-                period: '/Monat',
-                highlight: false,
-                features: [
-                  'Alles aus PROFESSIONAL',
-                  'Vollständige Rechnungsautomatisierung',
-                  'Advanced Analytics',
-                  'Unbegrenzte Benutzer',
-                  'API-Zugang',
-                  'Custom Integrationen',
-                  'Phone-Support',
-                  'White-Label Option'
-                ],
-                ideal: 'Für Agenturen & Unternehmen',
-              },
-            ].map((plan, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                className={`relative rounded-2xl p-8 transition-all duration-300 ${
-                  plan.highlight
-                    ? 'bg-gradient-to-br from-accent to-blue-600 text-white shadow-2xl transform scale-105 hover-lift'
-                    : 'bg-white border-2 border-gray-200 hover-lift'
+          {/* Pricing Tabs */}
+          <div className="flex justify-center gap-4 mb-12">
+            {['professional', 'premium', 'enterprise'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab === 'professional' ? 0 : tab === 'premium' ? 1 : 2)}
+                className={`px-8 py-3 rounded-full font-semibold transition-all ${
+                  (tab === 'professional' && activeTab === 0) ||
+                  (tab === 'premium' && activeTab === 1) ||
+                  (tab === 'enterprise' && activeTab === 2)
+                    ? 'bg-accent text-white shadow-lg'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 }`}
               >
-                {plan.highlight && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
-                      BELIEBT
-                    </span>
-                  </div>
-                )}
-
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <div className="flex items-baseline mb-2">
-                  <span className="text-5xl font-bold">{plan.price}</span>
-                  {plan.period && <span className="ml-2 opacity-75">{plan.period}</span>}
-                </div>
-                <p className={`text-sm mb-8 ${plan.highlight ? 'text-gray-100' : 'text-gray-600'}`}>{plan.ideal}</p>
-
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, j) => (
-                    <li key={j} className="flex items-center gap-3">
-                      <span className="text-xl">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href="#waitlist"
-                  className={`w-full block text-center py-3 px-6 rounded-full font-bold transition-all ${
-                    plan.highlight
-                      ? 'bg-white text-accent hover:bg-gray-100'
-                      : 'bg-accent text-white hover:bg-blue-600'
-                  }`}
-                >
-                  Jetzt starten
-                </a>
-              </motion.div>
+                {tab === 'professional' && '€299 - Professional'}
+                {tab === 'premium' && '€599 - Premium'}
+                {tab === 'enterprise' && 'Enterprise'}
+              </button>
             ))}
           </div>
 
-          <div className="mt-16 bg-blue-50 border-2 border-accent rounded-2xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-navy mb-4">Enterprise & Custom?</h3>
-            <p className="text-gray-700 mb-6">Für große Organisationen mit speziellen Anforderungen offerieren wir maßgeschneiderte Lösungen.</p>
-            <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full inline-block">
-              Kontaktieren Sie uns
-            </a>
-          </div>
+          {/* Tab Content */}
+          <AnimatePresence mode="wait">
+            {activeTab === 0 && (
+              <motion.div
+                key="professional"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+              >
+                {/* Professional Card */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                  className="lg:col-span-2 relative rounded-2xl p-8 bg-gradient-to-br from-accent to-blue-600 text-white shadow-2xl hover-lift"
+                >
+                  <div className="absolute -top-4 left-8">
+                    <span className="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
+                      EMPFOHLEN
+                    </span>
+                  </div>
+
+                  <h3 className="text-3xl font-bold mb-2">Professional</h3>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-6xl font-bold">€299</span>
+                    <span className="ml-2 text-lg opacity-75">/Monat</span>
+                  </div>
+                  <p className="text-gray-100 mb-8">Ideal für Praxen, Kanzleien und kleine Agenturen</p>
+
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      'AI-Rezeptionist (Anrufe + WhatsApp)',
+                      'Unbegrenzte E-Mails & Lead-Qualifizierung',
+                      'Rechnungsverwaltung & Automatisierung',
+                      '3 Benutzer & CRM-Integration',
+                      'Priority Email-Support',
+                      'Custom AI-Anweisungen',
+                      'Analytics Dashboard'
+                    ].map((feature, j) => (
+                      <li key={j} className="flex items-center gap-3">
+                        <span className="text-2xl">✓</span>
+                        <span className="text-lg">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href="#waitlist"
+                    className="w-full block text-center py-3 px-6 rounded-full font-bold bg-white text-accent hover:bg-gray-100 transition-all text-lg"
+                  >
+                    Kostenlos starten
+                  </a>
+                </motion.div>
+
+                {/* Info Box */}
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="rounded-2xl p-8 bg-blue-50 border-2 border-accent"
+                >
+                  <h4 className="font-bold text-navy mb-4 text-lg">Was ist enthalten?</h4>
+                  <ul className="space-y-3 text-sm text-gray-700">
+                    <li className="flex gap-2">
+                      <span className="text-accent font-bold flex-shrink-0">→</span>
+                      <span>KI antwortet auf Anrufe in Echtzeit</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-accent font-bold flex-shrink-0">→</span>
+                      <span>Bucht automatisch Termine</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-accent font-bold flex-shrink-0">→</span>
+                      <span>Verwaltet & versendet Rechnungen</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-accent font-bold flex-shrink-0">→</span>
+                      <span>Qualifiziert Leads automatisch</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-accent font-bold flex-shrink-0">→</span>
+                      <span>14 Tage kostenlos testen</span>
+                    </li>
+                  </ul>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {activeTab === 1 && (
+              <motion.div
+                key="premium"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+              >
+                {/* Premium Card */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                  className="lg:col-span-2 relative rounded-2xl p-8 bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-2xl hover-lift"
+                >
+                  <h3 className="text-3xl font-bold mb-2">Premium</h3>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-6xl font-bold">€599</span>
+                    <span className="ml-2 text-lg opacity-75">/Monat</span>
+                  </div>
+                  <p className="text-gray-100 mb-8">Für Agenturen und große Organisationen mit besonderen Anforderungen</p>
+
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      'Alles aus Professional',
+                      'Unbegrenzte Benutzer & Team-Verwaltung',
+                      'Advanced Analytics & Reporting',
+                      'API-Zugang & Custom Integrationen',
+                      'White-Label Option',
+                      'Phone-Support (Mo-Fr)',
+                      'Erweiterte Automation & Workflows'
+                    ].map((feature, j) => (
+                      <li key={j} className="flex items-center gap-3">
+                        <span className="text-2xl">✓</span>
+                        <span className="text-lg">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href="#waitlist"
+                    className="w-full block text-center py-3 px-6 rounded-full font-bold bg-white text-purple-600 hover:bg-gray-100 transition-all text-lg"
+                  >
+                    Kostenlos starten
+                  </a>
+                </motion.div>
+
+                {/* Info Box */}
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="rounded-2xl p-8 bg-purple-50 border-2 border-purple-600"
+                >
+                  <h4 className="font-bold text-navy mb-4 text-lg">Zusätzliche Features</h4>
+                  <ul className="space-y-3 text-sm text-gray-700">
+                    <li className="flex gap-2">
+                      <span className="text-purple-600 font-bold flex-shrink-0">→</span>
+                      <span>Unbegrenzte Teamgröße</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-purple-600 font-bold flex-shrink-0">→</span>
+                      <span>Detaillierte Analytics</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-purple-600 font-bold flex-shrink-0">→</span>
+                      <span>API für Custom-Integrationen</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-purple-600 font-bold flex-shrink-0">→</span>
+                      <span>White-Label Branding</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-purple-600 font-bold flex-shrink-0">→</span>
+                      <span>Phone-Support verfügbar</span>
+                    </li>
+                  </ul>
+                </motion.div>
+              </motion.div>
+            )}
+
+            {activeTab === 2 && (
+              <motion.div
+                key="enterprise"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+              >
+                {/* Enterprise Card */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                  className="lg:col-span-2 relative rounded-2xl p-8 bg-gradient-to-br from-gray-900 to-gray-800 text-white shadow-2xl hover-lift border-2 border-accent"
+                >
+                  <div className="absolute -top-4 left-8">
+                    <span className="bg-accent text-white px-4 py-1 rounded-full text-sm font-bold">
+                      BENUTZERDEFINIERT
+                    </span>
+                  </div>
+
+                  <h3 className="text-3xl font-bold mb-2">Enterprise</h3>
+                  <div className="flex items-baseline mb-6">
+                    <span className="text-6xl font-bold">Preis auf</span>
+                    <span className="ml-3 text-3xl">Anfrage</span>
+                  </div>
+                  <p className="text-gray-300 mb-8">Für Großunternehmen mit vollständig angepassten Anforderungen</p>
+
+                  <ul className="space-y-4 mb-8">
+                    {[
+                      'Alles aus Premium + Custom-Entwicklung',
+                      'Dedizierter Account Manager',
+                      '24/7 Premium Support (Telefon & Chat)',
+                      'Maßgeschneiderte Integrationslösungen',
+                      'On-Premise oder Hybrid-Deployment',
+                      'SLA mit Garantierter Verfügbarkeit',
+                      'Benutzerdefinierte Schulungen & Onboarding',
+                      'Custom AI-Training für Ihre Branche'
+                    ].map((feature, j) => (
+                      <li key={j} className="flex items-center gap-3">
+                        <span className="text-2xl">✓</span>
+                        <span className="text-lg">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href="#waitlist"
+                    className="w-full block text-center py-3 px-6 rounded-full font-bold bg-accent text-white hover:bg-blue-600 transition-all text-lg"
+                  >
+                    Kontaktieren Sie uns
+                  </a>
+                </motion.div>
+
+                {/* Info Box */}
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="rounded-2xl p-8 bg-gray-50 border-2 border-gray-900"
+                >
+                  <h4 className="font-bold text-gray-900 mb-4 text-lg">Perfekt für...</h4>
+                  <ul className="space-y-3 text-sm text-gray-700">
+                    <li className="flex gap-2">
+                      <span className="text-gray-900 font-bold flex-shrink-0">→</span>
+                      <span>Große Organisationen (100+ Mitarbeiter)</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-gray-900 font-bold flex-shrink-0">→</span>
+                      <span>Spezielle Branchenlösungen</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-gray-900 font-bold flex-shrink-0">→</span>
+                      <span>Regulatorische Anforderungen</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-gray-900 font-bold flex-shrink-0">→</span>
+                      <span>On-Premise Deployment</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-gray-900 font-bold flex-shrink-0">→</span>
+                      <span>Dedizierter Support nötig</span>
+                    </li>
+                  </ul>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
