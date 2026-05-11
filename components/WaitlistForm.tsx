@@ -45,7 +45,7 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-3 sm:space-y-4 w-full ${variant === 'modal' ? 'max-w-md' : 'max-w-2xl'}`}>
+    <form onSubmit={handleSubmit} className={`space-y-3 sm:space-y-4 w-full mx-auto ${variant === 'modal' ? 'max-w-md' : 'max-w-2xl'}`}>
       <div>
         <input
           type="email"

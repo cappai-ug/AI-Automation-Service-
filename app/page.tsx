@@ -222,7 +222,7 @@ export default function Home() {
                 icon: '💸',
                 problem: 'Empfang kostet €2.000/Monat',
                 desc: 'Das Budget ist knapp. Aber ohne Empfang geht nichts.',
-                solution: '€99-299/Monat. Keine Krankheitstage. Keine Urlaubsplanung. Immer verfügbar.',
+                solution: '€299-599/Monat. Keine Krankheitstage. Keine Urlaubsplanung. Immer verfügbar.',
               },
               {
                 icon: '⏰',
@@ -478,7 +478,7 @@ export default function Home() {
                   'Community Support',
                   'Jederzeit skalierbar'
                 ],
-                price: '€99 - €599/Monat',
+                price: '€299-599/Monat',
                 cta: 'Kostenlos starten'
               },
             ].map((service, i) => (
