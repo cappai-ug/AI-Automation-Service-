@@ -31,7 +31,16 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
       if (response.ok) {
         setStatus('success')
         setMessage('Danke! Sie wurden zur Warteliste hinzugefügt.')
-        setFormData({ email: '', company: '', useCase: '' })
+
+        // Redirect to demo page with signup data
+        setTimeout(() => {
+          const params = new URLSearchParams({
+            company: formData.company,
+            email: formData.email,
+            painPoint: formData.useCase,
+          })
+          window.location.href = `/demo?${params.toString()}`
+        }, 1500)
       } else {
         setStatus('error')
         setMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.')
