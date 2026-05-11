@@ -192,9 +192,6 @@ export default function LeadsPage() {
               Login
             </button>
           </form>
-          <p className="text-sm text-gray-500 mt-4 text-center">
-            (Standard: admin123)
-          </p>
         </div>
       </div>
     )
