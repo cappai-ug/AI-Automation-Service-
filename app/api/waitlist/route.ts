@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
+let prisma: PrismaClient
 
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    datasourceUrl: process.env.DATABASE_URL,
-    log: process.env.NODE_ENV === 'development' ? ['query'] : [],
-  })
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+function getPrisma() {
+  if (!prisma) {
+    prisma = new PrismaClient()
+  }
+  return prisma
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +30,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const existingEntry = await prisma.waitlist.findUnique({
+    const existingEntry = await getPrisma().waitlist.findUnique({
       where: { email }
     })
 
@@ -47,7 +45,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const entry = await prisma.waitlist.create({
+    const entry = await getPrisma().waitlist.create({
       data: {
         email,
         company,
