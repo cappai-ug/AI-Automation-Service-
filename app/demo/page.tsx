@@ -1,12 +1,13 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-export default function DemoPage() {
+function DemoPageContent() {
   const searchParams = useSearchParams()
   const company = searchParams.get('company') || 'Ihr Unternehmen'
   const industry = searchParams.get('industry') || 'Business'
@@ -439,5 +440,13 @@ export default function DemoPage() {
 
       <Footer />
     </main>
+  )
+}
+
+export default function DemoPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><p>Loading...</p></div>}>
+      <DemoPageContent />
+    </Suspense>
   )
 }
