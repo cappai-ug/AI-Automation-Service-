@@ -150,7 +150,7 @@ export default function Home() {
             {[
               { number: <Counter end={85} suffix="%" />, label: 'Weniger verpasste Anrufe' },
               { number: <Counter end={10} suffix=" Std" />, label: 'Zeit/Woche eingespart' },
-              { number: '€199', label: 'Kostet pro Monat' },
+              { number: '€1.500', label: 'Ersparnis/Monat' },
             ].map((stat, i) => (
               <motion.div
                 key={i}
