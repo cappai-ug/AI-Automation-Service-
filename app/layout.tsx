@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Cappai - AI-Automatisierung für deutsche Unternehmen',
   description: 'Automatisieren Sie Ihre Geschäftsprozesse mit KI. Dokumentenverarbeitung, Kundenkommunikation, Sales-Automatisierung für KMUs.',
   keywords: 'AI Automation, KI Automatisierung, Dokumentenverarbeitung, Business Process Automation, Deutschland',
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: 'Cappai - AI-Automatisierung für deutsche Unternehmen',
     description: 'Automatisieren Sie Ihre Geschäftsprozesse mit KI',
