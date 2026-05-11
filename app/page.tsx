@@ -220,8 +220,8 @@ export default function Home() {
               },
               {
                 icon: '💸',
-                problem: 'Rezeptionistin kostet €2.000/Monat',
-                desc: 'Das Budget ist knapp. Aber ohne Rezeptionistin geht nichts.',
+                problem: 'Empfang kostet €2.000/Monat',
+                desc: 'Das Budget ist knapp. Aber ohne Empfang geht nichts.',
                 solution: '€99-299/Monat. Keine Krankheitstage. Keine Urlaubsplanung. Immer verfügbar.',
               },
               {
@@ -357,12 +357,12 @@ export default function Home() {
                 icon: '🦷',
                 name: 'Zahnarztpraxis (5 Mitarbeiter)',
                 team: 'Typisches Szenario',
-                problem: '40 Anrufe/Tag, 2-3 verpasste Termine/Tag, 1 Rezeptionistin (€2.000/Monat)',
+                problem: '40 Anrufe/Tag, 2-3 verpasste Termine/Tag, 1 Empfang (€2.000/Monat)',
                 result: 'Mit OPTIMIZED: Kein einziger verpasster Anruf. +5-7 automatisch gebuchte Termine/Woche.',
                 metrics: [
                   '~€3.500 zusätzlicher Umsatz/Monat möglich',
                   '€1.500-1.800 Kostenersparnis/Monat',
-                  'Rezeptionistin konzentriert sich auf Patientenerlebnis'
+                  'Empfang konzentriert sich auf Patientenerlebnis'
                 ]
               },
               {
@@ -374,7 +374,7 @@ export default function Home() {
                 metrics: [
                   'Lead-Response: 6-12h → 15-30 Min erwartet',
                   '~€8.000-12.000 potenzieller Mehrertrag/Monat',
-                  'Sekretärin spart 8-12 Stunden/Woche'
+                  'Empfang spart 8-12 Stunden/Woche'
                 ]
               },
               {
@@ -731,7 +731,7 @@ export default function Home() {
               },
               {
                 q: 'Wie viel Zeit/Geld spare ich wirklich?',
-                a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Rezeptionistin (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMIZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
+                a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Empfang (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMIZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
               },
               {
                 q: 'Und wenn mein Unternehmen sehr speziell ist?',
