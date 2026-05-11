@@ -1,6 +1,6 @@
--- CreateTable
-CREATE TABLE "Waitlist" (
-    "id" SERIAL NOT NULL PRIMARY KEY,
+-- CreateTable "Waitlist"
+CREATE TABLE IF NOT EXISTS "Waitlist" (
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "company" TEXT,
     "useCase" TEXT,
@@ -9,25 +9,27 @@ CREATE TABLE "Waitlist" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "notes" TEXT,
     "source" TEXT NOT NULL DEFAULT 'landing_page',
+    CONSTRAINT "Waitlist_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "Waitlist_email_key" UNIQUE ("email")
 );
 
--- CreateTable
-CREATE TABLE "Customer" (
-    "id" SERIAL NOT NULL PRIMARY KEY,
+-- CreateTable "Customer"
+CREATE TABLE IF NOT EXISTS "Customer" (
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "company" TEXT NOT NULL,
     "plan" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "Customer_pkey" PRIMARY KEY ("id"),
     CONSTRAINT "Customer_email_key" UNIQUE ("email")
 );
 
--- CreateIndex
-CREATE INDEX "Waitlist_email_idx" ON "Waitlist"("email");
+-- CreateIndex "Waitlist_email_idx"
+CREATE INDEX IF NOT EXISTS "Waitlist_email_idx" ON "Waitlist"("email");
 
--- CreateIndex
-CREATE INDEX "Waitlist_status_idx" ON "Waitlist"("status");
+-- CreateIndex "Waitlist_status_idx"
+CREATE INDEX IF NOT EXISTS "Waitlist_status_idx" ON "Waitlist"("status");
 
--- CreateIndex
-CREATE INDEX "Waitlist_createdAt_idx" ON "Waitlist"("createdAt");
+-- CreateIndex "Waitlist_createdAt_idx"
+CREATE INDEX IF NOT EXISTS "Waitlist_createdAt_idx" ON "Waitlist"("createdAt");
