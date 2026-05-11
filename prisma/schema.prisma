@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Waitlist Model für Lead Capture
+model Waitlist {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  company   String?
+  useCase   String?
+  status    String  @default("new") // new, contacted, demo_sent, customer, rejected
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  notes     String?
+  source    String  @default("landing_page")
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Customer Model für zahlende Kunden
+model Customer {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  company   String
+  plan      String  // "starter", "professional", "premium"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,54 +10,56 @@ export async function POST(request: NextRequest) {
 
     if (!email || !company || !useCase) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Erforderliche Felder fehlen' },
         { status: 400 }
       )
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email address' },
+        { error: 'Ungültige E-Mail-Adresse' },
         { status: 400 }
       )
     }
 
-    // TODO: Implement Google Sheets integration
-    // For now, we'll log the data and return success
-    // Instructions for Google Sheets integration are below:
+    const existingEntry = await prisma.waitlist.findUnique({
+      where: { email }
+    })
 
-    // Option 1: Google Sheets with Apps Script
-    // 1. Create a Google Form connected to a Sheet
-    // 2. Get the form action URL
-    // 3. Submit data to the Google Form
+    if (existingEntry) {
+      return NextResponse.json(
+        {
+          success: true,
+          message: 'Sie sind bereits auf unserer Warteliste registriert.',
+          status: 'already_exists'
+        },
+        { status: 200 }
+      )
+    }
 
-    // Option 2: Google Sheets API
-    // 1. Create a service account with Sheets API access
-    // 2. Use GOOGLE_SHEETS_API_KEY and SPREADSHEET_ID env vars
-    // 3. Append rows programmatically
-
-    const timestamp = new Date().toISOString()
-    console.log('Waitlist signup:', { email, company, useCase, timestamp })
-
-    // Example: Append to Google Sheets via Apps Script
-    // const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL
-    // if (googleScriptUrl) {
-    //   await fetch(googleScriptUrl, {
-    //     method: 'POST',
-    //     body: JSON.stringify({ email, company, useCase, timestamp })
-    //   })
-    // }
+    const entry = await prisma.waitlist.create({
+      data: {
+        email,
+        company,
+        useCase,
+        status: 'new',
+        source: 'landing_page'
+      }
+    })
 
     return NextResponse.json(
-      { success: true, message: 'Added to waitlist' },
-      { status: 200 }
+      {
+        success: true,
+        message: 'Danke! Sie wurden zur Warteliste hinzugefügt.',
+        status: 'success'
+      },
+      { status: 201 }
     )
   } catch (error) {
     console.error('Waitlist error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Ein Fehler ist aufgetreten.' },
       { status: 500 }
     )
   }
