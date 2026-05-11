@@ -60,7 +60,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-700 pt-6 sm:pt-8 text-center text-gray-400 text-xs sm:text-sm">
-          <p>&copy; 2024 OPTIMIZED (haftungsbeschränkt). Alle Rechte vorbehalten.</p>
+          <p>&copy; 2026 OPTIMAZED. Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </footer>

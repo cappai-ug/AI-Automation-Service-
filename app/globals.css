@@ -40,7 +40,7 @@ body {
 }
 
 .section-subheading {
-  @apply text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl;
+  @apply text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto text-center;
 }
 
 /* ========== Advanced Animations ========== */

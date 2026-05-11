@@ -186,9 +186,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading text-navy">Das Problem erkennt sich wieder</h2>
-            <p className="section-subheading mt-4">
-              Welcher dieser Punkte trifft auf Ihr Unternehmen zu?
+            <h2 className="section-heading text-navy">Ihre häufigsten Herausforderungen</h2>
+            <p className="section-subheading mt-4 text-center">
+              Erkunden Sie, wie OPTIMIZED diese Probleme für Sie löst
             </p>
           </motion.div>
 
@@ -345,9 +345,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading text-navy">So funktioniert es in der Praxis</h2>
-            <p className="section-subheading mt-4">
-              Von Zahnärzten bis Anwälten. Von Einzelunternehmen bis zu Agenturen.
+            <h2 className="section-heading text-navy">So könnte es in Ihrer Praxis funktionieren</h2>
+            <p className="section-subheading mt-4 text-center">
+              Beispiele basierend auf erwarteten Verbesserungen – zeigt das Potenzial für Ihre Branche
             </p>
           </motion.div>
 
@@ -355,38 +355,38 @@ export default function Home() {
             {[
               {
                 icon: '🦷',
-                name: 'Zahnarztpraxis Dr. Schmidt',
-                team: '5 Mitarbeiter',
-                problem: '40 Anrufe/Tag, 2 verpasste Termine/Tag, 1 Rezeptionistin (€2.000/Monat)',
-                result: 'Nach 2 Wochen: 0 verpasste Anrufe. +5 extra Termine/Woche. Rezeptionistin auf Patientenbetreuung fokussiert.',
+                name: 'Zahnarztpraxis (5 Mitarbeiter)',
+                team: 'Typisches Szenario',
+                problem: '40 Anrufe/Tag, 2-3 verpasste Termine/Tag, 1 Rezeptionistin (€2.000/Monat)',
+                result: 'Mit OPTIMIZED: Kein einziger verpasster Anruf. +5-7 automatisch gebuchte Termine/Woche.',
                 metrics: [
-                  '38 verpasste Anrufe/Monat → 0',
-                  '+€3.500 Umsatz/Monat',
-                  '€1.500 Kostenersparnis = bessere Arbeit der Rezeptionistin'
+                  '~€3.500 zusätzlicher Umsatz/Monat möglich',
+                  '€1.500-1.800 Kostenersparnis/Monat',
+                  'Rezeptionistin konzentriert sich auf Patientenerlebnis'
                 ]
               },
               {
                 icon: '⚖️',
-                name: 'Kanzlei Meyer & Partner',
-                team: '3 Anwälte, 1 Sekretärin',
-                problem: '100 Mails/Tag. Die beste Anfrage wird übersehen. Lead-Response dauert 8h+',
-                result: 'Nach 3 Wochen: Neue Anfragen werden in 15 Min beantwortet. +3 neue Mandate/Monat.',
+                name: 'Kanzlei (3 Anwälte)',
+                team: 'Typisches Szenario',
+                problem: '80-120 Mails/Tag. Wichtige Anfragen können übersehen werden. Lead-Response dauert 6-12h',
+                result: 'Mit OPTIMIZED: Neue Anfragen werden in 15-30 Minuten beantwortet. Automatische Kategorisierung.',
                 metrics: [
-                  'Lead-Response: 8h → 15 Min',
-                  '+€12.000 Umsatz/Monat',
-                  'Sekretärin spart 12 Stunden/Woche'
+                  'Lead-Response: 6-12h → 15-30 Min erwartet',
+                  '~€8.000-12.000 potenzieller Mehrertrag/Monat',
+                  'Sekretärin spart 8-12 Stunden/Woche'
                 ]
               },
               {
                 icon: '🚀',
-                name: 'Marketing-Agentur WebaGency',
-                team: '8 Mitarbeiter',
-                problem: 'Viele Anfragen, keine Struktur. Leads fallen durchs Raster. Rechnungen zahlt keiner pünktlich.',
-                result: 'Nach 1 Monat: Alle Leads werden bearbeitet. +40% mehr neue Kunden. Zahlungsquote 100%.',
+                name: 'Marketing-Agentur (8 Mitarbeiter)',
+                team: 'Typisches Szenario',
+                problem: 'Viele Anfragen, unstrukturierte Verfolgung. Einige Leads fallen durchs Raster. Rechnungsversand manuell.',
+                result: 'Mit OPTIMIZED: Strukturierte Lead-Verwaltung. Automatisierte Rechnungen und Erinnerungen.',
                 metrics: [
-                  'Lead-Conversion: 15% → 25%',
-                  '+€25.000 Umsatz/Monat',
-                  'Rechnungs-Mahnung: Manuell → Automatisch'
+                  'Lead-Conversion: 15% → 22-28% erwartet',
+                  '~€15.000-25.000 zusätzlicher Jahresertrag möglich',
+                  'Rechnungs-Mahnung: 100% automatisiert'
                 ]
               },
             ].map((study, i) => (
