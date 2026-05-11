@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 
+export const dynamic = 'force-dynamic'
+
 let prisma: PrismaClient
 
 function getPrisma() {
