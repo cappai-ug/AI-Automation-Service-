@@ -16,24 +16,32 @@ function getPrisma() {
 
     const pool = new Pool({ connectionString })
     const adapter = new PrismaPg(pool)
-
     prisma = new PrismaClient({ adapter })
   }
   return prisma
 }
 
 async function sendWelcomeEmail(email: string, company: string) {
-  if (!process.env.SENDGRID_API_KEY || !process.env.SENDGRID_FROM_EMAIL) {
-    console.warn('SendGrid not configured, skipping email')
+  const apiKey = process.env.SENDGRID_API_KEY
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL
+
+  console.log('📧 SendGrid Config Check:')
+  console.log('  API Key:', apiKey ? '✅ Set' : '❌ Missing')
+  console.log('  From Email:', fromEmail ? `✅ ${fromEmail}` : '❌ Missing')
+
+  if (!apiKey || !fromEmail) {
+    console.warn('⚠️ SendGrid not fully configured, skipping email')
     return
   }
 
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  sgMail.setApiKey(apiKey)
 
   try {
-    await sgMail.send({
+    console.log(`📧 Attempting to send email to ${email}...`)
+
+    const msg = {
       to: email,
-      from: process.env.SENDGRID_FROM_EMAIL!,
+      from: fromEmail,
       subject: 'Willkommen bei OPTIMIZED – Ihre kostenlose Demo wartet',
       html: `
         <!DOCTYPE html>
@@ -79,10 +87,18 @@ async function sendWelcomeEmail(email: string, company: string) {
         </body>
         </html>
       `
-    })
-    console.log('Welcome email sent to', email)
-  } catch (error) {
-    console.error('Error sending email:', error)
+    }
+
+    const response = await sgMail.send(msg)
+    console.log('✅ Email sent successfully to', email)
+    console.log('SendGrid Response:', response[0].statusCode)
+    return true
+  } catch (error: any) {
+    console.error('❌ SendGrid Error:', error.message || error)
+    if (error.response) {
+      console.error('Response body:', error.response.body)
+    }
+    return false
   }
 }
 
@@ -131,6 +147,8 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    console.log('✅ Waitlist entry created:', entry.id)
+
     await sendWelcomeEmail(email, company)
 
     return NextResponse.json(
@@ -142,7 +160,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Waitlist error:', error)
+    console.error('❌ Waitlist error:', error)
     return NextResponse.json(
       { error: 'Ein Fehler ist aufgetreten.' },
       { status: 500 }
