@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
   }
 
   sgMail.setApiKey(apiKey)
-  sgMail.setDataResidency('eu')
 
   const msg = {
     to: 'niklas-schalinsky@hotmail.de',
