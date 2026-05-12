@@ -35,6 +35,7 @@ async function sendWelcomeEmail(email: string, company: string) {
   }
 
   sgMail.setApiKey(apiKey)
+  sgMail.setDataResidency('eu')
 
   try {
     console.log(`📧 Attempting to send email to ${email}...`)
