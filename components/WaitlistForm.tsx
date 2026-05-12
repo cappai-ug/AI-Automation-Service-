@@ -9,7 +9,7 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
     useCase: '',
   })
   const [loading, setLoading] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'success' | 'error' | 'exists'>('idle')
   const [message, setMessage] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -28,13 +28,20 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
         body: JSON.stringify(formData),
       })
 
+      const data = await response.json()
+
       if (response.ok) {
-        setStatus('success')
-        setMessage('Danke! Sie wurden zur Warteliste hinzugefügt.')
-        setFormData({ email: '', company: '', useCase: '' })
+        if (data.status === 'already_exists') {
+          setStatus('exists')
+          setMessage('Sie sind bereits registriert. Wir melden uns in Kürze bei Ihnen.')
+        } else {
+          setStatus('success')
+          setMessage('Danke! Sie wurden zur Warteliste hinzugefügt.')
+          setFormData({ email: '', company: '', useCase: '' })
+        }
       } else {
         setStatus('error')
-        setMessage('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.')
+        setMessage(data.error || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.')
       }
     } catch (err) {
       setStatus('error')
@@ -93,6 +100,12 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
       {status === 'success' && (
         <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
           {message} Wir schreiben Ihnen noch heute eine E-Mail mit Ihrem Demo-Link!
+        </div>
+      )}
+
+      {status === 'exists' && (
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-800">
+          ℹ️ {message}
         </div>
       )}
 
