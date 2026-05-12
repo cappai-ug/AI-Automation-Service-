@@ -25,20 +25,20 @@ async function sendWelcomeEmail(email: string, company: string) {
   const apiKey = process.env.SENDGRID_API_KEY
   const fromEmail = process.env.SENDGRID_FROM_EMAIL
 
-  console.log('📧 SendGrid Config Check:')
-  console.log('  API Key:', apiKey ? '✅ Set' : '❌ Missing')
-  console.log('  From Email:', fromEmail ? `✅ ${fromEmail}` : '❌ Missing')
+  console.log('📧 [sendWelcomeEmail] Called for:', email)
+  console.log('📧 [sendWelcomeEmail] Config Check:')
+  console.log('  - API Key exists:', !!apiKey)
+  console.log('  - From Email:', fromEmail)
 
   if (!apiKey || !fromEmail) {
-    console.warn('⚠️ SendGrid not fully configured, skipping email')
-    return
+    console.warn('⚠️ [sendWelcomeEmail] SendGrid not fully configured, skipping')
+    return false
   }
 
   sgMail.setApiKey(apiKey)
-  
 
   try {
-    console.log(`📧 Attempting to send email to ${email}...`)
+    console.log(`📧 [sendWelcomeEmail] Attempting to send to ${email}...`)
 
     const msg = {
       to: email,
@@ -91,24 +91,32 @@ async function sendWelcomeEmail(email: string, company: string) {
     }
 
     const response = await sgMail.send(msg)
-    console.log('✅ Email sent successfully to', email)
-    console.log('SendGrid Response:', response[0].statusCode)
+    console.log('✅ [sendWelcomeEmail] Email sent successfully')
+    console.log('✅ [sendWelcomeEmail] SendGrid Status Code:', response[0].statusCode)
     return true
   } catch (error: any) {
-    console.error('❌ SendGrid Error:', error.message || error)
+    console.error('❌ [sendWelcomeEmail] Error occurred')
+    console.error('❌ Error message:', error.message)
+    console.error('❌ Error code:', error.code)
     if (error.response) {
-      console.error('Response body:', error.response.body)
+      console.error('❌ Response body:', error.response.body)
     }
+    console.error('❌ Full error:', error)
     return false
   }
 }
 
 export async function POST(request: NextRequest) {
+  console.log('📨 [POST /api/waitlist] Request received')
   try {
     const body = await request.json()
     const { email, company, useCase } = body
 
+    console.log('📨 [POST] Email:', email)
+    console.log('📨 [POST] Company:', company)
+
     if (!email || !company || !useCase) {
+      console.warn('⚠️ [POST] Missing required fields')
       return NextResponse.json(
         { error: 'Erforderliche Felder fehlen' },
         { status: 400 }
@@ -117,6 +125,7 @@ export async function POST(request: NextRequest) {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
+      console.warn('⚠️ [POST] Invalid email format')
       return NextResponse.json(
         { error: 'Ungültige E-Mail-Adresse' },
         { status: 400 }
@@ -128,6 +137,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (existingEntry) {
+      console.log('ℹ️ [POST] Email already exists in waitlist')
       return NextResponse.json(
         {
           success: true,
@@ -148,20 +158,23 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log('✅ Waitlist entry created:', entry.id)
+    console.log('✅ [POST] Database entry created:', entry.id)
 
-    await sendWelcomeEmail(email, company)
+    console.log('📧 [POST] Calling sendWelcomeEmail...')
+    const emailSent = await sendWelcomeEmail(email, company)
+    console.log('📧 [POST] sendWelcomeEmail returned:', emailSent)
 
     return NextResponse.json(
       {
         success: true,
         message: 'Danke! Sie wurden zur Warteliste hinzugefügt. Wir schreiben Ihnen noch heute eine E-Mail mit Ihrem Demo-Link!',
-        status: 'success'
+        status: 'success',
+        emailSent: emailSent
       },
       { status: 201 }
     )
   } catch (error) {
-    console.error('❌ Waitlist error:', error)
+    console.error('❌ [POST] Waitlist error:', error)
     return NextResponse.json(
       { error: 'Ein Fehler ist aufgetreten.' },
       { status: 500 }
