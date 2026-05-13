@@ -106,8 +106,20 @@ export default function SourcesAdminPage() {
   }
 
   async function remove(source: FeedSource) {
-    if (!confirm(`Quelle "${source.name}" wirklich löschen?`)) return
-    await fetch(`/api/admin/sources/${source.id}`, { method: 'DELETE' })
+    const itemCount = source._count?.items ?? 0
+    const message =
+      itemCount > 0
+        ? `Quelle "${source.name}" wirklich löschen?\n\n` +
+          `${itemCount} gespeicherte Feed-Items werden mit gelöscht.\n` +
+          `Bereits generierte KI-Drafts bleiben erhalten (nur die Quellen-Verknüpfung geht verloren).`
+        : `Quelle "${source.name}" wirklich löschen?`
+    if (!confirm(message)) return
+    const res = await fetch(`/api/admin/sources/${source.id}`, { method: 'DELETE' })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      alert(`Löschen fehlgeschlagen: ${body.error || res.status}`)
+      return
+    }
     await load()
   }
 
@@ -299,7 +311,8 @@ export default function SourcesAdminPage() {
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => remove(s)}
-                        className="text-red-600 hover:text-red-800 text-sm"
+                        className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors"
+                        title="Quelle und alle ihre Items löschen"
                       >
                         Löschen
                       </button>
