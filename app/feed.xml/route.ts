@@ -1,6 +1,6 @@
 import { getAllPosts, CATEGORIES } from '@/lib/blog'
 
-export const dynamic = 'force-static'
+export const revalidate = 60
 
 const BASE_URL = 'https://www.optimazed.de'
 
@@ -13,8 +13,8 @@ function escapeXml(input: string): string {
     .replace(/'/g, '&apos;')
 }
 
-export function GET() {
-  const posts = getAllPosts()
+export async function GET() {
+  const posts = await getAllPosts()
   const updated = posts[0]?.date
     ? new Date(posts[0].date).toUTCString()
     : new Date().toUTCString()

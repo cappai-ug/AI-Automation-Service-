@@ -13,6 +13,8 @@ import {
 
 type Props = { params: { kategorie: string } }
 
+export const revalidate = 60
+
 export function generateStaticParams() {
   return (Object.keys(CATEGORIES) as BlogCategory[]).map((kategorie) => ({ kategorie }))
 }
@@ -36,11 +38,11 @@ export function generateMetadata({ params }: Props): Metadata {
   }
 }
 
-export default function CategoryPage({ params }: Props) {
+export default async function CategoryPage({ params }: Props) {
   if (!isValidCategory(params.kategorie)) notFound()
   const category = params.kategorie
   const cat = CATEGORIES[category]
-  const posts = getPostsByCategory(category)
+  const posts = await getPostsByCategory(category)
 
   return (
     <main className="bg-white">

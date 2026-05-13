@@ -15,13 +15,18 @@ import {
 
 type Props = { params: { kategorie: string; slug: string } }
 
-export function generateStaticParams() {
-  return getAllPosts().map((p) => ({ kategorie: p.category, slug: p.slug }))
+export const revalidate = 60
+// Allow DB-published drafts whose slugs weren't known at build time.
+export const dynamicParams = true
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts()
+  return posts.map((p) => ({ kategorie: p.category, slug: p.slug }))
 }
 
-export function generateMetadata({ params }: Props): Metadata {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isValidCategory(params.kategorie)) return {}
-  const post = getPost(params.kategorie, params.slug)
+  const post = await getPost(params.kategorie, params.slug)
   if (!post) return {}
 
   const url = `https://www.optimazed.de/blog/${post.category}/${post.slug}`
@@ -87,12 +92,12 @@ const mdxComponents = {
   ),
 }
 
-export default function ArticlePage({ params }: Props) {
+export default async function ArticlePage({ params }: Props) {
   if (!isValidCategory(params.kategorie)) notFound()
-  const post = getPost(params.kategorie, params.slug)
+  const post = await getPost(params.kategorie, params.slug)
   if (!post) notFound()
 
-  const related = getRelatedPosts(post)
+  const related = await getRelatedPosts(post)
   const url = `https://www.optimazed.de/blog/${post.category}/${post.slug}`
 
   const articleSchema = {

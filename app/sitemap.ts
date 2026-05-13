@@ -1,7 +1,9 @@
 import { MetadataRoute } from 'next'
 import { CATEGORIES, getAllPosts, type BlogCategory } from '@/lib/blog'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 60
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.optimazed.de'
   const currentDate = new Date().toISOString().split('T')[0]
 
@@ -59,7 +61,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  const blogPosts: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+  const posts = await getAllPosts()
+  const blogPosts: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.category}/${post.slug}`,
     lastModified: post.date,
     changeFrequency: 'monthly',

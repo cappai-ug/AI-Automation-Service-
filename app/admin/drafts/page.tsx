@@ -256,12 +256,29 @@ export default function DraftsAdminPage() {
                       </a>
                     </div>
                   )}
-                  <button
-                    onClick={() => setExpanded(expanded === d.id ? null : d.id)}
-                    className="text-sm text-accent hover:underline"
-                  >
-                    {expanded === d.id ? 'Inhalt ausblenden' : 'Inhalt anzeigen'}
-                  </button>
+                  <div className="flex flex-wrap gap-3 items-center">
+                    <Link
+                      href={`/admin/drafts/${d.id}`}
+                      className="px-4 py-1.5 bg-navy text-white text-sm font-medium rounded-lg hover:bg-blue-900"
+                    >
+                      Bearbeiten
+                    </Link>
+                    {d.status === 'published' && (
+                      <Link
+                        href={`/blog/${d.category}/${d.slug}`}
+                        target="_blank"
+                        className="px-4 py-1.5 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50"
+                      >
+                        Live ansehen
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => setExpanded(expanded === d.id ? null : d.id)}
+                      className="text-sm text-accent hover:underline"
+                    >
+                      {expanded === d.id ? 'Inhalt ausblenden' : 'Inhalt anzeigen'}
+                    </button>
+                  </div>
                 </div>
                 {expanded === d.id && (
                   <div className="border-t border-gray-100 bg-gray-50 p-5">

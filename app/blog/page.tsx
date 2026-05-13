@@ -4,6 +4,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { CATEGORIES, getAllPosts, formatDate, type BlogCategory } from '@/lib/blog'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Blog – KI-Automatisierung, DSGVO & Branchen-Insights | OPTIMAZED',
   description:
@@ -19,8 +21,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BlogIndexPage() {
-  const posts = getAllPosts()
+export default async function BlogIndexPage() {
+  const posts = await getAllPosts()
   const categories = Object.entries(CATEGORIES) as [BlogCategory, (typeof CATEGORIES)[BlogCategory]][]
 
   return (
