@@ -255,8 +255,8 @@ export default function SourcesAdminPage() {
         ) : sources.length === 0 ? (
           <p className="text-gray-500">Noch keine RSS-Quellen angelegt.</p>
         ) : (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
+            <table className="w-full text-sm min-w-[900px]">
               <thead className="bg-gray-50 text-left text-gray-600 uppercase text-xs">
                 <tr>
                   <th className="px-4 py-3">Name</th>
@@ -286,12 +286,17 @@ export default function SourcesAdminPage() {
                     <td className="px-4 py-3 text-right text-gray-700">
                       {s._count?.items ?? 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-600">
-                      {s.lastFetchedAt
-                        ? new Date(s.lastFetchedAt).toLocaleString('de-DE')
-                        : '—'}
+                    <td className="px-4 py-3 text-gray-600 max-w-[14rem]">
+                      <div className="whitespace-nowrap">
+                        {s.lastFetchedAt
+                          ? new Date(s.lastFetchedAt).toLocaleString('de-DE')
+                          : '—'}
+                      </div>
                       {s.lastError && (
-                        <div className="text-xs text-red-600 mt-1 truncate" title={s.lastError}>
+                        <div
+                          className="text-xs text-red-600 mt-1 truncate"
+                          title={s.lastError}
+                        >
                           {s.lastError}
                         </div>
                       )}
