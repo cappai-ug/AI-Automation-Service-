@@ -453,6 +453,33 @@ input:focus-visible {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+/* Heading anchor links (rehype-autolink-headings) — unobtrusive, visible on hover */
+.prose-content h1 .heading-anchor,
+.prose-content h2 .heading-anchor,
+.prose-content h3 .heading-anchor {
+  margin-left: 0.5rem;
+  color: rgb(156 163 175);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  font-weight: normal;
+}
+.prose-content h1:hover .heading-anchor,
+.prose-content h2:hover .heading-anchor,
+.prose-content h3:hover .heading-anchor,
+.prose-content .heading-anchor:focus {
+  opacity: 1;
+}
+.prose-content .heading-anchor:hover {
+  color: rgb(6 182 212);
+}
+/* Offset for sticky header when jumping via #anchor */
+.prose-content h1[id],
+.prose-content h2[id],
+.prose-content h3[id] {
+  scroll-margin-top: 6rem;
+}
+
 /* Print styles */
 @media print {
   .no-print {

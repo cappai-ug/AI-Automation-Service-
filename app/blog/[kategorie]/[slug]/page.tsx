@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeExternalLinks from 'rehype-external-links'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import {
@@ -219,6 +222,24 @@ export default async function ArticlePage({ params }: Props) {
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],
+                  rehypePlugins: [
+                    rehypeSlug,
+                    [
+                      rehypeAutolinkHeadings,
+                      {
+                        behavior: 'append',
+                        properties: {
+                          className: 'heading-anchor',
+                          ariaLabel: 'Direkt-Link zur Sektion',
+                        },
+                        content: { type: 'text', value: '#' },
+                      },
+                    ],
+                    [
+                      rehypeExternalLinks,
+                      { target: '_blank', rel: ['noopener', 'noreferrer'] },
+                    ],
+                  ],
                 },
               }}
             />
