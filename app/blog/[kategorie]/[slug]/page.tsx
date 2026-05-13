@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import {
@@ -90,6 +91,30 @@ const mdxComponents = {
   code: (props: React.HTMLAttributes<HTMLElement>) => (
     <code className="bg-gray-100 text-navy px-1.5 py-0.5 rounded text-sm" {...props} />
   ),
+  table: (props: React.HTMLAttributes<HTMLTableElement>) => (
+    <div className="my-8 overflow-x-auto">
+      <table
+        className="w-full text-sm text-left border-collapse rounded-lg overflow-hidden shadow-sm"
+        {...props}
+      />
+    </div>
+  ),
+  thead: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
+    <thead className="bg-navy text-white" {...props} />
+  ),
+  tbody: (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
+    <tbody className="divide-y divide-gray-200 bg-white" {...props} />
+  ),
+  tr: (props: React.HTMLAttributes<HTMLTableRowElement>) => (
+    <tr className="hover:bg-soft-white" {...props} />
+  ),
+  th: (props: React.ThHTMLAttributes<HTMLTableCellElement>) => (
+    <th className="px-4 py-3 font-semibold text-left" {...props} />
+  ),
+  td: (props: React.TdHTMLAttributes<HTMLTableCellElement>) => (
+    <td className="px-4 py-3 text-gray-700 align-top" {...props} />
+  ),
+  hr: () => <hr className="my-10 border-gray-200" />,
 }
 
 export default async function ArticlePage({ params }: Props) {
@@ -188,7 +213,15 @@ export default async function ArticlePage({ params }: Props) {
           </header>
 
           <div className="prose-content">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote
+              source={post.content}
+              components={mdxComponents}
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                },
+              }}
+            />
           </div>
         </div>
       </article>
