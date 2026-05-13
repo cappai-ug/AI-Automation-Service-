@@ -230,6 +230,12 @@ export default function LeadsPage() {
             >
               Blog-Quellen
             </a>
+            <a
+              href="/admin/drafts"
+              className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition"
+            >
+              KI-Drafts
+            </a>
             <button
               onClick={() => {
                 localStorage.removeItem('admin_authenticated')

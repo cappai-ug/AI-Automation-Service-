@@ -65,8 +65,33 @@ model FeedItem {
   publishedAt    DateTime?
   fetchedAt      DateTime @default(now())
   processed      Boolean  @default(false)
+  drafts         BlogDraft[]
 
   @@unique([sourceId, externalId])
   @@index([fetchedAt])
   @@index([processed])
+}
+
+// KI-generierter Blogartikel-Entwurf, basierend auf einem FeedItem.
+// Status-Workflow: draft → approved → published (oder → rejected).
+model BlogDraft {
+  id              String   @id @default(cuid())
+  sourceItemId    String?
+  sourceItem      FeedItem? @relation(fields: [sourceItemId], references: [id], onDelete: SetNull)
+  title           String
+  slug            String   @unique
+  description     String
+  category        String   // ratgeber | branchen | technologie
+  tags            String[] @default([])
+  contentMarkdown String   // MDX-Body, ohne Frontmatter
+  relevanceScore  Int      @default(5) // 1-10, Claude-Selbsteinschätzung
+  status          String   @default("draft") // draft | approved | published | rejected
+  model           String?  // Model-ID, mit dem generiert wurde
+  generatedAt     DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  publishedAt     DateTime?
+
+  @@index([status])
+  @@index([category])
+  @@index([generatedAt])
 }

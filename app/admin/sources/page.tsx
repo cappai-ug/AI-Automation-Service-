@@ -179,6 +179,12 @@ export default function SourcesAdminPage() {
             >
               Items ansehen
             </Link>
+            <Link
+              href="/admin/drafts"
+              className="px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50"
+            >
+              KI-Drafts
+            </Link>
             <button
               onClick={fetchNow}
               disabled={busy}

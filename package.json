@@ -10,6 +10,7 @@
     "export": "next export || echo 'Export not needed'"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.2",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@sendgrid/mail": "^8.1.6",
@@ -24,7 +25,8 @@
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.0",
     "reading-time": "^1.5.0",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

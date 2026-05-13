@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/fetch-feeds",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/generate-drafts",
+      "schedule": "30 6 * * *"
     }
   ]
 }
