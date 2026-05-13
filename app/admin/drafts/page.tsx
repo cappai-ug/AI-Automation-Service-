@@ -97,7 +97,9 @@ export default function DraftsAdminPage() {
     if (!confirm('Drafts generieren? Dies kostet API-Tokens (Claude Opus 4.7).')) return
     setGenerating(true)
     try {
-      const res = await fetch('/api/cron/generate-drafts?limit=3')
+      const res = await fetch('/api/admin/generate-drafts?limit=3', {
+        method: 'POST',
+      })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`)
       const msg = (data.results ?? [])

@@ -126,7 +126,7 @@ export default function SourcesAdminPage() {
   async function fetchNow() {
     setBusy(true)
     try {
-      const res = await fetch('/api/cron/fetch-feeds')
+      const res = await fetch('/api/admin/fetch-feeds', { method: 'POST' })
       const data = await res.json()
       alert(
         `Fetch abgeschlossen.\n\n` +
