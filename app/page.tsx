@@ -8,6 +8,54 @@ import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import WaitlistForm from '@/components/WaitlistForm'
 
+const faqs = [
+  {
+    q: 'Wie lange dauert die Einrichtung?',
+    a: 'Mit der SaaS-Plattform: 15 Minuten. Sie melden sich an, konfigurieren Ihre Nummer, fertig. Mit Managed Services: 2-4 Wochen für eine komplette Implementierung.'
+  },
+  {
+    q: 'Welche Integrations-Möglichkeiten gibt es?',
+    a: 'Wir unterstützen Google Calendar, Outlook, Gmail, Office 365, HubSpot, Pipedrive, Stripe und 100+ weitere Tools via Zapier/n8n. Custom-Integrationen sind im PREMIUM Plan möglich.'
+  },
+  {
+    q: 'Ist das DSGVO-konform?',
+    a: 'Ja! Vollständig DSGVO-konform. Daten werden in Deutschland (AWS Frankfurt) gespeichert, verschlüsselt übertragen und nicht für Training genutzt.'
+  },
+  {
+    q: 'Was, wenn ein Patient noch einen Menschen sprechen möchte?',
+    a: 'Der KI-Rezeptionist kann jederzeit zu Ihnen durchstellen – entweder automatisch nach 2-3 Fragen oder auf Wunsch des Anrufers. Sie entscheiden die Regel.'
+  },
+  {
+    q: 'Funktioniert das auch mit meinem CRM?',
+    a: 'Ja! Wir integrieren mit HubSpot, Pipedrive, Salesforce, Zoho und hunderten anderen Tools. Neue Leads und Termine werden automatisch synchronisiert.'
+  },
+  {
+    q: 'Kann ich OPTIMIZED jederzeit kündigen?',
+    a: 'Ja. Monatliche Verträge, 14 Tage Kündigungsfrist. Keine Bindung. Wenn Sie nicht zufrieden sind, können Sie stoppen. Einfach.'
+  },
+  {
+    q: 'Wie viel Zeit/Geld spare ich wirklich?',
+    a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Empfang (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMIZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
+  },
+  {
+    q: 'Und wenn mein Unternehmen sehr speziell ist?',
+    a: 'Mit Managed Services passen wir alles an Ihre Bedürfnisse an. Spezielle Branchenprozesse, Ihre Arbeitsweise, Ihre Systeme. Wir helfen Ihnen, alles zu automatisieren.'
+  },
+]
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+}
+
 const Counter = ({ end, suffix = '' }: { end: number; suffix?: string }) => {
   const [count, setCount] = useState(0)
   const { ref, inView } = useInView({ threshold: 0.5 })
@@ -686,7 +734,11 @@ export default function Home() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="py-32">
+      <section id="faq" className="py-32">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
         <div className="container-max max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -699,40 +751,7 @@ export default function Home() {
           </motion.div>
 
           <div className="space-y-4">
-            {[
-              {
-                q: 'Wie lange dauert die Einrichtung?',
-                a: 'Mit der SaaS-Plattform: 15 Minuten. Sie melden sich an, konfigurieren Ihre Nummer, fertig. Mit Managed Services: 2-4 Wochen für eine komplette Implementierung.'
-              },
-              {
-                q: 'Welche Integrations-Möglichkeiten gibt es?',
-                a: 'Wir unterstützen Google Calendar, Outlook, Gmail, Office 365, HubSpot, Pipedrive, Stripe und 100+ weitere Tools via Zapier/n8n. Custom-Integrationen sind im PREMIUM Plan möglich.'
-              },
-              {
-                q: 'Ist das DSGVO-konform?',
-                a: 'Ja! Vollständig DSGVO-konform. Daten werden in Deutschland (AWS Frankfurt) gespeichert, verschlüsselt übertragen und nicht für Training genutzt.'
-              },
-              {
-                q: 'Was, wenn ein Patient noch einen Menschen sprechen möchte?',
-                a: 'Der KI-Rezeptionist kann jederzeit zu Ihnen durchstellen – entweder automatisch nach 2-3 Fragen oder auf Wunsch des Anrufers. Sie entscheiden die Regel.'
-              },
-              {
-                q: 'Funktioniert das auch mit meinem CRM?',
-                a: 'Ja! Wir integrieren mit HubSpot, Pipedrive, Salesforce, Zoho und hunderten anderen Tools. Neue Leads und Termine werden automatisch synchronisiert.'
-              },
-              {
-                q: 'Kann ich OPTIMIZED jederzeit kündigen?',
-                a: 'Ja. Monatliche Verträge, 14 Tage Kündigungsfrist. Keine Bindung. Wenn Sie nicht zufrieden sind, können Sie stoppen. Einfach.'
-              },
-              {
-                q: 'Wie viel Zeit/Geld spare ich wirklich?',
-                a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Empfang (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMIZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
-              },
-              {
-                q: 'Und wenn mein Unternehmen sehr speziell ist?',
-                a: 'Mit Managed Services passen wir alles an Ihre Bedürfnisse an. Spezielle Branchenprozesse, Ihre Arbeitsweise, Ihre Systeme. Wir helfen Ihnen, alles zu automatisieren.'
-              },
-            ].map((item, i) => (
+            {faqs.map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
