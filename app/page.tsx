@@ -7,6 +7,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import WaitlistForm from '@/components/WaitlistForm'
+import LatestPostsSection from '@/components/LatestPostsSection'
 
 const faqs = [
   {
@@ -732,6 +733,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* ===== Latest Blog Posts ===== */}
+      <LatestPostsSection />
 
       {/* ===== FAQ ===== */}
       <section id="faq" className="py-32">
