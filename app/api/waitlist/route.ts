@@ -62,37 +62,37 @@ async function sendWelcomeEmail(email: string, company: string) {
       </head>
       <body>
         <div class="container">
-          <h1>Willkommen bei OPTIMIZED!</h1>
+          <h1>Willkommen bei OPTIMAZED!</h1>
           <p>Hallo ${company},</p>
-          <p>vielen Dank, dass Sie sich für OPTIMIZED interessieren. Wir freuen uns, Sie bei Ihrer digitalen Transformation zu unterstützen.</p>
+          <p>vielen Dank, dass Sie sich für OPTIMAZED interessieren. Wir freuen uns, Sie bei Ihrer digitalen Transformation zu unterstützen.</p>
 
           <div class="divider"></div>
 
           <h2>Die nächsten Schritte:</h2>
           <p><strong>1. Kostenlose Optimization Call (30 Min)</strong></p>
-          <p>Gemeinsam analysieren wir Ihre Anforderungen und zeigen Ihnen, wie OPTIMIZED Ihre Prozesse automatisiert.</p>
+          <p>Gemeinsam analysieren wir Ihre Anforderungen und zeigen Ihnen, wie OPTIMAZED Ihre Prozesse automatisiert.</p>
           <a href="https://cal.com/optimized/demo" class="button">Jetzt Termin buchen</a>
 
           <p><strong>2. Kostenlos testen</strong></p>
-          <p>Erhalten Sie 14 Tage kostenlosen Zugriff auf OPTIMIZED. Keine Kreditkarte erforderlich.</p>
+          <p>Erhalten Sie 14 Tage kostenlosen Zugriff auf OPTIMAZED. Keine Kreditkarte erforderlich.</p>
 
           <div class="divider"></div>
 
           <h2>Häufig gestellte Fragen</h2>
           <ul>
-            <li><strong>Was kostet OPTIMIZED?</strong> Unsere Pläne beginnen bei €299/Monat. Kostenlose Testwoche inklusive.</li>
+            <li><strong>Was kostet OPTIMAZED?</strong> Unsere Pläne beginnen bei €299/Monat. Kostenlose Testwoche inklusive.</li>
             <li><strong>Wie lange dauert die Integration?</strong> Die meisten Integrationen sind innerhalb von 48 Stunden aktiv.</li>
-            <li><strong>Ist OPTIMIZED DSGVO-konform?</strong> Ja, 100% DSGVO-konform mit Servern in Deutschland.</li>
+            <li><strong>Ist OPTIMAZED DSGVO-konform?</strong> Ja, 100% DSGVO-konform mit Servern in Deutschland.</li>
             <li><strong>Kann ich jederzeit kündigen?</strong> Ja, monatlich kündbar, keine Bindung.</li>
           </ul>
 
           <div class="divider"></div>
 
           <p>Bei Fragen stehe ich Ihnen gerne zur Verfügung.</p>
-          <p><strong>Viele Grüße,</strong><br>Das OPTIMIZED Team</p>
+          <p><strong>Viele Grüße,</strong><br>Das OPTIMAZED Team</p>
 
           <div class="footer">
-            <p>OPTIMIZED GmbH<br>
+            <p>OPTIMAZED GmbH<br>
             Email: hello@optimized.de<br>
             Website: <a href="https://www.optimazed.de" style="color: #2563EB; text-decoration: none;">www.optimazed.de</a></p>
             <p><a href="https://www.optimazed.de/datenschutz" style="color: #2563EB; text-decoration: none;">Datenschutzerklärung</a> | <a href="https://www.optimazed.de/impressum" style="color: #2563EB; text-decoration: none;">Impressum</a></p>
@@ -102,35 +102,35 @@ async function sendWelcomeEmail(email: string, company: string) {
       </html>
     `
 
-    const textContent = `Willkommen bei OPTIMIZED!
+    const textContent = `Willkommen bei OPTIMAZED!
 
 Hallo ${company},
 
-vielen Dank, dass Sie sich für OPTIMIZED interessieren. Wir freuen uns, Sie bei Ihrer digitalen Transformation zu unterstützen.
+vielen Dank, dass Sie sich für OPTIMAZED interessieren. Wir freuen uns, Sie bei Ihrer digitalen Transformation zu unterstützen.
 
 Die nächsten Schritte:
 
 1. Kostenlose Optimization Call (30 Min)
-Gemeinsam analysieren wir Ihre Anforderungen und zeigen Ihnen, wie OPTIMIZED Ihre Prozesse automatisiert.
+Gemeinsam analysieren wir Ihre Anforderungen und zeigen Ihnen, wie OPTIMAZED Ihre Prozesse automatisiert.
 Jetzt Termin buchen: https://cal.com/optimized/demo
 
 2. Kostenlos testen
-Erhalten Sie 14 Tage kostenlosen Zugriff auf OPTIMIZED. Keine Kreditkarte erforderlich.
+Erhalten Sie 14 Tage kostenlosen Zugriff auf OPTIMAZED. Keine Kreditkarte erforderlich.
 
 Häufig gestellte Fragen:
 
-- Was kostet OPTIMIZED? Unsere Pläne beginnen bei €299/Monat. Kostenlose Testwoche inklusive.
+- Was kostet OPTIMAZED? Unsere Pläne beginnen bei €299/Monat. Kostenlose Testwoche inklusive.
 - Wie lange dauert die Integration? Die meisten Integrationen sind innerhalb von 48 Stunden aktiv.
-- Ist OPTIMIZED DSGVO-konform? Ja, 100% DSGVO-konform mit Servern in Deutschland.
+- Ist OPTIMAZED DSGVO-konform? Ja, 100% DSGVO-konform mit Servern in Deutschland.
 - Kann ich jederzeit kündigen? Ja, monatlich kündbar, keine Bindung.
 
 Bei Fragen stehe ich Ihnen gerne zur Verfügung.
 
 Viele Grüße,
-Das OPTIMIZED Team
+Das OPTIMAZED Team
 
 ---
-OPTIMIZED GmbH
+OPTIMAZED GmbH
 Email: hello@optimized.de
 Website: https://www.optimazed.de
 
@@ -140,7 +140,7 @@ Datenschutzerklärung: https://www.optimazed.de/datenschutz`
       to: email,
       from: fromEmail,
       replyTo: 'hello@optimized.de',
-      subject: 'Willkommen bei OPTIMIZED – Ihre kostenlose Consultation',
+      subject: 'Willkommen bei OPTIMAZED – Ihre kostenlose Consultation',
       text: textContent,
       html: htmlContent,
       headers: {

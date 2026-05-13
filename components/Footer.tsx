@@ -11,7 +11,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-4 justify-center sm:justify-start">
               <Image
                 src="/images/logo.svg"
-                alt="OPTIMIZED Logo"
+                alt="OPTIMAZED Logo"
                 width={40}
                 height={40}
                 className="h-8 w-auto"

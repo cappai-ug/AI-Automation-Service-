@@ -22,7 +22,7 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 min-w-fit">
             <Image
               src="/images/logo.svg"
-              alt="OPTIMIZED Logo"
+              alt="OPTIMAZED Logo"
               width={640}
               height={160}
               className="h-12 sm:h-14 w-auto"

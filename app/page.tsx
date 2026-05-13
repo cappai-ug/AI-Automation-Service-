@@ -31,12 +31,12 @@ const faqs = [
     a: 'Ja! Wir integrieren mit HubSpot, Pipedrive, Salesforce, Zoho und hunderten anderen Tools. Neue Leads und Termine werden automatisch synchronisiert.'
   },
   {
-    q: 'Kann ich OPTIMIZED jederzeit kündigen?',
+    q: 'Kann ich OPTIMAZED jederzeit kündigen?',
     a: 'Ja. Monatliche Verträge, 14 Tage Kündigungsfrist. Keine Bindung. Wenn Sie nicht zufrieden sind, können Sie stoppen. Einfach.'
   },
   {
     q: 'Wie viel Zeit/Geld spare ich wirklich?',
-    a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Empfang (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMIZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
+    a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Empfang (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMAZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
   },
   {
     q: 'Und wenn mein Unternehmen sehr speziell ist?',
@@ -173,7 +173,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl sm:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Automatisieren Sie Ihre Geschäftsprozesse mit KI. Von <span className="text-secondary font-semibold">Anrufbearbeitung bis Rechnungsverwaltung</span> – OPTIMIZED übernimmt die repetitiven Aufgaben, damit Sie sich auf das konzentrieren, was zählt.
+            Automatisieren Sie Ihre Geschäftsprozesse mit KI. Von <span className="text-secondary font-semibold">Anrufbearbeitung bis Rechnungsverwaltung</span> – OPTIMAZED übernimmt die repetitiven Aufgaben, damit Sie sich auf das konzentrieren, was zählt.
           </motion.p>
 
           <motion.div
@@ -237,7 +237,7 @@ export default function Home() {
           >
             <h2 className="section-heading text-navy">Ihre häufigsten Herausforderungen</h2>
             <p className="section-subheading mt-4 text-center">
-              Erkunden Sie, wie OPTIMIZED diese Probleme für Sie löst
+              Erkunden Sie, wie OPTIMAZED diese Probleme für Sie löst
             </p>
           </motion.div>
 
@@ -247,7 +247,7 @@ export default function Home() {
                 icon: '☎️',
                 problem: 'Verpasste Anrufe',
                 desc: 'Nach Stunden fragt der Patient: „Warum antwortet keiner?" Die Terminvergabe läuft ins Leere.',
-                solution: 'OPTIMIZED beantwortet jeden Anruf. Bucht Termine. Sendet Bestätigung. Der Patient ist zufrieden.',
+                solution: 'OPTIMAZED beantwortet jeden Anruf. Bucht Termine. Sendet Bestätigung. Der Patient ist zufrieden.',
               },
               {
                 icon: '📧',
@@ -265,7 +265,7 @@ export default function Home() {
                 icon: '💰',
                 problem: 'Verlorene Leads',
                 desc: 'Der beste Lead geht an den Konkurrenten – weil Sie nicht schnell genug antworteten.',
-                solution: 'OPTIMIZED antwortet in Minuten. Mit personalisierter Info. Der Lead wird Kunde.',
+                solution: 'OPTIMAZED antwortet in Minuten. Mit personalisierter Info. Der Lead wird Kunde.',
               },
               {
                 icon: '💸',
@@ -310,7 +310,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="section-heading text-navy">Was OPTIMIZED für Sie tut</h2>
+            <h2 className="section-heading text-navy">Was OPTIMAZED für Sie tut</h2>
             <p className="section-subheading mt-4">
               Fünf Funktionen. Ein System. Einfach nur besser.
             </p>
@@ -407,7 +407,7 @@ export default function Home() {
                 name: 'Zahnarztpraxis (5 Mitarbeiter)',
                 team: 'Typisches Szenario',
                 problem: '40 Anrufe/Tag, 2-3 verpasste Termine/Tag, 1 Empfang (€2.000/Monat)',
-                result: 'Mit OPTIMIZED: Kein einziger verpasster Anruf. +5-7 automatisch gebuchte Termine/Woche.',
+                result: 'Mit OPTIMAZED: Kein einziger verpasster Anruf. +5-7 automatisch gebuchte Termine/Woche.',
                 metrics: [
                   '~€3.500 zusätzlicher Umsatz/Monat möglich',
                   '€1.500-1.800 Kostenersparnis/Monat',
@@ -419,7 +419,7 @@ export default function Home() {
                 name: 'Kanzlei (3 Anwälte)',
                 team: 'Typisches Szenario',
                 problem: '80-120 Mails/Tag. Wichtige Anfragen können übersehen werden. Lead-Response dauert 6-12h',
-                result: 'Mit OPTIMIZED: Neue Anfragen werden in 15-30 Minuten beantwortet. Automatische Kategorisierung.',
+                result: 'Mit OPTIMAZED: Neue Anfragen werden in 15-30 Minuten beantwortet. Automatische Kategorisierung.',
                 metrics: [
                   'Lead-Response: 6-12h → 15-30 Min erwartet',
                   '~€8.000-12.000 potenzieller Mehrertrag/Monat',
@@ -431,7 +431,7 @@ export default function Home() {
                 name: 'Marketing-Agentur (8 Mitarbeiter)',
                 team: 'Typisches Szenario',
                 problem: 'Viele Anfragen, unstrukturierte Verfolgung. Einige Leads fallen durchs Raster. Rechnungsversand manuell.',
-                result: 'Mit OPTIMIZED: Strukturierte Lead-Verwaltung. Automatisierte Rechnungen und Erinnerungen.',
+                result: 'Mit OPTIMAZED: Strukturierte Lead-Verwaltung. Automatisierte Rechnungen und Erinnerungen.',
                 metrics: [
                   'Lead-Conversion: 15% → 22-28% erwartet',
                   '~€15.000-25.000 zusätzlicher Jahresertrag möglich',
@@ -491,7 +491,7 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-white">
-              So nutzen Sie <span className="text-secondary">OPTIMIZED</span>
+              So nutzen Sie <span className="text-secondary">OPTIMAZED</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Voll verwaltet oder selbstbedient. Von uns eingerichtet oder selbst konfiguriert.
@@ -718,7 +718,7 @@ export default function Home() {
               Starten Sie Ihre <span className="text-secondary">kostenlose Demo</span>
             </h2>
             <p className="text-xl text-white/90">
-              Sehen Sie, wie OPTIMIZED Ihre Praxis, Kanzlei oder Agentur verändert.
+              Sehen Sie, wie OPTIMAZED Ihre Praxis, Kanzlei oder Agentur verändert.
             </p>
           </motion.div>
 

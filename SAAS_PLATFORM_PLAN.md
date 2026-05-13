@@ -1,4 +1,4 @@
-# OPTIMIZED SaaS Platform - Revised Plan
+# OPTIMAZED SaaS Platform - Revised Plan
 ## Focus: AI Receptionist & Personal Assistant for Local Businesses
 
 ---
@@ -26,7 +26,7 @@
 
 ---
 
-## CORE PRODUCT: "OPTIMIZED Assistant"
+## CORE PRODUCT: "OPTIMAZED Assistant"
 
 ### Core Features (MVP):
 
@@ -193,21 +193,21 @@ ENTERPRISE: €1,999+/month
 **Doctor's Practice** (5 employees):
 - Receives 30 calls/day, 50 emails/day
 - Currently: 1 receptionist (€2,000/month) + frustrated staff wasting time
-- OPTIMIZED: €299/month PROFESSIONAL
+- OPTIMAZED: €299/month PROFESSIONAL
 - ROI: Save ~€1,700/month + 10 hours/week
 - Payback: <1 month ✅
 
 **Marketing Agency** (8 employees):
 - Lead-heavy business, 100+ inquiries/month
 - Currently: One person spends 15 hours/week on email + scheduling + invoicing
-- OPTIMIZED: €599/month PREMIUM
+- OPTIMAZED: €599/month PREMIUM
 - ROI: Save 1 FTE (~€3,500/month) + better lead conversion
 - Payback: <1 week ✅
 
 **Freelance Coach**:
 - 20 clients, very personal service
 - Currently: Manually manage everything
-- OPTIMIZED: €99/month STARTER
+- OPTIMAZED: €99/month STARTER
 - ROI: Save 8 hours/week + professional image
 - Payback: 1-2 weeks ✅
 
@@ -225,14 +225,14 @@ ENTERPRISE: €1,999+/month
 ### vs. Zapier/n8n:
 - ❌ More complex to set up (requires tech skills)
 - ❌ Need to build own automations
-- ✅ **OPTIMIZED**: Pre-built workflows, 1-click setup, German-focused
+- ✅ **OPTIMAZED**: Pre-built workflows, 1-click setup, German-focused
 
 ### vs. Competitors (ZeroBounce, Calendly, etc.):
 - ❌ Calendly: Only scheduling
 - ❌ HubSpot: Overly complex for SMBs
-- ✅ **OPTIMIZED**: All-in-one for local business chaos
-- ✅ **OPTIMIZED**: Tailored to German business culture
-- ✅ **OPTIMIZED**: Radically simpler setup
+- ✅ **OPTIMAZED**: All-in-one for local business chaos
+- ✅ **OPTIMAZED**: Tailored to German business culture
+- ✅ **OPTIMAZED**: Radically simpler setup
 
 ### Your Unique Advantages:
 1. **German Language & Culture** (Competitors are US-focused)
@@ -249,7 +249,7 @@ ENTERPRISE: €1,999+/month
 
 ```
 ┌─────────────────────────────────────────────┐
-│      OPTIMIZED Dashboard (Next.js)          │
+│      OPTIMAZED Dashboard (Next.js)          │
 │  ├─ Appointment calendar                    │
 │  ├─ Email inbox (AI-filtered)              │
 │  ├─ Lead pipeline                          │
@@ -258,7 +258,7 @@ ENTERPRISE: €1,999+/month
 └────────────┬────────────────────────────────┘
              │
 ┌────────────▼────────────────────────────────┐
-│    OPTIMIZED Backend API (Node.js/Express)  │
+│    OPTIMAZED Backend API (Node.js/Express)  │
 │  ├─ User management & auth                 │
 │  ├─ Workflow orchestration                 │
 │  ├─ AI prompt management                   │

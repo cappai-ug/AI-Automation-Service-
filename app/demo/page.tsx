@@ -51,7 +51,7 @@ function DemoPageContent() {
     default: {
       title: 'Für Ihr Unternehmen',
       problem: 'Repetitive Aufgaben kosten Zeit & Geld',
-      solution: 'OPTIMIZED automatisiert, qualifiziert, optimiert',
+      solution: 'OPTIMAZED automatisiert, qualifiziert, optimiert',
       stats: [
         { value: '85%', label: 'Weniger manuelle Arbeit' },
         { value: '10h', label: 'Zeitersparnis/Woche' },
@@ -98,7 +98,7 @@ function DemoPageContent() {
       step: 2,
       title: '2-Wochen Free Trial',
       items: [
-        'Vollständiger Zugriff auf OPTIMIZED',
+        'Vollständiger Zugriff auf OPTIMAZED',
         'Wir richten es für Ihre Workflows ein',
         'Tägliche Check-ins & Support',
         'Keine Kreditkarte erforderlich',
@@ -119,11 +119,11 @@ function DemoPageContent() {
   const faqs = [
     {
       q: 'Wie lange dauert das Gespräch?',
-      a: 'Das Optimization Call dauert etwa 30 Minuten. Wir fragen nach Ihren Workflows, zeigen wie OPTIMIZED Ihnen hilft, und klären offene Fragen.',
+      a: 'Das Optimization Call dauert etwa 30 Minuten. Wir fragen nach Ihren Workflows, zeigen wie OPTIMAZED Ihnen hilft, und klären offene Fragen.',
     },
     {
       q: 'Kostet das etwas?',
-      a: 'Nein, komplett kostenlos. Der Call ist unverbindlich und es geht nur darum, zu sehen, ob OPTIMIZED für Sie passt.',
+      a: 'Nein, komplett kostenlos. Der Call ist unverbindlich und es geht nur darum, zu sehen, ob OPTIMAZED für Sie passt.',
     },
     {
       q: 'Was passiert nach dem Call?',
@@ -134,7 +134,7 @@ function DemoPageContent() {
       a: 'Ja! Nach dem Call bekommen Sie sofort 14 Tage kostenlosen Zugriff. Kein Abo, keine versteckten Gebühren.',
     },
     {
-      q: 'Was wenn OPTIMIZED nicht passt?',
+      q: 'Was wenn OPTIMAZED nicht passt?',
       a: 'Wir sagen Ihnen ehrlich Bescheid. Falls es nicht passt, können Sie ohne Kosten gehen. Aber bei 95% der Unternehmen funktioniert es perfekt.',
     },
     {
@@ -164,7 +164,7 @@ function DemoPageContent() {
               Großartig! Lassen Sie uns {company} optimieren.
             </h1>
             <p className="text-xl text-white/90 mb-8">
-              Sehen Sie, wie OPTIMIZED {painPoint && `Ihre "${painPoint}"-Probleme`} für Ihr Unternehmen löst.
+              Sehen Sie, wie OPTIMAZED {painPoint && `Ihre "${painPoint}"-Probleme`} für Ihr Unternehmen löst.
             </p>
             <a
               href="#booking"
@@ -353,7 +353,7 @@ function DemoPageContent() {
               Bereit, Ihr Unternehmen zu optimieren?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Buchen Sie ein unverbindliches Gespräch. Wir zeigen Ihnen genau, wie OPTIMIZED {company} transformiert.
+              Buchen Sie ein unverbindliches Gespräch. Wir zeigen Ihnen genau, wie OPTIMAZED {company} transformiert.
             </p>
 
             <div className="bg-white/10 p-8 rounded-xl mb-8 backdrop-blur">

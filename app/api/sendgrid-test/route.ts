@@ -38,7 +38,7 @@ export async function GET(_request: NextRequest) {
   const msg = {
     to: toEmail,
     from: fromEmail,
-    subject: 'Test Email from OPTIMIZED',
+    subject: 'Test Email from OPTIMAZED',
     html: '<h1>Test Email</h1><p>If you see this, SendGrid works!</p>',
   }
 

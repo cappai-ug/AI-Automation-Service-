@@ -98,7 +98,7 @@ model Waitlist {
 # Email
 SENDGRID_API_KEY=SG.xxxx
 SENDGRID_FROM_EMAIL=hello@optimized.de
-SENDGRID_FROM_NAME=OPTIMIZED
+SENDGRID_FROM_NAME=OPTIMAZED
 
 # Oder Mailgun:
 MAILGUN_API_KEY=key-xxxx
@@ -120,22 +120,22 @@ DEMO_BOOKING_URL=https://cal.com/optimized/demo
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to OPTIMIZED</title>
+  <title>Welcome to OPTIMAZED</title>
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f8fafc;">
   <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: white; border-radius: 8px;">
     
-    <h1 style="color: #0F172A;">Willkommen bei OPTIMIZED! 🎉</h1>
+    <h1 style="color: #0F172A;">Willkommen bei OPTIMAZED! 🎉</h1>
     
     <p>Hallo {{company}},</p>
     
-    <p>Danke, dass Sie sich für OPTIMIZED interessieren. Wir wissen, dass Zeit kostbar ist – deshalb möchten wir Ihnen zeigen, wie einfach KI-Automatisierung für Ihr Unternehmen sein kann.</p>
+    <p>Danke, dass Sie sich für OPTIMAZED interessieren. Wir wissen, dass Zeit kostbar ist – deshalb möchten wir Ihnen zeigen, wie einfach KI-Automatisierung für Ihr Unternehmen sein kann.</p>
     
     <h2 style="color: #2563EB;">Die nächsten Schritte:</h2>
     
     <ol>
       <li><strong>Kostenlose Demo (15 Min)</strong><br>
-        Sehen Sie live, wie OPTIMIZED funktioniert und wie es zu Ihrem Unternehmen passt.<br>
+        Sehen Sie live, wie OPTIMAZED funktioniert und wie es zu Ihrem Unternehmen passt.<br>
         <a href="{{demoLink}}" style="background-color: #2563EB; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-block; margin: 10px 0;">Demo buchen</a>
       </li>
       
@@ -159,7 +159,7 @@ DEMO_BOOKING_URL=https://cal.com/optimized/demo
     </p>
     
     <p style="color: #666; font-size: 12px;">
-      OPTIMIZED GmbH | hello@optimized.de | www.optimized.de
+      OPTIMAZED GmbH | hello@optimized.de | www.optimized.de
     </p>
   </div>
 </body>
@@ -232,11 +232,11 @@ export async function POST(req: NextRequest) {
     await sgMail.send({
       to: email,
       from: process.env.SENDGRID_FROM_EMAIL!,
-      subject: 'Willkommen bei OPTIMIZED – Ihre kostenlose Demo wartet',
+      subject: 'Willkommen bei OPTIMAZED – Ihre kostenlose Demo wartet',
       html: `
-        <h1>Willkommen bei OPTIMIZED! 🎉</h1>
+        <h1>Willkommen bei OPTIMAZED! 🎉</h1>
         <p>Hallo ${company},</p>
-        <p>Danke, dass Sie sich für OPTIMIZED interessieren.</p>
+        <p>Danke, dass Sie sich für OPTIMAZED interessieren.</p>
         <p><a href="${demoLink}">Demo buchen (15 Min)</a></p>
         <p><a href="https://app.optimized.de/signup">Kostenlos testen</a></p>
       `
@@ -375,7 +375,7 @@ await client.crm.contacts.basicApi.create({
 // Webhook from Stripe
 POST /api/webhooks/stripe
   → Wartelisten-Status = 'customer'
-  → Email: "Willkommen als OPTIMIZED-Kunde"
+  → Email: "Willkommen als OPTIMAZED-Kunde"
 ```
 
 ---
