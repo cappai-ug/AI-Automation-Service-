@@ -119,6 +119,9 @@ export default function FeedItemsAdminPage() {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
+            <Link href="/admin" className="text-sm text-accent hover:underline mb-2 inline-block">
+              ← Dashboard
+            </Link>
             <h1 className="text-3xl font-bold text-navy">Feed-Items</h1>
             <p className="text-gray-600 mt-1">
               Gesammelte Artikel aus den RSS-Quellen — Quelle für künftige Blog-Themen.

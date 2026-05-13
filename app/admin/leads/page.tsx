@@ -222,7 +222,15 @@ export default function LeadsPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Lead Management Dashboard</h1>
+          <div>
+            <a
+              href="/admin"
+              className="text-sm text-accent hover:underline mb-2 inline-block"
+            >
+              ← Dashboard
+            </a>
+            <h1 className="text-3xl font-bold text-gray-900">Lead Management Dashboard</h1>
+          </div>
           <div className="flex gap-3">
             <a
               href="/admin/sources"

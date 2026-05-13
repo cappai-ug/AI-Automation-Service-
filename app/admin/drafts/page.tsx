@@ -149,9 +149,12 @@ export default function DraftsAdminPage() {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
+            <Link href="/admin" className="text-sm text-accent hover:underline mb-2 inline-block">
+              ← Dashboard
+            </Link>
             <h1 className="text-3xl font-bold text-navy">KI-Drafts</h1>
             <p className="text-gray-600 mt-1">
-              Mit Claude generierte Blogartikel-Entwürfe. Bearbeiten & Veröffentlichen folgt in Phase 3.
+              Mit Claude generierte Blogartikel-Entwürfe. Klick „Bearbeiten" zum Editieren und Veröffentlichen.
             </p>
           </div>
           <div className="flex gap-3">
