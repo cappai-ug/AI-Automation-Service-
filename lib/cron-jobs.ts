@@ -83,10 +83,198 @@ export async function runFetchFeeds(): Promise<FetchFeedsSummary> {
   }
 }
 
+// ── shared scoring helper ───────────────────────────────────────────────────
+
+type CandidateItem = {
+  id: string
+  title: string
+  description: string | null
+  contentSnippet: string | null
+  link: string
+  source: { id: string; name: string; category: string | null }
+  relevanceScore: number | null
+}
+
+type Scored = CandidateItem & { score: number; reason: string }
+
+const HAIKU_BATCH_SIZE = 30
+
+/**
+ * Score a list of candidate items.
+ *
+ * 1. Items matching the keyword blacklist are marked processed (skip).
+ * 2. Items that already have relevanceScore are passed through using
+ *    the saved score (no Haiku call, free).
+ * 3. Remaining items are scored via Haiku in batches of 30 and their
+ *    score is persisted on the FeedItem row.
+ *
+ * Returns the scored items plus a count of how many were keyword-filtered
+ * and a scoringError (if Haiku threw).
+ */
+async function scoreCandidates(
+  items: CandidateItem[]
+): Promise<{
+  scored: Scored[]
+  keywordFiltered: number
+  haikuCalls: number
+  scoringError: string | null
+}> {
+  const prisma = getPrisma()
+  const scored: Scored[] = []
+  let keywordFiltered = 0
+  let scoringError: string | null = null
+  let haikuCalls = 0
+
+  // Stage 1: keyword filter
+  const remaining: CandidateItem[] = []
+  for (const item of items) {
+    const skip = applyKeywordFilter(item)
+    if (skip) {
+      await prisma.feedItem.update({
+        where: { id: item.id },
+        data: { processed: true, skipReason: skip, scoredAt: new Date() },
+      })
+      keywordFiltered += 1
+    } else {
+      remaining.push(item)
+    }
+  }
+
+  // Stage 2a: items that already have a saved score → reuse it for free
+  const alreadyScored = remaining.filter((it) => it.relevanceScore != null)
+  for (const item of alreadyScored) {
+    scored.push({
+      ...item,
+      score: item.relevanceScore!,
+      reason: '(already scored)',
+    })
+  }
+
+  // Stage 2b: items needing fresh scoring → batched Haiku calls
+  const needsScoring = remaining.filter((it) => it.relevanceScore == null)
+  if (needsScoring.length > 0) {
+    try {
+      for (let i = 0; i < needsScoring.length; i += HAIKU_BATCH_SIZE) {
+        const batch = needsScoring.slice(i, i + HAIKU_BATCH_SIZE)
+        const scores = await scoreItemsWithHaiku(
+          batch.map((it) => ({
+            id: it.id,
+            title: it.title,
+            description: it.description,
+            sourceName: it.source.name,
+          }))
+        )
+        haikuCalls += 1
+
+        for (const item of batch) {
+          const result = scores.get(item.id)
+          if (!result) {
+            await prisma.feedItem.update({
+              where: { id: item.id },
+              data: {
+                processed: true,
+                skipReason: 'scoring:missing',
+                scoredAt: new Date(),
+              },
+            })
+            continue
+          }
+          await prisma.feedItem.update({
+            where: { id: item.id },
+            data: { relevanceScore: result.score, scoredAt: new Date() },
+          })
+          scored.push({ ...item, score: result.score, reason: result.reason })
+        }
+      }
+    } catch (error: any) {
+      scoringError = error?.message?.slice(0, 500) ?? 'Unknown scoring error'
+      console.error('Haiku scoring failed:', error)
+      // Items not yet scored remain processed=false, relevanceScore=null
+      // so they'll be retried on the next run.
+    }
+  }
+
+  return { scored, keywordFiltered, haikuCalls, scoringError }
+}
+
+// ── score-only (no Opus generation) ─────────────────────────────────────────
+
+export type ScoreItemsSummary = {
+  ok: boolean
+  timestamp: string
+  pulled: number
+  keywordFiltered: number
+  scored: number
+  belowThreshold: number
+  eligible: number
+  haikuCalls: number
+  scoringError: string | null
+}
+
+export async function runScoreItems(options: {
+  limit: number
+}): Promise<ScoreItemsSummary> {
+  const prisma = getPrisma()
+  const limit = Math.min(Math.max(1, options.limit), 300)
+
+  // Pull only items that haven't been scored yet
+  const candidates = await prisma.feedItem.findMany({
+    where: { processed: false, relevanceScore: null },
+    orderBy: [{ publishedAt: 'desc' }, { fetchedAt: 'desc' }],
+    take: limit,
+    include: { source: true },
+  })
+
+  if (candidates.length === 0) {
+    return {
+      ok: true,
+      timestamp: new Date().toISOString(),
+      pulled: 0,
+      keywordFiltered: 0,
+      scored: 0,
+      belowThreshold: 0,
+      eligible: 0,
+      haikuCalls: 0,
+      scoringError: null,
+    }
+  }
+
+  const { scored, keywordFiltered, haikuCalls, scoringError } =
+    await scoreCandidates(candidates)
+
+  // For low-score items: mark processed so they don't keep filling the queue.
+  // High-score items stay processed=false so generate-drafts can pick them up.
+  let belowThreshold = 0
+  let eligible = 0
+  for (const item of scored) {
+    if (item.score < MIN_RELEVANCE_SCORE) {
+      await prisma.feedItem.update({
+        where: { id: item.id },
+        data: { processed: true, skipReason: `score:${item.score}` },
+      })
+      belowThreshold += 1
+    } else {
+      eligible += 1
+    }
+  }
+
+  return {
+    ok: true,
+    timestamp: new Date().toISOString(),
+    pulled: candidates.length,
+    keywordFiltered,
+    scored: scored.length,
+    belowThreshold,
+    eligible,
+    haikuCalls,
+    scoringError,
+  }
+}
+
 // ── generate-drafts ─────────────────────────────────────────────────────────
 
 const HARD_MAX_DRAFTS = 10
-const SCORING_BATCH_SIZE = 30
+const CANDIDATE_POOL_SIZE = 30
 
 export type GenerateDraftsSummary = {
   ok: boolean
@@ -100,6 +288,7 @@ export type GenerateDraftsSummary = {
   failed: number
   threshold: number
   maxDrafts: number
+  haikuCalls: number
   scoringError: string | null
   results: Array<{
     itemId: string
@@ -125,12 +314,29 @@ export async function runGenerateDrafts(options: {
   const prisma = getPrisma()
   const maxDrafts = Math.min(Math.max(1, options.maxDrafts), HARD_MAX_DRAFTS)
 
-  const candidates = await prisma.feedItem.findMany({
-    where: { processed: false },
-    orderBy: [{ publishedAt: 'desc' }, { fetchedAt: 'desc' }],
-    take: SCORING_BATCH_SIZE,
+  // Prefer items that already have a high score (no Haiku call needed).
+  const preScored = await prisma.feedItem.findMany({
+    where: { processed: false, relevanceScore: { gte: MIN_RELEVANCE_SCORE } },
+    orderBy: [
+      { relevanceScore: 'desc' },
+      { publishedAt: 'desc' },
+      { fetchedAt: 'desc' },
+    ],
+    take: maxDrafts,
     include: { source: true },
   })
+
+  // If not enough pre-scored eligible items, pull unscored ones to score now.
+  let candidates: Awaited<ReturnType<typeof prisma.feedItem.findMany>> = preScored as any
+  if (preScored.length < maxDrafts) {
+    const extra = await prisma.feedItem.findMany({
+      where: { processed: false, relevanceScore: null },
+      orderBy: [{ publishedAt: 'desc' }, { fetchedAt: 'desc' }],
+      take: CANDIDATE_POOL_SIZE,
+      include: { source: true },
+    })
+    candidates = [...(preScored as any), ...extra]
+  }
 
   if (candidates.length === 0) {
     return {
@@ -145,69 +351,20 @@ export async function runGenerateDrafts(options: {
       failed: 0,
       threshold: MIN_RELEVANCE_SCORE,
       maxDrafts,
+      haikuCalls: 0,
       scoringError: null,
       results: [],
     }
   }
 
-  // Stage 1: keyword filter (free)
-  const keptAfterKeyword: typeof candidates = []
-  let keywordSkips = 0
-  for (const item of candidates) {
-    const skip = applyKeywordFilter(item)
-    if (skip) {
-      await prisma.feedItem.update({
-        where: { id: item.id },
-        data: { processed: true, skipReason: skip, scoredAt: new Date() },
-      })
-      keywordSkips += 1
-    } else {
-      keptAfterKeyword.push(item)
-    }
-  }
+  const { scored, keywordFiltered, haikuCalls, scoringError } =
+    await scoreCandidates(candidates)
 
-  // Stage 2: Haiku batch scoring
-  type Scored = (typeof candidates)[number] & { score: number; reason: string }
-  const scoredItems: Scored[] = []
-  let scoringError: string | null = null
-
-  if (keptAfterKeyword.length > 0) {
-    try {
-      const scores = await scoreItemsWithHaiku(
-        keptAfterKeyword.map((it) => ({
-          id: it.id,
-          title: it.title,
-          description: it.description,
-          sourceName: it.source.name,
-        }))
-      )
-
-      for (const item of keptAfterKeyword) {
-        const scored = scores.get(item.id)
-        if (!scored) {
-          await prisma.feedItem.update({
-            where: { id: item.id },
-            data: {
-              processed: true,
-              skipReason: 'scoring:missing',
-              scoredAt: new Date(),
-            },
-          })
-          continue
-        }
-        scoredItems.push({ ...item, score: scored.score, reason: scored.reason })
-      }
-    } catch (error: any) {
-      scoringError = error?.message?.slice(0, 500) ?? 'Unknown scoring error'
-      console.error('Haiku scoring failed:', error)
-    }
-  }
-
-  // Stage 3: Opus draft generation (top N above threshold)
-  scoredItems.sort((a, b) => b.score - a.score)
+  // Stage 3: sort, pick winners (top N above threshold), mark losers
+  scored.sort((a, b) => b.score - a.score)
   const winners: Scored[] = []
   const losers: Scored[] = []
-  for (const item of scoredItems) {
+  for (const item of scored) {
     if (item.score >= MIN_RELEVANCE_SCORE && winners.length < maxDrafts) {
       winners.push(item)
     } else {
@@ -220,7 +377,6 @@ export async function runGenerateDrafts(options: {
       where: { id: loser.id },
       data: {
         processed: true,
-        relevanceScore: loser.score,
         skipReason:
           loser.score < MIN_RELEVANCE_SCORE
             ? `score:${loser.score}`
@@ -261,11 +417,7 @@ export async function runGenerateDrafts(options: {
 
       await prisma.feedItem.update({
         where: { id: item.id },
-        data: {
-          processed: true,
-          relevanceScore: item.score,
-          scoredAt: new Date(),
-        },
+        data: { processed: true, scoredAt: new Date() },
       })
 
       results.push({
@@ -293,14 +445,15 @@ export async function runGenerateDrafts(options: {
     ok: true,
     timestamp: new Date().toISOString(),
     candidates: candidates.length,
-    keywordFiltered: keywordSkips,
-    scored: scoredItems.length,
+    keywordFiltered,
+    scored: scored.length,
     belowThreshold: losers.filter((l) => l.score < MIN_RELEVANCE_SCORE).length,
     overLimit: losers.filter((l) => l.score >= MIN_RELEVANCE_SCORE).length,
     generated: results.filter((r) => r.status === 'created').length,
     failed: results.filter((r) => r.status === 'failed').length,
     threshold: MIN_RELEVANCE_SCORE,
     maxDrafts,
+    haikuCalls,
     scoringError,
     results,
   }

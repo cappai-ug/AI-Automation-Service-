@@ -14,7 +14,11 @@ export async function GET() {
       sourcesErrored,
       itemsTotal,
       itemsUnprocessed,
-      itemsHighScore,
+      itemsUnscored,
+      itemsScoredLow,
+      itemsScoredMid,
+      itemsScoredHigh,
+      itemsEligible,
       draftsTotal,
       draftsDraft,
       draftsPublished,
@@ -27,7 +31,14 @@ export async function GET() {
       prisma.feedSource.count({ where: { lastError: { not: null } } }),
       prisma.feedItem.count(),
       prisma.feedItem.count({ where: { processed: false } }),
-      prisma.feedItem.count({ where: { relevanceScore: { gte: 6 } } }),
+      prisma.feedItem.count({ where: { relevanceScore: null } }),
+      prisma.feedItem.count({ where: { relevanceScore: { lt: 6 } } }),
+      prisma.feedItem.count({ where: { relevanceScore: { gte: 6, lt: 8 } } }),
+      prisma.feedItem.count({ where: { relevanceScore: { gte: 8 } } }),
+      // Eligible for draft: scored ≥6 AND not yet processed
+      prisma.feedItem.count({
+        where: { relevanceScore: { gte: 6 }, processed: false },
+      }),
       prisma.blogDraft.count(),
       prisma.blogDraft.count({ where: { status: 'draft' } }),
       prisma.blogDraft.count({ where: { status: 'published' } }),
@@ -37,7 +48,17 @@ export async function GET() {
     return NextResponse.json({
       leads: { total: leadsTotal, new: leadsNew },
       sources: { total: sourcesTotal, enabled: sourcesEnabled, errored: sourcesErrored },
-      feedItems: { total: itemsTotal, unprocessed: itemsUnprocessed, highScore: itemsHighScore },
+      feedItems: {
+        total: itemsTotal,
+        unprocessed: itemsUnprocessed,
+        unscored: itemsUnscored,
+        scoredLow: itemsScoredLow, // < 6
+        scoredMid: itemsScoredMid, // 6-7
+        scoredHigh: itemsScoredHigh, // 8-10
+        eligible: itemsEligible, // ≥6 and not yet processed (ready for drafting)
+        // backwards-compat:
+        highScore: itemsScoredMid + itemsScoredHigh,
+      },
       drafts: {
         total: draftsTotal,
         draft: draftsDraft,

@@ -102,15 +102,27 @@ export default function DraftsAdminPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`)
-      const msg = (data.results ?? [])
-        .map(
-          (r: any) =>
-            `${r.status === 'created' ? '✓' : '✗'} ${r.title}` +
-            (r.relevanceScore !== undefined ? ` (Score ${r.relevanceScore})` : '') +
-            (r.error ? ` — ${r.error}` : '')
-        )
-        .join('\n')
-      alert(`${data.processed} Item(s) verarbeitet:\n\n${msg || '(keine Items zu verarbeiten)'}`)
+      const lines = (data.results ?? []).map(
+        (r: any) =>
+          `${r.status === 'created' ? '✓' : '✗'} ${r.title}` +
+          (typeof r.score === 'number' ? ` (Haiku ${r.score}/10)` : '') +
+          (r.error ? ` — ${r.error}` : '')
+      )
+      const stats = [
+        `Kandidaten geprüft: ${data.candidates ?? 0}`,
+        `Keyword-Filter: ${data.keywordFiltered ?? 0}`,
+        `Bewertet: ${data.scored ?? 0}`,
+        `Unter Threshold: ${data.belowThreshold ?? 0}`,
+        `Generiert: ${data.generated ?? 0}`,
+        `Fehlgeschlagen: ${data.failed ?? 0}`,
+      ].join('\n')
+      const errorLine = data.scoringError
+        ? `\n\n⚠️ Scoring-Fehler: ${data.scoringError}`
+        : ''
+      alert(
+        `Draft-Generierung abgeschlossen\n\n${stats}${errorLine}\n\n` +
+          (lines.length > 0 ? lines.join('\n') : '(keine neuen Drafts)')
+      )
       await load()
     } catch (err: any) {
       alert(`Fehler: ${err.message}`)

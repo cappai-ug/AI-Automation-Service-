@@ -22,6 +22,15 @@ interface FeedSource {
   name: string
 }
 
+interface ScoreStats {
+  total: number
+  unscored: number
+  scoredLow: number
+  scoredMid: number
+  scoredHigh: number
+  eligible: number
+}
+
 export default function FeedItemsAdminPage() {
   const [authenticated, setAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
@@ -32,12 +41,15 @@ export default function FeedItemsAdminPage() {
   const [minScore, setMinScore] = useState('')
   const [sort, setSort] = useState<'recent' | 'score'>('recent')
   const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState<ScoreStats | null>(null)
+  const [scoring, setScoring] = useState(false)
 
   useEffect(() => {
     const auth = localStorage.getItem('admin_authenticated') === 'true'
     if (auth) {
       setAuthenticated(true)
       void loadSources()
+      void loadStats()
       void load()
     } else {
       setLoading(false)
@@ -53,6 +65,54 @@ export default function FeedItemsAdminPage() {
     if (res.ok) {
       const data = await res.json()
       setSources(Array.isArray(data) ? data : [])
+    }
+  }
+
+  async function loadStats() {
+    const res = await fetch('/api/admin/stats')
+    if (res.ok) {
+      const data = await res.json()
+      setStats(data.feedItems)
+    }
+  }
+
+  async function scoreNow() {
+    const unscored = stats?.unscored ?? 0
+    if (unscored === 0) {
+      alert('Keine unbewerteten Items vorhanden.')
+      return
+    }
+    const cost = ((Math.min(unscored, 100) / 30) * 0.001).toFixed(3)
+    if (
+      !confirm(
+        `Bis zu 100 unbewertete Items mit Claude Haiku bewerten?\n\n` +
+          `Kosten: ca. $${cost} (sehr günstig).\n` +
+          `Unbewertete Items insgesamt: ${unscored}.`
+      )
+    )
+      return
+    setScoring(true)
+    try {
+      const res = await fetch('/api/admin/score-items?limit=100', {
+        method: 'POST',
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`)
+      alert(
+        `Bewertung abgeschlossen.\n\n` +
+          `Geprüft: ${data.pulled}\n` +
+          `Keyword-Filter: ${data.keywordFiltered}\n` +
+          `Haiku-bewertet: ${data.scored}\n` +
+          `Score ≥ 6 (eligible für Drafts): ${data.eligible}\n` +
+          `Score < 6 (verworfen): ${data.belowThreshold}\n` +
+          (data.scoringError ? `\n⚠️ Fehler: ${data.scoringError}` : '')
+      )
+      await loadStats()
+      await load()
+    } catch (err: any) {
+      alert(`Fehler beim Bewerten: ${err.message}`)
+    } finally {
+      setScoring(false)
     }
   }
 
@@ -127,13 +187,56 @@ export default function FeedItemsAdminPage() {
               Gesammelte Artikel aus den RSS-Quellen — Quelle für künftige Blog-Themen.
             </p>
           </div>
-          <Link
-            href="/admin/sources"
-            className="px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50"
-          >
-            Quellen verwalten
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/admin/sources"
+              className="px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50"
+            >
+              Quellen verwalten
+            </Link>
+            <button
+              onClick={scoreNow}
+              disabled={scoring || (stats?.unscored ?? 0) === 0}
+              className="px-4 py-2 bg-accent text-white rounded-lg font-medium disabled:opacity-50"
+              title="Bewertet bis zu 100 unbewertete Items mit Claude Haiku"
+            >
+              {scoring
+                ? 'Bewerte…'
+                : stats
+                  ? `Items bewerten (${stats.unscored} offen)`
+                  : 'Items bewerten'}
+            </button>
+          </div>
         </div>
+
+        {stats && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-6 grid grid-cols-2 sm:grid-cols-5 gap-4">
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Gesamt</div>
+              <div className="text-2xl font-bold text-navy">{stats.total}</div>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Unbewertet</div>
+              <div className="text-2xl font-bold text-gray-600">{stats.unscored}</div>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Score &lt; 6</div>
+              <div className="text-2xl font-bold text-yellow-700">{stats.scoredLow}</div>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Score 6–7</div>
+              <div className="text-2xl font-bold text-blue-700">{stats.scoredMid}</div>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Score 8–10</div>
+              <div className="text-2xl font-bold text-green-700">{stats.scoredHigh}</div>
+            </div>
+            <div className="col-span-2 sm:col-span-5 text-sm text-gray-600 pt-2 border-t border-gray-100">
+              Bereit für Draft-Generierung (Score ≥ 6 und noch unverarbeitet):{' '}
+              <span className="font-semibold text-navy">{stats.eligible}</span>
+            </div>
+          </div>
+        )}
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-wrap gap-3">
           <select
