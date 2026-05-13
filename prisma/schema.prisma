@@ -35,3 +35,38 @@ model Customer {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// RSS-Quelle, die periodisch abgefragt wird, um Themenideen für Blogartikel zu sammeln.
+model FeedSource {
+  id            String   @id @default(cuid())
+  name          String
+  url           String   @unique
+  enabled       Boolean  @default(true)
+  category      String?  // Mapping-Hint: ratgeber | branchen | technologie
+  lastFetchedAt DateTime?
+  lastError     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  items         FeedItem[]
+
+  @@index([enabled])
+}
+
+// Einzelne Items, die aus einer FeedSource extrahiert wurden.
+model FeedItem {
+  id             String   @id @default(cuid())
+  sourceId       String
+  source         FeedSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  externalId     String   // RSS guid oder link als Fallback
+  title          String
+  link           String
+  description    String?
+  contentSnippet String?
+  publishedAt    DateTime?
+  fetchedAt      DateTime @default(now())
+  processed      Boolean  @default(false)
+
+  @@unique([sourceId, externalId])
+  @@index([fetchedAt])
+  @@index([processed])
+}

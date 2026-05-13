@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.optimazed.de'),
   alternates: {
     canonical: 'https://www.optimazed.de',
+    types: {
+      'application/rss+xml': [
+        { url: 'https://www.optimazed.de/feed.xml', title: 'OPTIMAZED Blog RSS' },
+      ],
+    },
   },
   icons: {
     icon: '/favicon.ico',
