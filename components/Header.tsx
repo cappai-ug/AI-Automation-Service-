@@ -32,16 +32,19 @@ export default function Header() {
 
           {/* Desktop Navigation - Hidden on mobile */}
           <div className="hidden md:flex items-center gap-8 lg:gap-12">
-            <Link href="#features" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+            <Link href="/#features" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Features
             </Link>
-            <Link href="#services" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+            <Link href="/#services" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Services
             </Link>
-            <Link href="#pricing" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+            <Link href="/#pricing" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Preise
             </Link>
-            <Link href="#contact" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+            <Link href="/blog" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+              Blog
+            </Link>
+            <Link href="/#contact" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Kontakt
             </Link>
           </div>
@@ -82,28 +85,35 @@ export default function Header() {
           >
             <div className="px-4 sm:px-6 py-4 space-y-2">
               <Link
-                href="#features"
+                href="/#features"
                 className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
               </Link>
               <Link
-                href="#services"
+                href="/#services"
                 className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
               </Link>
               <Link
-                href="#pricing"
+                href="/#pricing"
                 className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Preise
               </Link>
               <Link
-                href="#contact"
+                href="/blog"
+                className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
+              </Link>
+              <Link
+                href="/#contact"
                 className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >

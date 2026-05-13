@@ -11,3 +11,5 @@ dist/
 .firebase
 
 /generated/prisma
+
+tsconfig.tsbuildinfo
