@@ -8,6 +8,7 @@ interface Stats {
   sources: { total: number; enabled: number; errored: number }
   feedItems: { total: number; unprocessed: number; highScore: number }
   drafts: { total: number; draft: number; published: number; rejected: number }
+  newsletter: { total: number; confirmed: number; pending: number; unsubscribed: number }
 }
 
 export default function AdminDashboard() {
@@ -138,6 +139,19 @@ export default function AdminDashboard() {
             { label: 'Entwurf', value: stats.drafts.draft },
             { label: 'Live', value: stats.drafts.published },
             { label: 'Gesamt', value: stats.drafts.total },
+          ]
+        : [],
+    },
+    {
+      title: 'Newsletter',
+      description: 'Abonnenten verwalten und Kampagnen versenden.',
+      href: '/admin/newsletter',
+      color: 'from-emerald-500 to-teal-600',
+      stats: stats
+        ? [
+            { label: 'Bestätigt', value: stats.newsletter.confirmed },
+            { label: 'Wartet', value: stats.newsletter.pending },
+            { label: 'Abgemeldet', value: stats.newsletter.unsubscribed },
           ]
         : [],
     },

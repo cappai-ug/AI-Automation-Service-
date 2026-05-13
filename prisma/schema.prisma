@@ -99,3 +99,26 @@ model BlogDraft {
   @@index([category])
   @@index([generatedAt])
 }
+
+// DSGVO-konformer Newsletter-Abonnent mit Double-Opt-in.
+// Status: pending (nach Anmeldung) → confirmed (nach Click) → unsubscribed (auf Wunsch)
+model NewsletterSubscriber {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  name              String?
+  source            String   @default("newsletter_form") // newsletter_form | lead_magnet_<name>
+  status            String   @default("pending") // pending | confirmed | unsubscribed
+  confirmToken      String   @unique
+  unsubscribeToken  String   @unique
+  consentText       String   // exakter Wortlaut der Einwilligung, für DSGVO-Nachweis
+  consentIp         String?  // IP zum Zeitpunkt der Anmeldung
+  consentUserAgent  String?
+  subscribedAt      DateTime @default(now())
+  confirmedAt       DateTime?
+  unsubscribedAt    DateTime?
+  lastSentAt        DateTime?
+
+  @@index([status])
+  @@index([source])
+  @@index([subscribedAt])
+}

@@ -1,10 +1,21 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import NewsletterSignup from './NewsletterSignup'
 
 export default function Footer() {
   return (
     <footer className="bg-navy text-white">
       <div className="container-max py-8 sm:py-12">
+        {/* Newsletter signup band */}
+        <div className="bg-blue-950/50 border border-blue-900 rounded-2xl p-6 sm:p-8 mb-8 max-w-3xl mx-auto">
+          <NewsletterSignup
+            wrapper="bare"
+            theme="dark"
+            heading="OPTIMAZED-Newsletter"
+            description="Ca. 1 Mail pro Woche mit Tipps zu KI-Automatisierung, neuen Blog-Artikeln und Branchen-Updates. Abmeldung jederzeit möglich."
+          />
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
           {/* Company Info */}
           <div className="text-center sm:text-left">

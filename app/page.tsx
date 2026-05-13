@@ -8,6 +8,7 @@ import Footer from '@/components/Footer'
 import CookieBanner from '@/components/CookieBanner'
 import WaitlistForm from '@/components/WaitlistForm'
 import LatestPostsSection from '@/components/LatestPostsSection'
+import LeadMagnetSection from '@/components/LeadMagnetSection'
 
 const faqs = [
   {
@@ -736,6 +737,9 @@ export default function Home() {
 
       {/* ===== Latest Blog Posts ===== */}
       <LatestPostsSection />
+
+      {/* ===== Lead Magnet ===== */}
+      <LeadMagnetSection />
 
       {/* ===== FAQ ===== */}
       <section id="faq" className="py-32">

@@ -23,6 +23,10 @@ export async function GET() {
       draftsDraft,
       draftsPublished,
       draftsRejected,
+      newsletterTotal,
+      newsletterConfirmed,
+      newsletterPending,
+      newsletterUnsubscribed,
     ] = await Promise.all([
       prisma.waitlist.count(),
       prisma.waitlist.count({ where: { status: 'new' } }),
@@ -43,6 +47,10 @@ export async function GET() {
       prisma.blogDraft.count({ where: { status: 'draft' } }),
       prisma.blogDraft.count({ where: { status: 'published' } }),
       prisma.blogDraft.count({ where: { status: 'rejected' } }),
+      prisma.newsletterSubscriber.count(),
+      prisma.newsletterSubscriber.count({ where: { status: 'confirmed' } }),
+      prisma.newsletterSubscriber.count({ where: { status: 'pending' } }),
+      prisma.newsletterSubscriber.count({ where: { status: 'unsubscribed' } }),
     ])
 
     return NextResponse.json({
@@ -64,6 +72,12 @@ export async function GET() {
         draft: draftsDraft,
         published: draftsPublished,
         rejected: draftsRejected,
+      },
+      newsletter: {
+        total: newsletterTotal,
+        confirmed: newsletterConfirmed,
+        pending: newsletterPending,
+        unsubscribed: newsletterUnsubscribed,
       },
     })
   } catch (error) {
