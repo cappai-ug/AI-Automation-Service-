@@ -65,11 +65,15 @@ model FeedItem {
   publishedAt    DateTime?
   fetchedAt      DateTime @default(now())
   processed      Boolean  @default(false)
+  relevanceScore Int?     // Haiku-Pre-Scoring 1-10; null = noch nicht bewertet
+  scoredAt       DateTime?
+  skipReason     String?  // z.B. "keyword:gaming", "score:3", "filter_error"
   drafts         BlogDraft[]
 
   @@unique([sourceId, externalId])
   @@index([fetchedAt])
   @@index([processed])
+  @@index([relevanceScore])
 }
 
 // KI-generierter Blogartikel-Entwurf, basierend auf einem FeedItem.
