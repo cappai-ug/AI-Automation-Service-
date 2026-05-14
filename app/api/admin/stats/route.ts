@@ -3,103 +3,145 @@ import { getPrisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 
-type Row = {
-  leads_total: bigint
-  leads_new: bigint
-  sources_total: bigint
-  sources_enabled: bigint
-  sources_errored: bigint
-  items_total: bigint
-  items_unprocessed: bigint
-  items_unscored: bigint
-  items_scored_low: bigint
-  items_scored_mid: bigint
-  items_scored_high: bigint
-  items_eligible: bigint
-  drafts_total: bigint
-  drafts_draft: bigint
-  drafts_published: bigint
-  drafts_rejected: bigint
-  newsletter_total: bigint
-  newsletter_confirmed: bigint
-  newsletter_pending: bigint
-  newsletter_unsubscribed: bigint
+function n(value: bigint | number | null | undefined): number {
+  if (value == null) return 0
+  return typeof value === 'bigint' ? Number(value) : value
 }
 
-function n(value: bigint | null | undefined): number {
-  return Number(value ?? 0n)
+async function safeQuery<T>(label: string, fn: () => Promise<T>): Promise<T | null> {
+  try {
+    return await fn()
+  } catch (err: any) {
+    // Most common cause: table doesn't exist yet (migration not run).
+    // Return null so the dashboard can show zeros for that group and
+    // the rest of the stats still load.
+    console.warn(`Stats(${label}) failed:`, err?.message ?? err)
+    return null
+  }
+}
+
+type LeadsRow = { total: bigint; new_count: bigint }
+type SourcesRow = { total: bigint; enabled: bigint; errored: bigint }
+type ItemsRow = {
+  total: bigint
+  unprocessed: bigint
+  unscored: bigint
+  scored_low: bigint
+  scored_mid: bigint
+  scored_high: bigint
+  eligible: bigint
+}
+type DraftsRow = {
+  total: bigint
+  draft: bigint
+  published: bigint
+  rejected: bigint
+}
+type NewsletterRow = {
+  total: bigint
+  confirmed: bigint
+  pending: bigint
+  unsubscribed: bigint
 }
 
 export async function GET() {
-  try {
-    const prisma = getPrisma()
-    // One round-trip, one connection. Replaces 16 parallel count() queries
-    // that were exhausting the serverless connection pool.
-    const rows = await prisma.$queryRaw<Row[]>`
+  const prisma = getPrisma()
+
+  // Five small sequential queries: each touches one table group, so a missing
+  // table (e.g. NewsletterSubscriber before the migration ran) doesn't take
+  // down the whole dashboard. Sequential = 1 connection reused via the pool.
+  const leadsRow = await safeQuery<LeadsRow[]>('leads', () =>
+    prisma.$queryRaw`
       SELECT
-        (SELECT COUNT(*) FROM "Waitlist")                                                       AS leads_total,
-        (SELECT COUNT(*) FROM "Waitlist" WHERE status = 'new')                                  AS leads_new,
-        (SELECT COUNT(*) FROM "FeedSource")                                                     AS sources_total,
-        (SELECT COUNT(*) FROM "FeedSource" WHERE enabled = true)                                AS sources_enabled,
-        (SELECT COUNT(*) FROM "FeedSource" WHERE "lastError" IS NOT NULL)                       AS sources_errored,
-        (SELECT COUNT(*) FROM "FeedItem")                                                       AS items_total,
-        (SELECT COUNT(*) FROM "FeedItem" WHERE processed = false)                               AS items_unprocessed,
-        (SELECT COUNT(*) FROM "FeedItem" WHERE "relevanceScore" IS NULL)                        AS items_unscored,
-        (SELECT COUNT(*) FROM "FeedItem" WHERE "relevanceScore" < 6)                            AS items_scored_low,
-        (SELECT COUNT(*) FROM "FeedItem" WHERE "relevanceScore" >= 6 AND "relevanceScore" < 8)  AS items_scored_mid,
-        (SELECT COUNT(*) FROM "FeedItem" WHERE "relevanceScore" >= 8)                           AS items_scored_high,
-        (SELECT COUNT(*) FROM "FeedItem" WHERE "relevanceScore" >= 6 AND processed = false)     AS items_eligible,
-        (SELECT COUNT(*) FROM "BlogDraft")                                                      AS drafts_total,
-        (SELECT COUNT(*) FROM "BlogDraft" WHERE status = 'draft')                               AS drafts_draft,
-        (SELECT COUNT(*) FROM "BlogDraft" WHERE status = 'published')                           AS drafts_published,
-        (SELECT COUNT(*) FROM "BlogDraft" WHERE status = 'rejected')                            AS drafts_rejected,
-        (SELECT COUNT(*) FROM "NewsletterSubscriber")                                           AS newsletter_total,
-        (SELECT COUNT(*) FROM "NewsletterSubscriber" WHERE status = 'confirmed')                AS newsletter_confirmed,
-        (SELECT COUNT(*) FROM "NewsletterSubscriber" WHERE status = 'pending')                  AS newsletter_pending,
-        (SELECT COUNT(*) FROM "NewsletterSubscriber" WHERE status = 'unsubscribed')             AS newsletter_unsubscribed
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE status = 'new')::int AS new_count
+      FROM "Waitlist"
     `
+  )
+  const sourcesRow = await safeQuery<SourcesRow[]>('sources', () =>
+    prisma.$queryRaw`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE enabled = true)::int AS enabled,
+        COUNT(*) FILTER (WHERE "lastError" IS NOT NULL)::int AS errored
+      FROM "FeedSource"
+    `
+  )
+  const itemsRow = await safeQuery<ItemsRow[]>('items', () =>
+    prisma.$queryRaw`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE processed = false)::int AS unprocessed,
+        COUNT(*) FILTER (WHERE "relevanceScore" IS NULL)::int AS unscored,
+        COUNT(*) FILTER (WHERE "relevanceScore" < 6)::int AS scored_low,
+        COUNT(*) FILTER (WHERE "relevanceScore" >= 6 AND "relevanceScore" < 8)::int AS scored_mid,
+        COUNT(*) FILTER (WHERE "relevanceScore" >= 8)::int AS scored_high,
+        COUNT(*) FILTER (WHERE "relevanceScore" >= 6 AND processed = false)::int AS eligible
+      FROM "FeedItem"
+    `
+  )
+  const draftsRow = await safeQuery<DraftsRow[]>('drafts', () =>
+    prisma.$queryRaw`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE status = 'draft')::int AS draft,
+        COUNT(*) FILTER (WHERE status = 'published')::int AS published,
+        COUNT(*) FILTER (WHERE status = 'rejected')::int AS rejected
+      FROM "BlogDraft"
+    `
+  )
+  const newsletterRow = await safeQuery<NewsletterRow[]>('newsletter', () =>
+    prisma.$queryRaw`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE status = 'confirmed')::int AS confirmed,
+        COUNT(*) FILTER (WHERE status = 'pending')::int AS pending,
+        COUNT(*) FILTER (WHERE status = 'unsubscribed')::int AS unsubscribed
+      FROM "NewsletterSubscriber"
+    `
+  )
 
-    const r = rows[0]
-    if (!r) {
-      return NextResponse.json({ error: 'No stats row returned' }, { status: 500 })
-    }
+  const leads = leadsRow?.[0]
+  const sources = sourcesRow?.[0]
+  const items = itemsRow?.[0]
+  const drafts = draftsRow?.[0]
+  const newsletter = newsletterRow?.[0]
 
-    return NextResponse.json({
-      leads: { total: n(r.leads_total), new: n(r.leads_new) },
-      sources: {
-        total: n(r.sources_total),
-        enabled: n(r.sources_enabled),
-        errored: n(r.sources_errored),
-      },
-      feedItems: {
-        total: n(r.items_total),
-        unprocessed: n(r.items_unprocessed),
-        unscored: n(r.items_unscored),
-        scoredLow: n(r.items_scored_low),
-        scoredMid: n(r.items_scored_mid),
-        scoredHigh: n(r.items_scored_high),
-        eligible: n(r.items_eligible),
-        // backwards-compat:
-        highScore: n(r.items_scored_mid) + n(r.items_scored_high),
-      },
-      drafts: {
-        total: n(r.drafts_total),
-        draft: n(r.drafts_draft),
-        published: n(r.drafts_published),
-        rejected: n(r.drafts_rejected),
-      },
-      newsletter: {
-        total: n(r.newsletter_total),
-        confirmed: n(r.newsletter_confirmed),
-        pending: n(r.newsletter_pending),
-        unsubscribed: n(r.newsletter_unsubscribed),
-      },
-    })
-  } catch (error: any) {
-    console.error('Error loading admin stats:', error)
-    return NextResponse.json(
-      { error: error?.message ?? 'Failed to load stats' },
-      { status: 500 }
-    )
-  }
+  return NextResponse.json({
+    leads: { total: n(leads?.total), new: n(leads?.new_count) },
+    sources: {
+      total: n(sources?.total),
+      enabled: n(sources?.enabled),
+      errored: n(sources?.errored),
+    },
+    feedItems: {
+      total: n(items?.total),
+      unprocessed: n(items?.unprocessed),
+      unscored: n(items?.unscored),
+      scoredLow: n(items?.scored_low),
+      scoredMid: n(items?.scored_mid),
+      scoredHigh: n(items?.scored_high),
+      eligible: n(items?.eligible),
+      highScore: n(items?.scored_mid) + n(items?.scored_high),
+    },
+    drafts: {
+      total: n(drafts?.total),
+      draft: n(drafts?.draft),
+      published: n(drafts?.published),
+      rejected: n(drafts?.rejected),
+    },
+    newsletter: {
+      total: n(newsletter?.total),
+      confirmed: n(newsletter?.confirmed),
+      pending: n(newsletter?.pending),
+      unsubscribed: n(newsletter?.unsubscribed),
+    },
+    missing: {
+      leads: leads == null,
+      sources: sources == null,
+      items: items == null,
+      drafts: drafts == null,
+      newsletter: newsletter == null,
+    },
+  })
 }
