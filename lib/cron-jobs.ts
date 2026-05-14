@@ -5,8 +5,16 @@ import { DRAFT_MODEL } from './anthropic'
 import {
   applyKeywordFilter,
   scoreItemsWithHaiku,
+  titleSimilarity,
   MIN_RELEVANCE_SCORE,
 } from './feed-filter'
+
+// Window for duplicate detection: candidates sharing a topic cluster (or a
+// highly similar title) with any draft generated in this many days get skipped.
+const DEDUP_WINDOW_DAYS = 60
+// Jaccard threshold above which two titles are treated as the same topic
+// even if the cluster differs (catches legacy items without a cluster).
+const TITLE_SIM_THRESHOLD = 0.5
 
 const parser = new Parser({
   timeout: 15_000,
@@ -93,9 +101,14 @@ type CandidateItem = {
   link: string
   source: { id: string; name: string; category: string | null }
   relevanceScore: number | null
+  topicCluster: string | null
 }
 
-type Scored = CandidateItem & { score: number; reason: string }
+type Scored = CandidateItem & {
+  score: number
+  reason: string
+  cluster: string | null
+}
 
 const HAIKU_BATCH_SIZE = 30
 
@@ -147,6 +160,7 @@ async function scoreCandidates(
       ...item,
       score: item.relevanceScore!,
       reason: '(already scored)',
+      cluster: item.topicCluster,
     })
   }
 
@@ -181,9 +195,18 @@ async function scoreCandidates(
           }
           await prisma.feedItem.update({
             where: { id: item.id },
-            data: { relevanceScore: result.score, scoredAt: new Date() },
+            data: {
+              relevanceScore: result.score,
+              scoredAt: new Date(),
+              topicCluster: result.topicCluster,
+            },
           })
-          scored.push({ ...item, score: result.score, reason: result.reason })
+          scored.push({
+            ...item,
+            score: result.score,
+            reason: result.reason,
+            cluster: result.topicCluster,
+          })
         }
       }
     } catch (error: any) {
@@ -284,6 +307,7 @@ export type GenerateDraftsSummary = {
   scored: number
   belowThreshold: number
   overLimit: number
+  duplicateSkipped: number
   generated: number
   failed: number
   threshold: number
@@ -296,6 +320,7 @@ export type GenerateDraftsSummary = {
     status: 'created' | 'failed'
     score: number
     reason: string
+    cluster?: string | null
     draftId?: string
     error?: string
   }>
@@ -314,7 +339,8 @@ export async function runGenerateDrafts(options: {
   const prisma = getPrisma()
   const maxDrafts = Math.min(Math.max(1, options.maxDrafts), HARD_MAX_DRAFTS)
 
-  // Prefer items that already have a high score (no Haiku call needed).
+  // Pull a generous pool of eligible pre-scored items so dedup can drop the
+  // obvious duplicates and we still have N winners left.
   const preScored = await prisma.feedItem.findMany({
     where: { processed: false, relevanceScore: { gte: MIN_RELEVANCE_SCORE } },
     orderBy: [
@@ -322,17 +348,18 @@ export async function runGenerateDrafts(options: {
       { publishedAt: 'desc' },
       { fetchedAt: 'desc' },
     ],
-    take: maxDrafts,
+    take: CANDIDATE_POOL_SIZE,
     include: { source: true },
   })
 
-  // If not enough pre-scored eligible items, pull unscored ones to score now.
+  // If too few pre-scored items survive dedup, top up with unscored items
+  // to be scored now.
   let candidates: Awaited<ReturnType<typeof prisma.feedItem.findMany>> = preScored as any
-  if (preScored.length < maxDrafts) {
+  if (preScored.length < CANDIDATE_POOL_SIZE) {
     const extra = await prisma.feedItem.findMany({
       where: { processed: false, relevanceScore: null },
       orderBy: [{ publishedAt: 'desc' }, { fetchedAt: 'desc' }],
-      take: CANDIDATE_POOL_SIZE,
+      take: CANDIDATE_POOL_SIZE - preScored.length,
       include: { source: true },
     })
     candidates = [...(preScored as any), ...extra]
@@ -360,13 +387,61 @@ export async function runGenerateDrafts(options: {
   const { scored, keywordFiltered, haikuCalls, scoringError } =
     await scoreCandidates(candidates)
 
-  // Stage 3: sort, pick winners (top N above threshold), mark losers
+  // Stage 3: dedup against recent drafts, then pick top N
+  const cutoff = new Date(Date.now() - DEDUP_WINDOW_DAYS * 24 * 60 * 60 * 1000)
+  const recentDrafts = await prisma.blogDraft.findMany({
+    where: {
+      generatedAt: { gte: cutoff },
+      status: { in: ['draft', 'approved', 'published'] }, // rejected: ok to revisit
+    },
+    select: { title: true, topicCluster: true },
+  })
+  const usedClusters = new Set(
+    recentDrafts.map((d) => d.topicCluster).filter((c): c is string => !!c)
+  )
+  const recentTitles = recentDrafts.map((d) => d.title)
+
+  function dedupReason(item: Scored): string | null {
+    if (item.cluster && usedClusters.has(item.cluster)) {
+      return `duplicate_cluster:${item.cluster}`
+    }
+    for (const t of recentTitles) {
+      if (titleSimilarity(item.title, t) >= TITLE_SIM_THRESHOLD) {
+        return 'duplicate_title'
+      }
+    }
+    return null
+  }
+
   scored.sort((a, b) => b.score - a.score)
+
   const winners: Scored[] = []
   const losers: Scored[] = []
+  let duplicateSkipped = 0
+  const usedThisRun = new Set<string>() // intra-batch cluster dedup
+
   for (const item of scored) {
-    if (item.score >= MIN_RELEVANCE_SCORE && winners.length < maxDrafts) {
+    if (item.score < MIN_RELEVANCE_SCORE) {
+      losers.push(item)
+      continue
+    }
+    const dupReason = dedupReason(item)
+    if (dupReason) {
+      duplicateSkipped += 1
+      await prisma.feedItem.update({
+        where: { id: item.id },
+        data: { processed: true, skipReason: dupReason, scoredAt: new Date() },
+      })
+      continue
+    }
+    if (item.cluster && usedThisRun.has(item.cluster)) {
+      // Already picked one from this cluster in this batch.
+      losers.push({ ...item, reason: `same-batch:${item.cluster}` })
+      continue
+    }
+    if (winners.length < maxDrafts) {
       winners.push(item)
+      if (item.cluster) usedThisRun.add(item.cluster)
     } else {
       losers.push(item)
     }
@@ -380,7 +455,9 @@ export async function runGenerateDrafts(options: {
         skipReason:
           loser.score < MIN_RELEVANCE_SCORE
             ? `score:${loser.score}`
-            : 'over_daily_limit',
+            : loser.reason?.startsWith('same-batch:')
+              ? loser.reason
+              : 'over_daily_limit',
         scoredAt: new Date(),
       },
     })
@@ -412,6 +489,7 @@ export async function runGenerateDrafts(options: {
           contentMarkdown: draft.content_markdown,
           relevanceScore: draft.relevance_score,
           model: DRAFT_MODEL,
+          topicCluster: item.cluster,
         },
       })
 
@@ -426,6 +504,7 @@ export async function runGenerateDrafts(options: {
         status: 'created',
         score: item.score,
         reason: item.reason,
+        cluster: item.cluster,
         draftId: saved.id,
       })
     } catch (error: any) {
@@ -436,6 +515,7 @@ export async function runGenerateDrafts(options: {
         status: 'failed',
         score: item.score,
         reason: item.reason,
+        cluster: item.cluster,
         error: error?.message?.slice(0, 500) ?? 'Unknown error',
       })
     }
@@ -448,7 +528,11 @@ export async function runGenerateDrafts(options: {
     keywordFiltered,
     scored: scored.length,
     belowThreshold: losers.filter((l) => l.score < MIN_RELEVANCE_SCORE).length,
-    overLimit: losers.filter((l) => l.score >= MIN_RELEVANCE_SCORE).length,
+    overLimit: losers.filter(
+      (l) =>
+        l.score >= MIN_RELEVANCE_SCORE && !l.reason?.startsWith('same-batch:')
+    ).length,
+    duplicateSkipped,
     generated: results.filter((r) => r.status === 'created').length,
     failed: results.filter((r) => r.status === 'failed').length,
     threshold: MIN_RELEVANCE_SCORE,

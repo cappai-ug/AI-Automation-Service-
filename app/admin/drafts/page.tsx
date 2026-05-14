@@ -113,7 +113,8 @@ export default function DraftsAdminPage() {
       const lines = (data.results ?? []).map(
         (r: any) =>
           `${r.status === 'created' ? '✓' : '✗'} ${r.title}` +
-          (typeof r.score === 'number' ? ` (Haiku ${r.score}/10)` : '') +
+          (typeof r.score === 'number' ? ` (Haiku ${r.score}/10` : '') +
+          (r.cluster ? `, cluster=${r.cluster})` : typeof r.score === 'number' ? ')' : '') +
           (r.error ? ` — ${r.error}` : '')
       )
       const stats = [
@@ -121,6 +122,7 @@ export default function DraftsAdminPage() {
         `Keyword-Filter: ${data.keywordFiltered ?? 0}`,
         `Bewertet: ${data.scored ?? 0}`,
         `Unter Threshold: ${data.belowThreshold ?? 0}`,
+        `Duplikate übersprungen: ${data.duplicateSkipped ?? 0}`,
         `Generiert: ${data.generated ?? 0}`,
         `Fehlgeschlagen: ${data.failed ?? 0}`,
       ].join('\n')

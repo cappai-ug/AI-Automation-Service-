@@ -67,13 +67,15 @@ model FeedItem {
   processed      Boolean  @default(false)
   relevanceScore Int?     // Haiku-Pre-Scoring 1-10; null = noch nicht bewertet
   scoredAt       DateTime?
-  skipReason     String?  // z.B. "keyword:gaming", "score:3", "filter_error"
+  skipReason     String?  // z.B. "keyword:gaming", "score:3", "duplicate_cluster:dsgvo"
+  topicCluster   String?  // Haiku-zugewiesene Themen-Kennung (slug), für Dedup
   drafts         BlogDraft[]
 
   @@unique([sourceId, externalId])
   @@index([fetchedAt])
   @@index([processed])
   @@index([relevanceScore])
+  @@index([topicCluster])
 }
 
 // KI-generierter Blogartikel-Entwurf, basierend auf einem FeedItem.
@@ -91,6 +93,7 @@ model BlogDraft {
   relevanceScore  Int      @default(5) // 1-10, Claude-Selbsteinschätzung
   status          String   @default("draft") // draft | approved | published | rejected
   model           String?  // Model-ID, mit dem generiert wurde
+  topicCluster    String?  // Themen-Kennung (slug), vom FeedItem übernommen
   generatedAt     DateTime @default(now())
   updatedAt       DateTime @updatedAt
   publishedAt     DateTime?
@@ -98,6 +101,7 @@ model BlogDraft {
   @@index([status])
   @@index([category])
   @@index([generatedAt])
+  @@index([topicCluster])
 }
 
 // DSGVO-konformer Newsletter-Abonnent mit Double-Opt-in.

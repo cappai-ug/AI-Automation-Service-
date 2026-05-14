@@ -31,7 +31,7 @@ export function applyKeywordFilter(item: {
   return null
 }
 
-// Structured output: Claude returns an array of { id, score, reason }.
+// Structured output: Claude returns an array of { id, score, reason, topic_cluster }.
 const ScoredItemSchema = z.object({
   id: z
     .string()
@@ -45,8 +45,15 @@ const ScoredItemSchema = z.object({
   reason: z
     .string()
     .min(3)
-    .max(120)
+    .max(150)
     .describe('Kurze deutsche Begründung, max 12 Wörter.'),
+  topic_cluster: z
+    .string()
+    .min(2)
+    .max(60)
+    .describe(
+      'Themen-Kennung als slug (kleinbuchstaben, bindestriche), z.B. "ki-arztpraxis", "dsgvo-update", "ai-act". Items zum gleichen Thema müssen denselben Cluster bekommen.'
+    ),
 })
 const ScoreResultSchema = z.object({
   items: z.array(ScoredItemSchema),
@@ -69,6 +76,28 @@ WICHTIG
 - Wenn ein Item nur tangential mit KI zu tun hat, aber für ein DE-KMU keinen praktischen Nutzen hat: max 5.
 - Begründung max 12 Wörter, auf Deutsch.
 
+TOPIC-CLUSTER (für Duplikat-Erkennung)
+Vergib pro Item eine kompakte Themen-Kennung als slug — kleinbuchstaben, bindestrich-getrennt, 2–4 Wörter. Items zum gleichen Thema MÜSSEN dieselbe Kennung bekommen, damit wir Duplikate erkennen.
+
+Beispiele für gute Cluster:
+- "ki-arztpraxis" (Anwendungsfälle für Praxen)
+- "ki-anwaltskanzlei"
+- "ki-steuerberatung"
+- "ki-handwerk"
+- "dsgvo-update" (neue DSGVO-Urteile / -Hinweise)
+- "ai-act" (EU AI Act Themen)
+- "ki-rezeptionist" (Telefon-KI)
+- "email-automatisierung"
+- "rechnungsbearbeitung"
+- "ki-recruiting"
+- "deepfake-betrug"
+- "datenleck"
+- "claude-update", "openai-update" (KI-Anbieter-News)
+- "generative-ki-allgemein"
+- "klein-irrelevant" (für sehr unspezifische Items)
+
+Lieber etwas weniger granular, damit zwei Artikel über dieselbe Nachricht (z.B. ein neues DSGVO-Urteil aus zwei Quellen) gleich gruppiert werden. Aber granular genug, dass z.B. "KI in der Arztpraxis" und "KI in der Anwaltskanzlei" nicht denselben Cluster bekommen.
+
 OUTPUT
 Gib ein JSON-Objekt mit "items"-Array zurück, eines pro Input-Item, in der gleichen Reihenfolge. Die "id" muss exakt mit der übergebenen ID übereinstimmen.`
 
@@ -83,7 +112,7 @@ export type ScoredItem = z.infer<typeof ScoredItemSchema>
 
 export async function scoreItemsWithHaiku(
   items: ItemToScore[]
-): Promise<Map<string, { score: number; reason: string }>> {
+): Promise<Map<string, { score: number; reason: string; topicCluster: string }>> {
   if (items.length === 0) return new Map()
 
   const client = getAnthropic()
@@ -122,9 +151,62 @@ export async function scoreItemsWithHaiku(
     throw new Error(`Haiku scorer returned no parsed output (stop_reason: ${response.stop_reason})`)
   }
 
-  const map = new Map<string, { score: number; reason: string }>()
+  const map = new Map<string, { score: number; reason: string; topicCluster: string }>()
   for (const scored of response.parsed_output.items) {
-    map.set(scored.id, { score: scored.score, reason: scored.reason })
+    map.set(scored.id, {
+      score: scored.score,
+      reason: scored.reason,
+      topicCluster: normalizeCluster(scored.topic_cluster),
+    })
   }
   return map
+}
+
+/**
+ * Normalize a Haiku-emitted cluster slug so equal topics consistently
+ * compare equal even if Haiku varies casing or punctuation.
+ */
+export function normalizeCluster(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/[äöü]/g, (c) => ({ ä: 'ae', ö: 'oe', ü: 'ue' })[c] ?? c)
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60)
+}
+
+/**
+ * Jaccard similarity on lowercased, stop-word-filtered tokens of length ≥3.
+ * 0 = no overlap, 1 = identical bag of significant words.
+ */
+const STOP_WORDS = new Set([
+  'der', 'die', 'das', 'den', 'dem', 'des', 'ein', 'eine', 'einer', 'einem', 'einen', 'eines',
+  'und', 'oder', 'aber', 'mit', 'ohne', 'für', 'fuer', 'gegen', 'auf', 'von', 'zu', 'zur', 'zum',
+  'ist', 'sind', 'war', 'waren', 'wird', 'werden', 'wurde', 'wurden',
+  'mehr', 'sehr', 'doch', 'nur', 'auch', 'schon', 'bereits',
+  'dass', 'wenn', 'weil', 'damit', 'als', 'wie', 'was', 'wer', 'wo', 'warum',
+  'hier', 'dort', 'man', 'sich', 'beim', 'vom', 'im', 'am',
+  'this', 'that', 'with', 'from', 'into', 'have', 'has', 'had', 'will', 'are', 'and', 'the', 'for',
+])
+
+function tokenize(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[äöü]/g, (c) => ({ ä: 'ae', ö: 'oe', ü: 'ue' })[c] ?? c)
+      .replace(/ß/g, 'ss')
+      .split(/[^a-z0-9]+/)
+      .filter((w) => w.length >= 3 && !STOP_WORDS.has(w))
+  )
+}
+
+export function titleSimilarity(a: string, b: string): number {
+  const tokensA = tokenize(a)
+  const tokensB = tokenize(b)
+  if (tokensA.size === 0 || tokensB.size === 0) return 0
+  let intersection = 0
+  for (const t of tokensA) if (tokensB.has(t)) intersection += 1
+  const union = tokensA.size + tokensB.size - intersection
+  return intersection / union
 }
