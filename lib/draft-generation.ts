@@ -3,34 +3,36 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod'
 import { getAnthropic, DRAFT_MODEL } from './anthropic'
 
 // Structured output schema — Claude must return JSON matching this shape.
+// Length/regex constraints are validated client-side; Anthropic's structured-outputs
+// API does not enforce minLength/maxLength/pattern in the schema sent to Claude.
+// Keep the floors generous (don't reject perfectly good content) but assert structure.
 export const DraftSchema = z.object({
   title: z
     .string()
-    .min(20)
-    .max(120)
+    .min(15)
+    .max(150)
     .describe('SEO-optimierter Titel auf Deutsch, max 120 Zeichen.'),
   slug: z
     .string()
-    .regex(/^[a-z0-9-]+$/)
     .min(5)
-    .max(80)
+    .max(100)
     .describe('URL-Slug: nur Kleinbuchstaben, Zahlen und Bindestriche.'),
   description: z
     .string()
-    .min(80)
-    .max(280)
+    .min(50)
+    .max(400)
     .describe('Meta-Description, 80–280 Zeichen.'),
   category: z
     .enum(['ratgeber', 'branchen', 'technologie'])
     .describe('Beste Kategorie für den Artikel.'),
   tags: z
-    .array(z.string().min(2).max(40))
-    .min(3)
-    .max(8)
+    .array(z.string().min(2).max(60))
+    .min(2)
+    .max(10)
     .describe('3–8 prägnante Tags.'),
   content_markdown: z
     .string()
-    .min(8000)
+    .min(3000)
     .describe(
       'Vollständiger Artikel als Markdown (ohne Frontmatter). Mindestens 1.800 Wörter (ca. 8.000–14.000 Zeichen). Struktur: einleitender Hook, 5–8 H2-Hauptsektionen mit substantiellem Inhalt, H3-Unterabschnitte wo sinnvoll, konkrete Beispiele, Listen/Tabellen, abschließendes Fazit.'
     ),
@@ -172,11 +174,32 @@ export async function generateDraftFromItem(item: FeedItemInput): Promise<Draft>
     throw new Error(`No text block returned (stop_reason: ${finalMessage.stop_reason})`)
   }
 
-  let parsed: unknown
+  let parsed: any
   try {
     parsed = JSON.parse(raw)
   } catch (err: any) {
-    throw new Error(`Failed to parse JSON from Claude: ${err.message}`)
+    throw new Error(`Failed to parse JSON from Claude: ${err.message}. Raw (first 200 chars): ${raw.slice(0, 200)}`)
   }
-  return DraftSchema.parse(parsed)
+
+  // Normalize the slug — Claude doesn't always emit URL-safe output.
+  if (typeof parsed?.slug === 'string') {
+    parsed.slug = parsed.slug
+      .toLowerCase()
+      .replace(/[äöü]/g, (c: string) => ({ ä: 'ae', ö: 'oe', ü: 'ue' })[c] ?? c)
+      .replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80)
+  }
+
+  try {
+    return DraftSchema.parse(parsed)
+  } catch (err: any) {
+    const issues = err?.issues
+      ? err.issues
+          .map((i: any) => `${i.path?.join('.') || '?'}: ${i.message}`)
+          .join('; ')
+      : err?.message
+    throw new Error(`Draft validation failed: ${issues}`)
+  }
 }

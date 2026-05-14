@@ -11,10 +11,24 @@ interface Stats {
   newsletter: { total: number; confirmed: number; pending: number; unsubscribed: number }
 }
 
+interface DiagnoseCheck {
+  name: string
+  ok: boolean
+  detail: string
+}
+
+interface Diagnose {
+  ok: boolean
+  timestamp: string
+  checks: DiagnoseCheck[]
+}
+
 export default function AdminDashboard() {
   const [authenticated, setAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [stats, setStats] = useState<Stats | null>(null)
+  const [diagnose, setDiagnose] = useState<Diagnose | null>(null)
+  const [diagnoseLoading, setDiagnoseLoading] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -36,6 +50,23 @@ export default function AdminDashboard() {
       }
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function runDiagnose() {
+    setDiagnoseLoading(true)
+    try {
+      const res = await fetch('/api/admin/diagnose')
+      const data = await res.json()
+      setDiagnose(data)
+    } catch (err: any) {
+      setDiagnose({
+        ok: false,
+        timestamp: new Date().toISOString(),
+        checks: [{ name: 'Diagnose', ok: false, detail: err?.message ?? String(err) }],
+      })
+    } finally {
+      setDiagnoseLoading(false)
     }
   }
 
@@ -228,7 +259,57 @@ export default function AdminDashboard() {
           ))}
         </div>
 
+        {/* Diagnose */}
         <div className="mt-10 bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+            <h2 className="text-lg font-bold text-navy">System-Diagnose</h2>
+            <button
+              onClick={runDiagnose}
+              disabled={diagnoseLoading}
+              className="px-4 py-2 bg-navy text-white text-sm font-medium rounded-lg hover:bg-blue-900 disabled:opacity-50"
+            >
+              {diagnoseLoading ? 'Prüfe…' : 'Jetzt prüfen'}
+            </button>
+          </div>
+          {diagnose ? (
+            <div className="space-y-2">
+              <p
+                className={`text-sm font-medium ${
+                  diagnose.ok ? 'text-green-700' : 'text-red-700'
+                }`}
+              >
+                {diagnose.ok
+                  ? '✓ Alle Checks bestanden'
+                  : '⚠ Ein oder mehrere Probleme erkannt'}
+              </p>
+              <table className="w-full text-sm">
+                <tbody>
+                  {diagnose.checks.map((c) => (
+                    <tr key={c.name} className="border-t border-gray-100">
+                      <td className="py-2 pr-3 font-medium align-top w-44">
+                        <span className={c.ok ? 'text-green-700' : 'text-red-700'}>
+                          {c.ok ? '✓' : '✗'}
+                        </span>{' '}
+                        {c.name}
+                      </td>
+                      <td className="py-2 text-gray-600 break-all">{c.detail}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="text-xs text-gray-400 mt-2">
+                Letzte Prüfung: {new Date(diagnose.timestamp).toLocaleString('de-DE')}
+              </p>
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500">
+              Klicke „Jetzt prüfen", wenn Generation oder andere Funktionen nicht laufen.
+              Zeigt Env-Vars, DB-Verbindung, Anthropic-API-Erreichbarkeit und Queue-Status.
+            </p>
+          )}
+        </div>
+
+        <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
           <h2 className="text-lg font-bold text-navy mb-3">Cron-Pipeline (täglich)</h2>
           <ol className="text-sm text-gray-700 space-y-2 list-decimal list-inside">
             <li>

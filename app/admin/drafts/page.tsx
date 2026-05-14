@@ -100,8 +100,16 @@ export default function DraftsAdminPage() {
       const res = await fetch('/api/admin/generate-drafts?limit=3', {
         method: 'POST',
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || `Fehler ${res.status}`)
+      const rawText = await res.text()
+      let data: any
+      try {
+        data = JSON.parse(rawText)
+      } catch {
+        throw new Error(
+          `Server hat kein JSON zurückgegeben (HTTP ${res.status}). Antwort (erste 300 Zeichen): ${rawText.slice(0, 300)}`
+        )
+      }
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
       const lines = (data.results ?? []).map(
         (r: any) =>
           `${r.status === 'created' ? '✓' : '✗'} ${r.title}` +

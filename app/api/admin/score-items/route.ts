@@ -7,7 +7,15 @@ export const maxDuration = 300
 const DEFAULT_LIMIT = 100
 
 export async function POST(request: NextRequest) {
-  const limit = Number(request.nextUrl.searchParams.get('limit') || DEFAULT_LIMIT)
-  const summary = await runScoreItems({ limit })
-  return NextResponse.json(summary)
+  try {
+    const limit = Number(request.nextUrl.searchParams.get('limit') || DEFAULT_LIMIT)
+    const summary = await runScoreItems({ limit })
+    return NextResponse.json(summary)
+  } catch (error: any) {
+    console.error('score-items failed:', error)
+    return NextResponse.json(
+      { error: error?.message ?? 'Unknown error' },
+      { status: 500 }
+    )
+  }
 }
