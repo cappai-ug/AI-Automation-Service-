@@ -34,6 +34,7 @@ export type PostMeta = PostFrontmatter & {
   slug: string
   readingMinutes: number
   origin: 'mdx' | 'db'
+  aiModel?: string | null
 }
 
 export type Post = PostMeta & {
@@ -94,6 +95,7 @@ async function loadPublishedDrafts(): Promise<Post[]> {
         slug: d.slug,
         readingMinutes: Math.max(1, Math.round(stats.minutes)),
         origin: 'db' as const,
+        aiModel: d.model,
         content: d.contentMarkdown,
       }
     })
@@ -152,6 +154,7 @@ export async function getPost(category: BlogCategory, slug: string): Promise<Pos
       slug: draft.slug,
       readingMinutes: Math.max(1, Math.round(stats.minutes)),
       origin: 'db',
+      aiModel: draft.model,
       content: draft.contentMarkdown,
     }
   } catch (error) {

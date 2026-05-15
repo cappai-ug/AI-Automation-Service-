@@ -8,6 +8,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import AiTransparencyNotice from '@/components/AiTransparencyNotice'
 import {
   CATEGORIES,
   getAllPosts,
@@ -215,6 +216,8 @@ export default async function ArticlePage({ params }: Props) {
             )}
           </header>
 
+          <AiTransparencyNotice origin={post.origin} aiModel={post.aiModel} />
+
           <div className="prose-content">
             <MDXRemote
               source={post.content}
@@ -244,6 +247,8 @@ export default async function ArticlePage({ params }: Props) {
               }}
             />
           </div>
+
+          <AiTransparencyNotice origin={post.origin} aiModel={post.aiModel} />
         </div>
       </article>
 
