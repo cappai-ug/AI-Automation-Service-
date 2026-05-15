@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import CookieBanner from '@/components/CookieBanner'
 import WaitlistForm from '@/components/WaitlistForm'
 import LatestPostsSection from '@/components/LatestPostsSection'
 import LeadMagnetSection from '@/components/LeadMagnetSection'
@@ -99,7 +98,6 @@ export default function Home() {
   return (
     <main className="bg-white overflow-hidden">
       <Header />
-      <CookieBanner />
 
       {/* ===== HERO SECTION ===== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-navy via-blue-950 to-navy pt-20">

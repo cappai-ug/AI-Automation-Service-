@@ -2,23 +2,33 @@
 
 import { useState, useEffect } from 'react'
 
+export const CONSENT_STORAGE_KEY = 'cappai-cookie-consent'
+export const CONSENT_EVENT = 'cookie-consent-changed'
+
+export type ConsentValue = 'accepted' | 'rejected'
+
+function setConsent(value: ConsentValue) {
+  localStorage.setItem(CONSENT_STORAGE_KEY, value)
+  window.dispatchEvent(new CustomEvent<ConsentValue>(CONSENT_EVENT, { detail: value }))
+}
+
 export default function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false)
 
   useEffect(() => {
-    const cookieConsent = localStorage.getItem('cappai-cookie-consent')
+    const cookieConsent = localStorage.getItem(CONSENT_STORAGE_KEY)
     if (!cookieConsent) {
       setShowBanner(true)
     }
   }, [])
 
   const handleAccept = () => {
-    localStorage.setItem('cappai-cookie-consent', 'accepted')
+    setConsent('accepted')
     setShowBanner(false)
   }
 
   const handleReject = () => {
-    localStorage.setItem('cappai-cookie-consent', 'rejected')
+    setConsent('rejected')
     setShowBanner(false)
   }
 

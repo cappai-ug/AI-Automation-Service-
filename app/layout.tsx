@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import CookieBanner from '@/components/CookieBanner'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 export const metadata: Metadata = {
   title: 'OPTIMAZED - KI Automatisierung für deutsche Unternehmen | AI-Lösungen',
@@ -89,7 +91,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-white text-gray-900">
+        <GoogleAnalytics />
         {children}
+        <CookieBanner />
       </body>
     </html>
   )
