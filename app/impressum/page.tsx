@@ -3,7 +3,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata = {
-  title: 'Impressum - Cappai',
+  title: 'Impressum | OPTIMAZED',
 }
 
 export default function Impressum() {
@@ -59,6 +59,9 @@ export default function Impressum() {
             <p className="mt-4">
               <strong>Urheberrecht:</strong> Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des Autors oder Urhebers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.
             </p>
+            <p className="mt-4">
+              <strong>KI-unterstützte Inhalte:</strong> Blog-Beiträge und ähnliche redaktionelle Inhalte auf dieser Website können unter Einsatz künstlicher Intelligenz erstellt worden sein. Solche Beiträge sind direkt am jeweiligen Artikel als KI-unterstützt gekennzeichnet (Transparenzhinweis gemäß Art. 50 Abs. 4 EU AI Act). Alle KI-generierten Inhalte werden vor Veröffentlichung redaktionell geprüft, ersetzen jedoch keine individuelle fachliche oder rechtliche Beratung. Details zum Einsatz von KI finden Sie in unserer <a href="/datenschutz" className="text-primary-600 hover:underline">Datenschutzerklärung</a>.
+            </p>
           </section>
 
           <section>
@@ -70,8 +73,7 @@ export default function Impressum() {
 
           <section className="bg-blue-50 p-6 rounded-lg border border-blue-200">
             <p className="text-sm text-gray-600">
-              Stand: Mai 2024<br/>
-              Zuletzt aktualisiert: 9. Mai 2024
+              Stand: Mai 2026
             </p>
           </section>
         </div>
