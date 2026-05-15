@@ -14,7 +14,9 @@ export function generateToken(): string {
 }
 
 export function confirmUrl(token: string): string {
-  return `${BASE_URL}/api/newsletter/confirm?token=${token}`
+  // Points at the interstitial page, NOT the API. The page is safe for
+  // email scanners to GET; only the button on it POSTs to /api/newsletter/confirm.
+  return `${BASE_URL}/newsletter/confirm?token=${token}`
 }
 
 export function unsubscribeUrl(token: string): string {

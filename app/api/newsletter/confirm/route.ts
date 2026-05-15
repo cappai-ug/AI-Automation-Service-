@@ -4,7 +4,27 @@ import { sendWelcomeAndDeliverMagnet } from '@/lib/newsletter'
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * GET requests come from email scanners (Microsoft Safelinks, Gmail
+ * prefetch, etc.) before the user even clicks. We must NOT confirm here
+ * or the subscriber's status flips to "confirmed" before they actually
+ * see the email.
+ *
+ * GET therefore just redirects to the interstitial /newsletter/confirm
+ * page, which shows a "Bestätigen"-button that POSTs to this endpoint.
+ */
 export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get('token') ?? ''
+  return NextResponse.redirect(
+    new URL(`/newsletter/confirm?token=${encodeURIComponent(token)}`, request.url)
+  )
+}
+
+/**
+ * POST flips the status to confirmed. Email scanners don't issue POST
+ * requests, so this only runs when the user clicks the button.
+ */
+export async function POST(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token')
   if (!token) {
     return NextResponse.redirect(new URL('/newsletter/confirmed?status=error', request.url))
@@ -39,5 +59,7 @@ export async function GET(request: NextRequest) {
     console.error('Failed to send welcome email:', err)
   }
 
-  return NextResponse.redirect(new URL('/newsletter/confirmed?status=ok', request.url))
+  return NextResponse.redirect(new URL('/newsletter/confirmed?status=ok', request.url), {
+    status: 303, // POST → GET on the target
+  })
 }
