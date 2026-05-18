@@ -116,7 +116,7 @@ export default function CookiePolicy() {
             </p>
             <p>
               Cappai UG (haftungsbeschränkt)<br/>
-              E-Mail: <a href="mailto:info@cappai-ug.de" className="text-primary-600 hover:underline">info@cappai-ug.de</a>
+              E-Mail: <a href="mailto:hello@optimazed.de" className="text-primary-600 hover:underline">hello@optimazed.de</a>
             </p>
           </section>
 

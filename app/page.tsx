@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: 'Ist das DSGVO-konform?',
-    a: 'Ja! Vollständig DSGVO-konform. Daten werden in Deutschland (AWS Frankfurt) gespeichert, verschlüsselt übertragen und nicht für Training genutzt.'
+    a: 'Ja! Vollständig DSGVO-konform. Daten werden auf Servern in der EU gespeichert, verschlüsselt übertragen und nicht für Training genutzt.'
   },
   {
     q: 'Was, wenn ein Patient noch einen Menschen sprechen möchte?',

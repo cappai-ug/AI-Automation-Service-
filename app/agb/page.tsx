@@ -111,7 +111,7 @@ export default function AGB() {
               Sollten einzelne Bestimmungen dieser AGB unwirksam sein, wird die Wirksamkeit der übrigen Bestimmungen dadurch nicht beeinträchtigt.
             </p>
             <p>
-              Alle Mitteilungen müssen schriftlich erfolgen und können per E-Mail an info@cappai-ug.de übermittelt werden.
+              Alle Mitteilungen müssen schriftlich erfolgen und können per E-Mail an hello@optimazed.de übermittelt werden.
             </p>
           </section>
 

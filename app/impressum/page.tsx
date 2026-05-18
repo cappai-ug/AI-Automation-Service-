@@ -28,7 +28,7 @@ export default function Impressum() {
           <section>
             <h2 className="text-2xl font-bold mb-4">Kontaktinformationen</h2>
             <p>
-              <strong>E-Mail:</strong> <a href="mailto:info@cappai-ug.de" className="text-primary-600 hover:underline">info@cappai-ug.de</a>
+              <strong>E-Mail:</strong> <a href="mailto:hello@optimazed.de" className="text-primary-600 hover:underline">hello@optimazed.de</a>
             </p>
           </section>
 
@@ -44,7 +44,7 @@ export default function Impressum() {
           <section>
             <h2 className="text-2xl font-bold mb-4">Vertretung</h2>
             <p>
-              Die Gesellschaft wird durch die Geschäftsführer vertreten.
+              Geschäftsführer: Niklas Cappai
             </p>
           </section>
 

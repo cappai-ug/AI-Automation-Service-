@@ -293,19 +293,23 @@ Nehmen wir eine **typische Zahnarztpraxis** mit drei Behandlern, einer Vollzeit-
 
 Selbst wenn Sie unsere Zahlen halbieren — bleiben 45.000 € jährlich. **Bei jeder seriösen Rechnung amortisiert sich das System in unter 2 Monaten.**
 
-# Echte Fallstudie: Steuerkanzlei in Süddeutschland
+# Beispielszenario: So könnte das in Ihrer Kanzlei aussehen
 
-Eine mittelgroße Steuerkanzlei mit acht Mitarbeitern bei Stuttgart kam mit folgender Lage zu uns:
+Damit die Zahlen oben greifbar werden, hier ein realistisches Szenario für eine **mittelgroße Steuerkanzlei mit acht Mitarbeitern** — typische Ausgangslage, typische Ergebnisse nach 3 Monaten.
 
-> *„Wir verbringen täglich vier Stunden mit E-Mail-Beantwortung. Drei Sachbearbeiter arbeiten in der Vorbereitung. Wenn ein Mandant anruft, hängt er sieben Mal in der Warteschleife. Wir verlieren Mandanten nicht wegen schlechter Arbeit — wir verlieren sie, weil wir zu langsam reagieren."*
+**Ausgangslage:**
 
-**Was wir umgesetzt haben (in 6 Wochen):**
+- 4 Stunden pro Tag werden für E-Mail-Beantwortung verbrannt
+- 3 Sachbearbeiter sind in der Vorbereitung gebunden
+- Mandanten landen häufig in der Warteschleife — Reaktionszeit auf Neuanfragen oft über 2 Tage
+
+**Umsetzung in 6 Wochen** mit drei Bausteinen:
 
 1. KI-Rezeptionist mit DATEV-Kalenderanbindung
-2. E-Mail-Triage mit automatischer Antwortvorschlägen
+2. E-Mail-Triage mit automatischen Antwortvorschlägen
 3. Belegextraktion aus Eingangsrechnungen → direkt in DATEV
 
-**Was nach 3 Monaten messbar war:**
+**Realistisch messbares Ergebnis nach 3 Monaten:**
 
 | Bereich | Vorher | Nachher |
 |---|---|---|
@@ -313,15 +317,14 @@ Eine mittelgroße Steuerkanzlei mit acht Mitarbeitern bei Stuttgart kam mit folg
 | Zeit für E-Mail-Bearbeitung | 90 Min/Tag | 25 Min/Tag |
 | Angebotsdurchlauf | 4–6 Tage | 1–2 Tage |
 | Termin-No-Shows | 12 % | 6 % |
-| Mandanten-NPS (Kundenzufriedenheit) | 7,2 | 8,9 |
 
-Die Kanzlei hat im selben Quartal **drei zusätzliche Mandate** gewonnen, die im klassischen Setup mangels Reaktionszeit nicht zustande gekommen wären. Allein das deckte die KI-Investition für das ganze Jahr.
+Eine Kanzlei dieser Größe gewinnt typischerweise **2–3 zusätzliche Mandate pro Quartal**, die im klassischen Setup wegen langsamer Reaktionszeit nicht zustande gekommen wären. Allein das deckt die KI-Investition für das ganze Jahr.
 
-> *„Wir hätten nie gedacht, dass die Telefonzentrale unser größter Engpass war. Heute höre ich es einfach nicht mehr klingeln — und es funktioniert besser als vorher."* — Kanzlei-Inhaber, 53
+> **Hinweis:** Dies ist eine realistische Modellrechnung, kein konkreter Kundenfall. Die Zahlen entsprechen typischen Ergebnissen aus vergleichbaren Setups in der Branche.
 
 # Die drei häufigsten Fehler beim KI-Einstieg
 
-Wir haben mit über 50 deutschen KMU gearbeitet. Diese drei Stolperfallen tauchen immer wieder auf:
+In Gesprächen mit Inhabern deutscher KMU und aus der Beobachtung gescheiterter KI-Projekte zeichnen sich drei Stolperfallen ab, die immer wieder auftreten:
 
 ## Fehler #1: Zu viel auf einmal automatisieren
 
@@ -396,9 +399,7 @@ Wenn Sie Zeit sparen wollen — und vor allem die Fallen vermeiden, die wir oben
 - Kein „Wir melden uns dann" — Sie bekommen heute klare Aussagen
 - Kein 90-Minuten-Termin, der zu nichts führt
 
-> **„Das beste 30-Minuten-Gespräch unseres Jahres."** — Inhaberin einer Heilpraktiker-Praxis nach dem Strategiecall.
-
-**👉 Termin buchen:** Antworten Sie einfach auf eine unserer Mails, oder schreiben Sie an *info@cappai-ug.de* mit dem Stichwort „Strategiegespräch". Wir melden uns innerhalb von 24 Stunden.
+**👉 Termin buchen:** Antworten Sie einfach auf eine unserer Mails, oder schreiben Sie an *hello@optimazed.de* mit dem Stichwort „Strategiegespräch". Wir melden uns innerhalb von 24 Stunden.
 
 ---
 
@@ -408,16 +409,16 @@ Wir sind eine deutsche Beratung, spezialisiert auf KI-Automatisierung für klein
 
 **Was uns anders macht:**
 
-- **Server ausschließlich in Deutschland** (AWS Frankfurt) — kein Datenexport
+- **Server in der EU** — kein Datenexport in Drittländer
 - **Keine Trainingsnutzung Ihrer Daten** — vertraglich zugesichert
 - **AVV im Standard** — jeder Kunde, jedes Mal
 - **Branchenfokus statt Bauchladen** — wir kennen die Praxis-/Kanzleisoftware Ihrer Branche
 - **Pilotbetrieb statt Big Bang** — wir setzen Sie nicht einem Großprojekt aus
 
-Sitz: Cappai UG (haftungsbeschränkt), Oberursel · Geschäftsführung: kontaktierbar · HRB 17299 Amtsgericht Bad Homburg.
+Sitz: Cappai UG (haftungsbeschränkt), Oberursel · Geschäftsführer: Niklas Cappai · HRB 17299 Amtsgericht Bad Homburg · E-Mail: hello@optimazed.de
 
 ---
 
-*Diese Checkliste basiert auf der Zusammenarbeit mit über 50 deutschen KMU. Die genannten Zahlen sind Erfahrungswerte — keine Garantien. Bei spezifischen Fragen zur Umsetzung in Ihrer Branche sprechen Sie uns an.*
+*Die in dieser Checkliste genannten Zahlen sind Erfahrungs- und Branchenrichtwerte aus typischen Setups — keine Garantien. Konkrete Effekte variieren je nach Ausgangslage Ihres Betriebs. Für eine Einschätzung speziell für Ihre Situation sprechen Sie uns an.*
 
 *© OPTIMAZED · Stand: Mai 2026 · Diese Datei darf weitergegeben werden, sofern Quelle und Logo erhalten bleiben.*

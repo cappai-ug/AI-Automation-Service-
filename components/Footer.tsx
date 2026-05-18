@@ -57,8 +57,8 @@ export default function Footer() {
             <h3 className="font-semibold mb-3 sm:mb-4 text-base">Kontakt</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
               <li>
-                <a href="mailto:info@cappai-ug.de" className="hover:text-white transition-colors break-all">
-                  info@cappai-ug.de
+                <a href="mailto:hello@optimazed.de" className="hover:text-white transition-colors break-all">
+                  hello@optimazed.de
                 </a>
               </li>
               <li className="leading-relaxed">
