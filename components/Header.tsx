@@ -41,6 +41,9 @@ export default function Header() {
             <Link href="/#pricing" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Preise
             </Link>
+            <Link href="/branchen" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+              Branchen
+            </Link>
             <Link href="/blog" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Blog
             </Link>
@@ -104,6 +107,13 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Preise
+              </Link>
+              <Link
+                href="/branchen"
+                className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Branchen
               </Link>
               <Link
                 href="/blog"

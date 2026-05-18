@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { trackEvent } from '@/lib/analytics'
 
 type Props = {
   source?: string
@@ -55,6 +56,12 @@ export default function NewsletterSignup({
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Anmeldung fehlgeschlagen')
+      // Fire conversion event. Use a different name for lead magnets vs.
+      // standalone newsletter so we can separate funnels in GA.
+      trackEvent(
+        source.startsWith('lead_magnet_') ? 'lead_magnet_download' : 'newsletter_signup',
+        { source }
+      )
       setStatus('success')
       setMessage(data.message || 'Bitte prüfen Sie Ihren Posteingang.')
       setEmail('')

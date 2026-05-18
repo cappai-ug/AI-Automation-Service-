@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { CATEGORIES, getAllPosts, type BlogCategory } from '@/lib/blog'
+import { BRANCHEN } from '@/lib/branchen'
 
 export const revalidate = 60
 
@@ -24,6 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/blog`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/branchen`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
@@ -69,5 +76,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...categoryPages, ...blogPosts]
+  const branchenPages: MetadataRoute.Sitemap = BRANCHEN.map((b) => ({
+    url: `${baseUrl}/branchen/${b.slug}`,
+    lastModified: currentDate,
+    changeFrequency: 'monthly',
+    priority: 0.85,
+  }))
+
+  return [...staticPages, ...categoryPages, ...branchenPages, ...blogPosts]
 }
