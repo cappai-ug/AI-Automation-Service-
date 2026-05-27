@@ -112,7 +112,7 @@ export default function BranchenPage({ params }: Props) {
             Kennen Sie das?
           </h2>
           <p className="text-gray-600 mb-12 text-lg">
-            Diese fünf Engpässe sehen wir in nahezu jeder Kanzlei.
+            Diese fünf Engpässe sehen wir in nahezu jedem Betrieb dieser Branche.
           </p>
           <div className="grid gap-6 md:grid-cols-2">
             {b.painPoints.map((p) => (
@@ -193,27 +193,20 @@ export default function BranchenPage({ params }: Props) {
               </tbody>
             </table>
           </div>
-          <div className="mt-6 grid sm:grid-cols-2 gap-4">
-            <div className="bg-white border border-gray-200 rounded-xl p-5">
-              <div className="text-xs uppercase tracking-wide text-gray-500 mb-1">
-                Investition
-              </div>
-              <div className="text-lg font-semibold text-navy">
-                {b.exampleCalculation.investment}
-              </div>
+          <div className="mt-6 bg-white border border-gray-200 rounded-xl p-5">
+            <div className="text-xs uppercase tracking-wide text-gray-500 mb-1">
+              Investition (stark volumenabhängig)
             </div>
-            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
-              <div className="text-xs uppercase tracking-wide text-green-700 mb-1">
-                Netto-Effekt
-              </div>
-              <div className="text-lg font-semibold text-green-800">
-                {b.exampleCalculation.netPerMonth}
-              </div>
+            <div className="text-lg font-semibold text-navy mb-3">
+              {b.exampleCalculation.investmentRange}
             </div>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {b.exampleCalculation.investmentNote}
+            </p>
           </div>
           <p className="text-xs text-gray-500 mt-4 italic">
-            Realistische Modellrechnung auf Basis typischer Setups. Konkrete Effekte
-            variieren je nach Ausgangslage.
+            Realistische Modellrechnung auf Basis typischer Setups. Konkrete Werte —
+            Mehrwert wie Investition — variieren je nach Ausgangslage und Volumen.
           </p>
         </div>
       </section>
@@ -226,7 +219,7 @@ export default function BranchenPage({ params }: Props) {
               Kostenloser Ratgeber
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-3">
-              7 Aufgaben, die KI in Ihrer Kanzlei sofort übernehmen kann
+              7 Aufgaben, die KI in Ihrem Betrieb sofort übernehmen kann
             </h2>
             <p className="text-gray-700 mb-6">
               12-seitige Checkliste mit konkreten Zahlen, Beispielrechnung und
