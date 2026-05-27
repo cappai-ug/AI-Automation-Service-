@@ -25,7 +25,7 @@ function DemoPageContent() {
       stats: [
         { value: '95%', label: 'Weniger verpasste Anrufe' },
         { value: '12h', label: 'Zeitersparnis/Woche' },
-        { value: '€2k', label: 'Kostenersparnis/Monat' },
+        { value: '24/7', label: 'Erreichbarkeit' },
       ],
     },
     lawyer: {
@@ -35,7 +35,7 @@ function DemoPageContent() {
       stats: [
         { value: '80%', label: 'Schnellere Response-Zeit' },
         { value: '15h', label: 'Zeitersparnis/Woche' },
-        { value: '€3k', label: 'Mehrertrag/Monat' },
+        { value: '15 Min', label: 'statt 6-12h Lead-Response' },
       ],
     },
     agency: {
@@ -45,17 +45,17 @@ function DemoPageContent() {
       stats: [
         { value: '40%', label: 'Mehr qualifizierte Leads' },
         { value: '20h', label: 'Zeitersparnis/Woche' },
-        { value: '€4k', label: 'Mehrertrag/Monat' },
+        { value: '0', label: 'Leads fallen durchs Raster' },
       ],
     },
     default: {
       title: 'Für Ihr Unternehmen',
-      problem: 'Repetitive Aufgaben kosten Zeit & Geld',
+      problem: 'Repetitive Aufgaben kosten Zeit',
       solution: 'OPTIMAZED automatisiert, qualifiziert, optimiert',
       stats: [
         { value: '85%', label: 'Weniger manuelle Arbeit' },
         { value: '10h', label: 'Zeitersparnis/Woche' },
-        { value: '€1.5k', label: 'Kostenersparnis/Monat' },
+        { value: '24/7', label: 'Erreichbarkeit' },
       ],
     },
   }

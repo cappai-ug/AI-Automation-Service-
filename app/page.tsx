@@ -12,11 +12,11 @@ import LeadMagnetSection from '@/components/LeadMagnetSection'
 const faqs = [
   {
     q: 'Wie lange dauert die Einrichtung?',
-    a: 'Mit der SaaS-Plattform: 15 Minuten. Sie melden sich an, konfigurieren Ihre Nummer, fertig. Mit Managed Services: 2-4 Wochen für eine komplette Implementierung.'
+    a: 'In der Regel 2–4 Wochen für eine komplette Implementierung. Wir starten klein — eine Aufgabe, ein Pilot — und skalieren erst, wenn der Prozess sauber läuft.'
   },
   {
     q: 'Welche Integrations-Möglichkeiten gibt es?',
-    a: 'Wir unterstützen Google Calendar, Outlook, Gmail, Office 365, HubSpot, Pipedrive, Stripe und 100+ weitere Tools via Zapier/n8n. Custom-Integrationen sind im PREMIUM Plan möglich.'
+    a: 'Wir unterstützen Google Calendar, Outlook, Gmail, Office 365, HubSpot, Pipedrive, DATEV und 100+ weitere Tools. Branchen-Software und Custom-Integrationen besprechen wir im Erstgespräch.'
   },
   {
     q: 'Ist das DSGVO-konform?',
@@ -31,16 +31,16 @@ const faqs = [
     a: 'Ja! Wir integrieren mit HubSpot, Pipedrive, Salesforce, Zoho und hunderten anderen Tools. Neue Leads und Termine werden automatisch synchronisiert.'
   },
   {
-    q: 'Kann ich OPTIMAZED jederzeit kündigen?',
-    a: 'Ja. Monatliche Verträge, 14 Tage Kündigungsfrist. Keine Bindung. Wenn Sie nicht zufrieden sind, können Sie stoppen. Einfach.'
+    q: 'Für welche Branchen ist das geeignet?',
+    a: 'Besonders für Arztpraxen, Anwalts- und Steuerkanzleien, Handwerksbetriebe und Agenturen — überall, wo viel Routine über Telefon, E-Mail und Dokumente läuft.'
   },
   {
-    q: 'Wie viel Zeit/Geld spare ich wirklich?',
-    a: 'Im Schnitt: 8-12 Stunden Arbeit pro Woche eingespart. Bei einer Praxis sparen Sie oft die Kosten einer ganzen Empfang (€1.500-2.500/Monat) – minus dem €99-299 für OPTIMAZED. Rechnen Sie selbst: Der ROI ist innerhalb von 2-4 Wochen erreicht.'
+    q: 'Wie viel Zeit spare ich wirklich?',
+    a: 'Im Schnitt 8–12 Stunden Arbeit pro Woche, je nachdem welche Aufgaben Sie automatisieren. Im kostenlosen Strategiegespräch schätzen wir Ihr konkretes Potenzial realistisch ein.'
   },
   {
     q: 'Und wenn mein Unternehmen sehr speziell ist?',
-    a: 'Mit Managed Services passen wir alles an Ihre Bedürfnisse an. Spezielle Branchenprozesse, Ihre Arbeitsweise, Ihre Systeme. Wir helfen Ihnen, alles zu automatisieren.'
+    a: 'Wir passen alles an Ihre Bedürfnisse an. Spezielle Branchenprozesse, Ihre Arbeitsweise, Ihre Systeme. Wir helfen Ihnen, genau die Aufgaben zu automatisieren, die bei Ihnen am meisten Zeit kosten.'
   },
 ]
 
@@ -198,7 +198,7 @@ export default function Home() {
             {[
               { number: <Counter end={85} suffix="%" />, label: 'Weniger verpasste Anrufe' },
               { number: <Counter end={10} suffix=" Std" />, label: 'Zeit/Woche eingespart' },
-              { number: <>€<Counter end={1500} /></>, label: 'Ersparnis/Monat' },
+              { number: <>24/7</>, label: 'Erreichbarkeit' },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -268,9 +268,9 @@ export default function Home() {
               },
               {
                 icon: '💸',
-                problem: 'Empfang kostet €2.000/Monat',
-                desc: 'Das Budget ist knapp. Aber ohne Empfang geht nichts.',
-                solution: '€299-599/Monat. Keine Krankheitstage. Keine Urlaubsplanung. Immer verfügbar.',
+                problem: 'Personal ist knapp',
+                desc: 'Eine zusätzliche Empfangskraft ist teuer und schwer zu finden. Aber ohne Empfang geht nichts.',
+                solution: 'Die KI übernimmt die Routine — keine Krankheitstage, keine Urlaubsplanung, immer verfügbar.',
               },
               {
                 icon: '⏰',
@@ -405,11 +405,11 @@ export default function Home() {
                 icon: '🦷',
                 name: 'Zahnarztpraxis (5 Mitarbeiter)',
                 team: 'Typisches Szenario',
-                problem: '40 Anrufe/Tag, 2-3 verpasste Termine/Tag, 1 Empfang (€2.000/Monat)',
+                problem: '40 Anrufe/Tag, 2-3 verpasste Termine/Tag, Empfang dauerhaft am Limit',
                 result: 'Mit OPTIMAZED: Kein einziger verpasster Anruf. +5-7 automatisch gebuchte Termine/Woche.',
                 metrics: [
-                  '~€3.500 zusätzlicher Umsatz/Monat möglich',
-                  '€1.500-1.800 Kostenersparnis/Monat',
+                  'Deutlich mehr gebuchte Termine pro Woche',
+                  '8-12 Stunden Empfangszeit/Woche frei',
                   'Empfang konzentriert sich auf Patientenerlebnis'
                 ]
               },
@@ -421,8 +421,8 @@ export default function Home() {
                 result: 'Mit OPTIMAZED: Neue Anfragen werden in 15-30 Minuten beantwortet. Automatische Kategorisierung.',
                 metrics: [
                   'Lead-Response: 6-12h → 15-30 Min erwartet',
-                  '~€8.000-12.000 potenzieller Mehrertrag/Monat',
-                  'Empfang spart 8-12 Stunden/Woche'
+                  'Keine übersehenen Anfragen mehr',
+                  'Team spart 8-12 Stunden/Woche'
                 ]
               },
               {
@@ -432,8 +432,8 @@ export default function Home() {
                 problem: 'Viele Anfragen, unstrukturierte Verfolgung. Einige Leads fallen durchs Raster. Rechnungsversand manuell.',
                 result: 'Mit OPTIMAZED: Strukturierte Lead-Verwaltung. Automatisierte Rechnungen und Erinnerungen.',
                 metrics: [
-                  'Lead-Conversion: 15% → 22-28% erwartet',
-                  '~€15.000-25.000 zusätzlicher Jahresertrag möglich',
+                  'Höhere Lead-Conversion durch schnellere Reaktion',
+                  'Kein Lead fällt mehr durchs Raster',
                   'Rechnungs-Mahnung: 100% automatisiert'
                 ]
               },
@@ -490,204 +490,58 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-white">
-              So nutzen Sie <span className="text-secondary">OPTIMAZED</span>
+              So arbeiten wir <span className="text-secondary">mit Ihnen</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Voll verwaltet oder selbstbedient. Von uns eingerichtet oder selbst konfiguriert.
+              Wir richten alles ein, optimieren laufend und begleiten Sie — vom ersten
+              Pilot bis zum eingespielten Betrieb. Kein Großprojekt, sondern Schritt für Schritt.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {[
-              {
-                icon: '🤝',
-                title: 'Managed Services',
-                desc: 'Wir richten alles ein. Wir optimieren. Wir unterstützen Sie.',
-                benefits: [
+          <div className="max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="p-10 sm:p-12 rounded-2xl glass border border-white/20"
+            >
+              <div className="grid sm:grid-cols-2 gap-4 mb-10">
+                {[
                   'Komplette Analyse Ihrer Prozesse',
-                  'Maßgeschneiderte AI-Konfiguration',
-                  'Mehrwöchige Implementierung',
-                  'Intensive Einarbeitung',
-                  'Dedizierter Account Manager',
-                  '24/7 Premium Support'
-                ],
-                price: 'Preis auf Anfrage',
-                cta: 'Unverbindliches Angebot'
-              },
-              {
-                icon: '⚡',
-                title: 'SaaS Platform',
-                desc: 'Selbstbedienung. Templates. Sofort produktiv.',
-                benefits: [
-                  'Vorkonfigurierte Templates',
-                  'Selbstbedienungs-Dashboard',
-                  'Plug-and-Play Integration',
-                  'Eigenständige Anpassung',
-                  'Community Support',
-                  'Jederzeit skalierbar'
-                ],
-                price: '€299-599/Monat',
-                cta: 'Kostenlos starten'
-              },
-            ].map((service, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className="group relative p-12 rounded-2xl glass border border-white/20 hover-lift"
-              >
-                <div className="text-6xl mb-6">{service.icon}</div>
-                <h3 className="text-3xl font-bold mb-3">{service.title}</h3>
-                <p className="text-gray-300 mb-8 text-lg">{service.desc}</p>
+                  'Maßgeschneiderte KI-Konfiguration',
+                  'Anbindung an Ihre vorhandene Software',
+                  'Pilotbetrieb statt Big-Bang-Umstellung',
+                  'Persönliche Einarbeitung Ihres Teams',
+                  'Laufende Betreuung und Optimierung',
+                ].map((benefit, j) => (
+                  <motion.div
+                    key={j}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: j * 0.08 }}
+                    viewport={{ once: true }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="text-secondary text-xl flex-shrink-0">→</span>
+                    <span>{benefit}</span>
+                  </motion.div>
+                ))}
+              </div>
 
-                <ul className="space-y-3 mb-8">
-                  {service.benefits.map((benefit, j) => (
-                    <motion.li
-                      key={j}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: j * 0.1 }}
-                      viewport={{ once: true }}
-                      className="flex items-center gap-3"
-                    >
-                      <span className="text-secondary text-xl">→</span>
-                      <span>{benefit}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                <div className="mb-8 pb-8 border-t border-white/20">
-                  <p className="text-2xl font-bold text-secondary">{service.price}</p>
-                </div>
-
-                <a href="#waitlist" className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full text-center inline-block">
-                  {service.cta}
-                </a>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== PRICING ===== */}
-      <section id="pricing" className="py-32">
-        <div className="container-max">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <h2 className="section-heading text-navy">Transparente Preise. Keine versteckten Gebühren.</h2>
-            <p className="section-subheading mt-4">Für jeden Betrieb die richtige Lösung.</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'PROFESSIONAL',
-                price: '€299',
-                period: '/Monat',
-                highlight: true,
-                features: [
-                  'AI-Rezeptionist (Anrufe + WhatsApp)',
-                  'Unbegrenzte E-Mails',
-                  'Lead-Qualifizierung',
-                  'Rechnungsverwaltung',
-                  '3 Benutzer',
-                  'CRM-Integration',
-                  'Priority-Support',
-                  'Custom AI-Anweisungen'
-                ],
-                ideal: 'Für Praxen & Kanzleien',
-              },
-              {
-                name: 'PREMIUM',
-                price: '€599',
-                period: '/Monat',
-                highlight: false,
-                features: [
-                  'Alles aus PROFESSIONAL',
-                  'Vollständige Rechnungsautomatisierung',
-                  'Advanced Analytics',
-                  'Unbegrenzte Benutzer',
-                  'API-Zugang',
-                  'Custom Integrationen',
-                  'Phone-Support',
-                  'White-Label Option'
-                ],
-                ideal: 'Für Agenturen & Unternehmen',
-              },
-              {
-                name: 'ENTERPRISE',
-                price: 'Preis auf',
-                priceSecond: 'Anfrage',
-                highlight: false,
-                features: [
-                  'Alles aus PREMIUM',
-                  'Dedizierter Account Manager',
-                  '24/7 Premium Support',
-                  'Custom Development',
-                  'On-Premise Deployment',
-                  'SLA Garantie',
-                  'Benutzerdefinierte Schulung',
-                  'Custom AI-Training'
-                ],
-                ideal: 'Für Großunternehmen',
-              },
-            ].map((plan, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                className={`relative rounded-2xl p-8 transition-all duration-300 ${
-                  plan.highlight
-                    ? 'bg-gradient-to-br from-accent to-blue-600 text-white shadow-2xl transform hover-lift'
-                    : 'bg-white border-2 border-gray-200 hover-lift'
-                }`}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
-                      BELIEBT
-                    </span>
-                  </div>
-                )}
-
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <div className="flex items-baseline mb-2">
-                  <span className="text-5xl font-bold">{plan.price}</span>
-                  {plan.priceSecond && <span className="ml-2 text-xl">{plan.priceSecond}</span>}
-                  {plan.period && <span className="ml-2 opacity-75">{plan.period}</span>}
-                </div>
-                <p className={`text-sm mb-8 ${plan.highlight ? 'text-gray-100' : 'text-gray-600'}`}>{plan.ideal}</p>
-
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, j) => (
-                    <li key={j} className="flex items-center gap-3">
-                      <span className="text-xl">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
+              <div className="text-center">
+                <p className="text-gray-300 mb-6">
+                  Im kostenlosen Strategiegespräch schauen wir uns Ihre größten Engpässe an
+                  und sagen Ihnen ehrlich, was sich bei Ihnen lohnt.
+                </p>
                 <a
                   href="#waitlist"
-                  className={`w-full block text-center py-3 px-6 rounded-full font-bold transition-all ${
-                    plan.highlight
-                      ? 'bg-white text-accent hover:bg-gray-100'
-                      : 'bg-accent text-white hover:bg-blue-600'
-                  }`}
+                  className="bg-accent hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg inline-block"
                 >
-                  {plan.name === 'ENTERPRISE' ? 'Kontaktieren Sie uns' : 'Jetzt starten'}
+                  Kostenloses Strategiegespräch
                 </a>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>

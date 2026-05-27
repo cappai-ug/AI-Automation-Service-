@@ -31,15 +31,12 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation - Hidden on mobile */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-12">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             <Link href="/#features" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Features
             </Link>
             <Link href="/#services" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Services
-            </Link>
-            <Link href="/#pricing" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
-              Preise
             </Link>
             <Link href="/branchen" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Branchen
@@ -49,6 +46,12 @@ export default function Header() {
             </Link>
             <Link href="/#waitlist" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Kontakt
+            </Link>
+            <Link
+              href="/#lead-magnet"
+              className="bg-accent hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-full transition-colors text-sm lg:text-base whitespace-nowrap"
+            >
+              Gratis-Checkliste
             </Link>
           </div>
 
@@ -102,13 +105,6 @@ export default function Header() {
                 Services
               </Link>
               <Link
-                href="/#pricing"
-                className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Preise
-              </Link>
-              <Link
                 href="/branchen"
                 className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
@@ -128,6 +124,13 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Kontakt
+              </Link>
+              <Link
+                href="/#lead-magnet"
+                className="block px-4 py-3 mt-2 bg-accent hover:bg-blue-600 text-white text-center rounded-lg transition-colors font-semibold text-base"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Gratis-Checkliste anfordern
               </Link>
             </div>
           </motion.div>

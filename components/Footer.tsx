@@ -35,9 +35,9 @@ export default function Footer() {
           <div className="text-center sm:text-left">
             <h3 className="font-semibold mb-3 sm:mb-4 text-base">Services</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li><Link href="#services" className="hover:text-white transition-colors">Dokumentenautomatisierung</Link></li>
-              <li><Link href="#services" className="hover:text-white transition-colors">Kundenservice-KI</Link></li>
-              <li><Link href="#services" className="hover:text-white transition-colors">SaaS Plattform</Link></li>
+              <li><Link href="/#services" className="hover:text-white transition-colors">Dokumentenautomatisierung</Link></li>
+              <li><Link href="/#services" className="hover:text-white transition-colors">Kundenservice-KI</Link></li>
+              <li><Link href="/branchen" className="hover:text-white transition-colors">Lösungen nach Branche</Link></li>
             </ul>
           </div>
 
