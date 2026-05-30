@@ -223,6 +223,26 @@ export async function POST(request: NextRequest) {
     const emailSent = await sendWelcomeEmail(email, company)
     console.log('📧 [POST] sendWelcomeEmail returned:', emailSent)
 
+    // Operator-Notification an info@cappai-ug.de — fire-and-forget
+    try {
+      const { notifyOperator } = await import('@/lib/notifications')
+      await notifyOperator({
+        subject: '🎯 Neuer Waitlist-Lead',
+        intro: 'Eine neue Anmeldung über das Waitlist-Formular auf der Startseite.',
+        source: 'waitlist',
+        fields: [
+          { label: 'E-Mail', value: email },
+          { label: 'Firma', value: company },
+          { label: 'Use Case / Anliegen', value: useCase },
+          { label: 'Zeitpunkt', value: new Date().toLocaleString('de-DE') },
+        ],
+        ctaUrl: 'https://www.optimazed.de/admin/leads',
+        ctaLabel: 'Im Admin öffnen',
+      })
+    } catch (err) {
+      console.error('Operator notification failed:', err)
+    }
+
     return NextResponse.json(
       {
         success: true,

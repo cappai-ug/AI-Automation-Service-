@@ -104,6 +104,31 @@ export async function POST(request: NextRequest) {
       // admin can resend manually. But we do log.
     }
 
+    // Operator-Notification — pending lead, noch nicht bestätigt
+    try {
+      const { notifyOperator } = await import('@/lib/notifications')
+      const isLeadMagnetSource = source.startsWith('lead_magnet_')
+      await notifyOperator({
+        subject: isLeadMagnetSource
+          ? '📥 Lead-Magnet angefordert (wartet auf DOI-Bestätigung)'
+          : '📥 Newsletter-Anmeldung (wartet auf DOI-Bestätigung)',
+        intro: isLeadMagnetSource
+          ? 'Jemand hat den Lead-Magneten angefordert. Sobald die E-Mail bestätigt ist, kommt eine zweite Benachrichtigung.'
+          : 'Neue Newsletter-Anmeldung. Sobald die E-Mail bestätigt ist, kommt eine zweite Benachrichtigung.',
+        source,
+        fields: [
+          { label: 'E-Mail', value: subscriber.email },
+          { label: 'Name', value: subscriber.name },
+          { label: 'Status', value: 'pending (Double-Opt-in)' },
+          { label: 'Zeitpunkt', value: new Date().toLocaleString('de-DE') },
+        ],
+        ctaUrl: 'https://www.optimazed.de/admin/newsletter',
+        ctaLabel: 'Im Admin öffnen',
+      })
+    } catch (err) {
+      console.error('Operator notification failed:', err)
+    }
+
     return NextResponse.json({
       ok: true,
       message:

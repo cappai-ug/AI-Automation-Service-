@@ -59,6 +59,36 @@ export async function POST(request: NextRequest) {
     console.error('Failed to send welcome email:', err)
   }
 
+  // Operator-Notification — confirmed lead (höhere Qualität als pending)
+  try {
+    const { notifyOperator } = await import('@/lib/notifications')
+    const isLeadMagnet = subscriber.source.startsWith('lead_magnet_')
+    await notifyOperator({
+      subject: isLeadMagnet
+        ? '✅ Lead-Magnet bestätigt — neuer Newsletter-Abonnent'
+        : '✅ Newsletter-Anmeldung bestätigt',
+      intro: isLeadMagnet
+        ? 'Der Lead-Magnet wurde angefordert UND die Anmeldung per Double-Opt-in bestätigt. Heißer Lead.'
+        : 'Die Newsletter-Anmeldung wurde per Double-Opt-in bestätigt.',
+      source: subscriber.source,
+      fields: [
+        { label: 'E-Mail', value: subscriber.email },
+        { label: 'Name', value: subscriber.name },
+        { label: 'Status', value: 'confirmed' },
+        {
+          label: 'Angemeldet seit',
+          value: subscriber.subscribedAt
+            ? new Date(subscriber.subscribedAt).toLocaleString('de-DE')
+            : null,
+        },
+      ],
+      ctaUrl: 'https://www.optimazed.de/admin/newsletter',
+      ctaLabel: 'Im Admin öffnen',
+    })
+  } catch (err) {
+    console.error('Operator notification failed:', err)
+  }
+
   return NextResponse.redirect(new URL('/newsletter/confirmed?status=ok', request.url), {
     status: 303, // POST → GET on the target
   })
