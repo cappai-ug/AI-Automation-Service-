@@ -78,6 +78,7 @@ export default function LeadMagnetSection() {
                 description=""
                 consentText="Ich möchte die Checkliste per E-Mail erhalten und abonniere damit den OPTIMAZED-Newsletter (ca. 1 Mail/Woche). Abmeldung jederzeit über den Link in jeder Mail."
                 ctaLabel="Checkliste per E-Mail anfordern"
+                redirectOnSuccess="lead-magnet"
               />
             </div>
           </motion.div>

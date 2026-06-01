@@ -44,7 +44,7 @@ export default function Header() {
             <Link href="/blog" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Blog
             </Link>
-            <Link href="/#waitlist" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
+            <Link href="/kontakt" className="text-white hover:text-secondary transition-colors text-sm lg:text-base font-medium">
               Kontakt
             </Link>
             <Link
@@ -119,7 +119,7 @@ export default function Header() {
                 Blog
               </Link>
               <Link
-                href="/#waitlist"
+                href="/kontakt"
                 className="block px-4 py-3 text-white hover:bg-gray-800 hover:text-secondary rounded-lg transition-colors font-medium text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >

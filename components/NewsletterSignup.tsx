@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { trackEvent } from '@/lib/analytics'
 
 type Props = {
@@ -12,6 +13,8 @@ type Props = {
   consentText?: string
   ctaLabel?: string
   showName?: boolean
+  /** If set, redirect to /danke?typ=... on successful submit. Use for conversion-tracked surfaces. */
+  redirectOnSuccess?: 'lead-magnet' | 'newsletter'
 }
 
 const DEFAULT_CONSENT =
@@ -26,7 +29,9 @@ export default function NewsletterSignup({
   consentText = DEFAULT_CONSENT,
   ctaLabel = 'Anmelden',
   showName = false,
+  redirectOnSuccess,
 }: Props) {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [consent, setConsent] = useState(false)
@@ -56,12 +61,16 @@ export default function NewsletterSignup({
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Anmeldung fehlgeschlagen')
-      // Fire conversion event. Use a different name for lead magnets vs.
-      // standalone newsletter so we can separate funnels in GA.
+      // Fire GA event. Conversion-page event firing also happens on /danke
+      // for the redirect variants, so this covers inline-success forms too.
       trackEvent(
         source.startsWith('lead_magnet_') ? 'lead_magnet_download' : 'newsletter_signup',
         { source }
       )
+      if (redirectOnSuccess) {
+        router.push(`/danke?typ=${redirectOnSuccess}`)
+        return
+      }
       setStatus('success')
       setMessage(data.message || 'Bitte prüfen Sie Ihren Posteingang.')
       setEmail('')

@@ -5,61 +5,187 @@ import { useState, useEffect } from 'react'
 export const CONSENT_STORAGE_KEY = 'cappai-cookie-consent'
 export const CONSENT_EVENT = 'cookie-consent-changed'
 
-export type ConsentValue = 'accepted' | 'rejected'
+export type ConsentValue = {
+  analytics: boolean
+  marketing: boolean
+}
+
+const DEFAULT_CONSENT: ConsentValue = { analytics: false, marketing: false }
+
+/**
+ * Read the saved consent. Backwards-compatible with the old binary
+ * 'accepted' / 'rejected' string: 'accepted' is treated as analytics-only
+ * (the safer interpretation given the prior cookie banner never asked
+ * about marketing).
+ */
+export function getStoredConsent(): ConsentValue | null {
+  if (typeof window === 'undefined') return null
+  const raw = localStorage.getItem(CONSENT_STORAGE_KEY)
+  if (!raw) return null
+  // Legacy strings
+  if (raw === 'accepted') return { analytics: true, marketing: false }
+  if (raw === 'rejected') return { analytics: false, marketing: false }
+  try {
+    const parsed = JSON.parse(raw)
+    return {
+      analytics: !!parsed?.analytics,
+      marketing: !!parsed?.marketing,
+    }
+  } catch {
+    return null
+  }
+}
 
 function setConsent(value: ConsentValue) {
-  localStorage.setItem(CONSENT_STORAGE_KEY, value)
+  localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(value))
   window.dispatchEvent(new CustomEvent<ConsentValue>(CONSENT_EVENT, { detail: value }))
 }
 
 export default function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [analyticsChecked, setAnalyticsChecked] = useState(true)
+  const [marketingChecked, setMarketingChecked] = useState(true)
 
   useEffect(() => {
-    const cookieConsent = localStorage.getItem(CONSENT_STORAGE_KEY)
-    if (!cookieConsent) {
-      setShowBanner(true)
-    }
+    if (getStoredConsent() == null) setShowBanner(true)
   }, [])
 
-  const handleAccept = () => {
-    setConsent('accepted')
+  function acceptAll() {
+    setConsent({ analytics: true, marketing: true })
     setShowBanner(false)
+    setShowSettings(false)
   }
 
-  const handleReject = () => {
-    setConsent('rejected')
+  function rejectAll() {
+    setConsent({ analytics: false, marketing: false })
     setShowBanner(false)
+    setShowSettings(false)
+  }
+
+  function saveSelection() {
+    setConsent({ analytics: analyticsChecked, marketing: marketingChecked })
+    setShowBanner(false)
+    setShowSettings(false)
   }
 
   if (!showBanner) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-lg">
-      <div className="container-max flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex-1">
-          <p className="text-sm sm:text-base">
-            Wir verwenden Cookies, um unsere Website zu verbessern und Ihr Erlebnis zu optimieren.
-            Durch die Nutzung dieser Website akzeptieren Sie unsere{' '}
-            <a href="/datenschutz" className="underline hover:text-gray-300">Datenschutzrichtlinie</a> und{' '}
-            <a href="/cookie-richtlinie" className="underline hover:text-gray-300">Cookie-Richtlinie</a>.
-          </p>
-        </div>
-        <div className="flex gap-3 whitespace-nowrap">
-          <button
-            onClick={handleReject}
-            className="px-4 py-2 rounded border border-gray-500 hover:border-gray-300 transition-colors text-sm"
-          >
-            Ablehnen
-          </button>
-          <button
-            onClick={handleAccept}
-            className="px-4 py-2 rounded bg-primary-600 hover:bg-primary-700 transition-colors text-sm font-semibold"
-          >
-            Akzeptieren
-          </button>
+    <>
+      <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-2xl border-t border-gray-700">
+        <div className="container-max flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+          <div className="flex-1 text-sm sm:text-base leading-relaxed">
+            <p>
+              Wir verwenden Cookies und ähnliche Technologien, um unsere Website zu betreiben (notwendig),
+              die Nutzung anonymisiert auszuwerten (Statistik) und Werbung sinnvoll auszuspielen (Marketing).
+              Sie entscheiden selbst, was wir verwenden dürfen. Details in unserer{' '}
+              <a href="/datenschutz" className="underline hover:text-gray-300">Datenschutzerklärung</a> und{' '}
+              <a href="/cookie-richtlinie" className="underline hover:text-gray-300">Cookie-Richtlinie</a>.
+            </p>
+          </div>
+          <div className="flex gap-2 sm:gap-3 whitespace-nowrap flex-wrap">
+            <button
+              onClick={() => setShowSettings(true)}
+              className="px-3 py-2 rounded border border-gray-600 hover:border-gray-400 transition-colors text-xs sm:text-sm"
+            >
+              Einstellungen
+            </button>
+            <button
+              onClick={rejectAll}
+              className="px-3 py-2 rounded border border-gray-500 hover:border-gray-300 transition-colors text-xs sm:text-sm"
+            >
+              Nur notwendige
+            </button>
+            <button
+              onClick={acceptAll}
+              className="px-4 py-2 rounded bg-accent hover:bg-blue-600 transition-colors text-xs sm:text-sm font-semibold"
+            >
+              Alle akzeptieren
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      {showSettings && (
+        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60">
+          <div className="bg-white text-gray-900 w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden">
+            <div className="p-6 sm:p-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-navy mb-2">
+                Cookie-Einstellungen
+              </h2>
+              <p className="text-sm text-gray-600 mb-6">
+                Wählen Sie, welche Cookies wir setzen dürfen. Notwendige Cookies sind immer aktiv,
+                weil ohne sie die Seite nicht funktioniert.
+              </p>
+
+              <div className="space-y-4 mb-6">
+                <label className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg cursor-not-allowed opacity-90">
+                  <input type="checkbox" checked disabled className="mt-1" />
+                  <div>
+                    <div className="font-semibold text-navy">Notwendig <span className="text-xs text-gray-500 font-normal">(immer aktiv)</span></div>
+                    <div className="text-sm text-gray-600">
+                      Für Login, Cookie-Wahl und Sicherheit. Ohne diese funktioniert die Seite nicht.
+                    </div>
+                  </div>
+                </label>
+
+                <label className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={analyticsChecked}
+                    onChange={(e) => setAnalyticsChecked(e.target.checked)}
+                    className="mt-1"
+                  />
+                  <div>
+                    <div className="font-semibold text-navy">Statistik / Analyse</div>
+                    <div className="text-sm text-gray-600">
+                      Google Analytics 4 (anonymisierte IP). Hilft uns, die Seite zu verbessern.
+                    </div>
+                  </div>
+                </label>
+
+                <label className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={marketingChecked}
+                    onChange={(e) => setMarketingChecked(e.target.checked)}
+                    className="mt-1"
+                  />
+                  <div>
+                    <div className="font-semibold text-navy">Marketing</div>
+                    <div className="text-sm text-gray-600">
+                      Google Ads Conversion-Tracking. Wir messen, ob unsere Anzeigen sinnvoll sind —
+                      ohne Sie persönlich zu identifizieren.
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <div className="flex flex-wrap gap-2 justify-end">
+                <button
+                  onClick={rejectAll}
+                  className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm"
+                >
+                  Alle ablehnen
+                </button>
+                <button
+                  onClick={saveSelection}
+                  className="px-4 py-2 rounded bg-navy text-white hover:bg-blue-900 text-sm font-semibold"
+                >
+                  Auswahl speichern
+                </button>
+                <button
+                  onClick={acceptAll}
+                  className="px-4 py-2 rounded bg-accent text-white hover:bg-blue-600 text-sm font-semibold"
+                >
+                  Alle akzeptieren
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }

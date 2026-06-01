@@ -233,6 +233,7 @@ export default function BranchenPage({ params }: Props) {
               description=""
               consentText="Ich möchte die Checkliste per E-Mail erhalten und abonniere damit den OPTIMAZED-Newsletter (ca. 1 Mail/Woche). Abmeldung jederzeit über den Link in jeder Mail."
               ctaLabel="Checkliste anfordern"
+              redirectOnSuccess="lead-magnet"
             />
           </div>
         </div>

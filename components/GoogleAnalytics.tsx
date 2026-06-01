@@ -2,66 +2,71 @@
 
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
-import { CONSENT_EVENT, CONSENT_STORAGE_KEY, type ConsentValue } from './CookieBanner'
+import {
+  CONSENT_EVENT,
+  getStoredConsent,
+  type ConsentValue,
+} from './CookieBanner'
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+const ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
+
+const ANY_TAG_CONFIGURED = !!GA_ID || !!ADS_ID
+// gtag.js is loaded once; whichever ID we have first is used for the script src
+const SCRIPT_TAG_ID = GA_ID ?? ADS_ID
 
 /**
- * GA4 with Google Consent Mode v2.
+ * Loads gtag.js once and configures both GA4 and Google Ads (if their IDs are
+ * set). Uses Google Consent Mode v2: defaults are denied, then per-category
+ * (analytics_storage for Analytics, ad_storage/ad_user_data/ad_personalization
+ * for Marketing) flipped to granted when the user consents in the CookieBanner.
  *
- * On first render we set consent defaults to "denied" so gtag.js is loaded
- * in cookieless mode (no client identifiers, no remarketing). Once the user
- * clicks "Akzeptieren" in the CookieBanner, the consent state flips to
- * "granted" via gtag('consent', 'update', ...) and full analytics kicks in.
- *
- * If NEXT_PUBLIC_GA_ID is unset, this component renders nothing — handy in
- * local dev or preview environments.
+ * Renders nothing if no GA/Ads IDs are configured.
  */
 export default function GoogleAnalytics() {
   const [consent, setConsentState] = useState<ConsentValue | null>(null)
 
   useEffect(() => {
-    const stored = localStorage.getItem(CONSENT_STORAGE_KEY) as ConsentValue | null
-    if (stored === 'accepted' || stored === 'rejected') setConsentState(stored)
-
-    const handler = (e: Event) => {
+    setConsentState(getStoredConsent())
+    function handler(e: Event) {
       const detail = (e as CustomEvent<ConsentValue>).detail
-      if (detail === 'accepted' || detail === 'rejected') setConsentState(detail)
+      if (detail && typeof detail === 'object') setConsentState(detail)
     }
     window.addEventListener(CONSENT_EVENT, handler)
     return () => window.removeEventListener(CONSENT_EVENT, handler)
   }, [])
 
-  // Whenever consent flips, push the matching consent update to gtag.
   useEffect(() => {
-    if (!GA_ID) return
+    if (!ANY_TAG_CONFIGURED) return
     if (typeof window === 'undefined') return
-    // gtag may not be defined yet on first render — wrap defensively.
     const w = window as any
     if (typeof w.gtag !== 'function') return
-    if (consent === 'accepted') {
-      w.gtag('consent', 'update', {
-        analytics_storage: 'granted',
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-      })
-    }
-    if (consent === 'rejected') {
-      w.gtag('consent', 'update', {
-        analytics_storage: 'denied',
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-      })
-    }
+    if (consent == null) return
+
+    w.gtag('consent', 'update', {
+      analytics_storage: consent.analytics ? 'granted' : 'denied',
+      ad_storage: consent.marketing ? 'granted' : 'denied',
+      ad_user_data: consent.marketing ? 'granted' : 'denied',
+      ad_personalization: consent.marketing ? 'granted' : 'denied',
+    })
   }, [consent])
 
-  if (!GA_ID) return null
+  if (!ANY_TAG_CONFIGURED) return null
+
+  // The "config" calls must run AFTER gtag.js loads. We push them into
+  // dataLayer with the same pattern Google's snippet uses, so they're
+  // applied as soon as the library is ready regardless of script order.
+  const configCalls = [GA_ID, ADS_ID]
+    .filter((id): id is string => !!id)
+    .map(
+      (id) =>
+        `gtag('config', '${id}'${id.startsWith('G-') ? ", { anonymize_ip: true, page_path: window.location.pathname }" : ''});`
+    )
+    .join('\n          ')
 
   return (
     <>
-      {/* Consent defaults — must be set BEFORE gtag.js loads. */}
+      {/* Consent defaults — must run BEFORE gtag.js fires any tag */}
       <Script id="ga-consent-default" strategy="beforeInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
@@ -78,15 +83,12 @@ export default function GoogleAnalytics() {
         `}
       </Script>
       <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${SCRIPT_TAG_ID}`}
         strategy="afterInteractive"
       />
-      <Script id="ga-config" strategy="afterInteractive">
+      <Script id="ga-ads-config" strategy="afterInteractive">
         {`
-          gtag('config', '${GA_ID}', {
-            anonymize_ip: true,
-            page_path: window.location.pathname,
-          });
+          ${configCalls}
         `}
       </Script>
     </>

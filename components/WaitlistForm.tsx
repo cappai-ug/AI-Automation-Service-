@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function WaitlistForm({ variant = 'default' }: { variant?: 'default' | 'modal' }) {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     company: '',
@@ -35,9 +37,10 @@ export default function WaitlistForm({ variant = 'default' }: { variant?: 'defau
           setStatus('exists')
           setMessage('Sie sind bereits registriert. Wir melden uns in Kürze bei Ihnen.')
         } else {
-          setStatus('success')
-          setMessage('Danke! Sie wurden zur Warteliste hinzugefügt.')
-          setFormData({ email: '', company: '', useCase: '' })
+          // Forward to the /danke page so the conversion is firing on a
+          // standalone URL — gives Google Ads a clean conversion event.
+          router.push('/danke?typ=waitlist')
+          return
         }
       } else {
         setStatus('error')
