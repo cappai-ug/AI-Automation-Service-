@@ -15,8 +15,8 @@ const MESSAGES: Record<
   { title: string; body: string; next?: { label: string; href: string } }
 > = {
   waitlist: {
-    title: 'Vielen Dank für Ihre Anfrage',
-    body: 'Wir haben Ihre Nachricht erhalten und melden uns innerhalb der nächsten 24 Stunden persönlich bei Ihnen mit konkreten nächsten Schritten.',
+    title: 'Anfrage angekommen — wir melden uns',
+    body: 'Wir antworten Ihnen innerhalb der nächsten 24 Stunden persönlich mit konkreten nächsten Schritten.',
     next: { label: 'Inzwischen: Gratis-Checkliste', href: '/#lead-magnet' },
   },
   'lead-magnet': {
