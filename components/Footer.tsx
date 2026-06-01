@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import NewsletterSignup from './NewsletterSignup'
+import CookieSettingsLink from './CookieSettingsLink'
 
 export default function Footer() {
   return (
@@ -49,6 +50,7 @@ export default function Footer() {
               <li><Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li>
               <li><Link href="/agb" className="hover:text-white transition-colors">AGB</Link></li>
               <li><Link href="/cookie-richtlinie" className="hover:text-white transition-colors">Cookie-Richtlinie</Link></li>
+              <li><CookieSettingsLink className="hover:text-white transition-colors text-left" /></li>
             </ul>
           </div>
 

@@ -2,29 +2,36 @@
 
 import { useState, useEffect } from 'react'
 
-export const CONSENT_STORAGE_KEY = 'cappai-cookie-consent'
+// Bumped from 'cappai-cookie-consent' (v1) when we switched from a binary
+// accept/reject banner to granular analytics/marketing toggles. Legacy
+// values are deleted on read so existing visitors are re-prompted —
+// otherwise their analytics-only consent would silently keep ad_storage
+// denied forever and Google Ads would report "0 % Einwilligungsrate".
+export const CONSENT_STORAGE_KEY = 'cappai-cookie-consent-v2'
+const LEGACY_KEYS = ['cappai-cookie-consent']
 export const CONSENT_EVENT = 'cookie-consent-changed'
+export const OPEN_SETTINGS_EVENT = 'cookie-settings-open'
 
 export type ConsentValue = {
   analytics: boolean
   marketing: boolean
 }
 
-const DEFAULT_CONSENT: ConsentValue = { analytics: false, marketing: false }
-
 /**
- * Read the saved consent. Backwards-compatible with the old binary
- * 'accepted' / 'rejected' string: 'accepted' is treated as analytics-only
- * (the safer interpretation given the prior cookie banner never asked
- * about marketing).
+ * Read the saved consent. Returns null if no v2 value exists — also when
+ * a legacy v1 value was present (which we silently clear so the banner
+ * re-prompts for marketing consent that v1 never asked about).
  */
 export function getStoredConsent(): ConsentValue | null {
   if (typeof window === 'undefined') return null
+  // Migrate away from legacy keys — clear and re-prompt
+  for (const legacy of LEGACY_KEYS) {
+    if (localStorage.getItem(legacy) != null) {
+      localStorage.removeItem(legacy)
+    }
+  }
   const raw = localStorage.getItem(CONSENT_STORAGE_KEY)
   if (!raw) return null
-  // Legacy strings
-  if (raw === 'accepted') return { analytics: true, marketing: false }
-  if (raw === 'rejected') return { analytics: false, marketing: false }
   try {
     const parsed = JSON.parse(raw)
     return {
@@ -36,7 +43,7 @@ export function getStoredConsent(): ConsentValue | null {
   }
 }
 
-function setConsent(value: ConsentValue) {
+function persistConsent(value: ConsentValue) {
   localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(value))
   window.dispatchEvent(new CustomEvent<ConsentValue>(CONSENT_EVENT, { detail: value }))
 }
@@ -48,64 +55,92 @@ export default function CookieBanner() {
   const [marketingChecked, setMarketingChecked] = useState(true)
 
   useEffect(() => {
-    if (getStoredConsent() == null) setShowBanner(true)
+    const existing = getStoredConsent()
+    if (existing == null) {
+      setShowBanner(true)
+    } else {
+      // Pre-fill the settings modal with the current choice so re-opens
+      // show the user what they previously selected.
+      setAnalyticsChecked(existing.analytics)
+      setMarketingChecked(existing.marketing)
+    }
+
+    // External components (e.g. Footer "Cookie-Einstellungen") can request
+    // the settings modal at any time via this custom event.
+    function openHandler() {
+      const current = getStoredConsent()
+      if (current) {
+        setAnalyticsChecked(current.analytics)
+        setMarketingChecked(current.marketing)
+      }
+      setShowSettings(true)
+    }
+    window.addEventListener(OPEN_SETTINGS_EVENT, openHandler)
+    return () => window.removeEventListener(OPEN_SETTINGS_EVENT, openHandler)
   }, [])
 
   function acceptAll() {
-    setConsent({ analytics: true, marketing: true })
+    persistConsent({ analytics: true, marketing: true })
+    setAnalyticsChecked(true)
+    setMarketingChecked(true)
     setShowBanner(false)
     setShowSettings(false)
   }
 
   function rejectAll() {
-    setConsent({ analytics: false, marketing: false })
+    persistConsent({ analytics: false, marketing: false })
+    setAnalyticsChecked(false)
+    setMarketingChecked(false)
     setShowBanner(false)
     setShowSettings(false)
   }
 
   function saveSelection() {
-    setConsent({ analytics: analyticsChecked, marketing: marketingChecked })
+    persistConsent({ analytics: analyticsChecked, marketing: marketingChecked })
     setShowBanner(false)
     setShowSettings(false)
   }
 
-  if (!showBanner) return null
+  // If neither banner nor settings is visible, nothing to render.
+  if (!showBanner && !showSettings) return null
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-2xl border-t border-gray-700">
-        <div className="container-max flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <div className="flex-1 text-sm sm:text-base leading-relaxed">
-            <p>
-              Wir verwenden Cookies und ähnliche Technologien, um unsere Website zu betreiben (notwendig),
-              die Nutzung anonymisiert auszuwerten (Statistik) und Werbung sinnvoll auszuspielen (Marketing).
-              Sie entscheiden selbst, was wir verwenden dürfen. Details in unserer{' '}
-              <a href="/datenschutz" className="underline hover:text-gray-300">Datenschutzerklärung</a> und{' '}
-              <a href="/cookie-richtlinie" className="underline hover:text-gray-300">Cookie-Richtlinie</a>.
-            </p>
-          </div>
-          <div className="flex gap-2 sm:gap-3 whitespace-nowrap flex-wrap">
-            <button
-              onClick={() => setShowSettings(true)}
-              className="px-3 py-2 rounded border border-gray-600 hover:border-gray-400 transition-colors text-xs sm:text-sm"
-            >
-              Einstellungen
-            </button>
-            <button
-              onClick={rejectAll}
-              className="px-3 py-2 rounded border border-gray-500 hover:border-gray-300 transition-colors text-xs sm:text-sm"
-            >
-              Nur notwendige
-            </button>
-            <button
-              onClick={acceptAll}
-              className="px-4 py-2 rounded bg-accent hover:bg-blue-600 transition-colors text-xs sm:text-sm font-semibold"
-            >
-              Alle akzeptieren
-            </button>
+      {showBanner && (
+        <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 shadow-2xl border-t border-gray-700">
+          <div className="container-max flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div className="flex-1 text-sm sm:text-base leading-relaxed">
+              <p>
+                Wir verwenden Cookies und ähnliche Technologien, um unsere Website zu betreiben (notwendig),
+                die Nutzung anonymisiert auszuwerten (Statistik) und Werbung sinnvoll auszuspielen (Marketing).
+                Sie entscheiden selbst, was wir verwenden dürfen. Details in unserer{' '}
+                <a href="/datenschutz" className="underline hover:text-gray-300">Datenschutzerklärung</a> und{' '}
+                <a href="/cookie-richtlinie" className="underline hover:text-gray-300">Cookie-Richtlinie</a>.
+              </p>
+            </div>
+            <div className="flex gap-2 sm:gap-3 whitespace-nowrap flex-wrap">
+              <button
+                onClick={() => setShowSettings(true)}
+                className="px-3 py-2 rounded border border-gray-600 hover:border-gray-400 transition-colors text-xs sm:text-sm"
+              >
+                Einstellungen
+              </button>
+              <button
+                onClick={rejectAll}
+                className="px-3 py-2 rounded border border-gray-500 hover:border-gray-300 transition-colors text-xs sm:text-sm"
+              >
+                Nur notwendige
+              </button>
+              <button
+                onClick={acceptAll}
+                className="px-4 py-2 rounded bg-accent hover:bg-blue-600 transition-colors text-xs sm:text-sm font-semibold"
+              >
+                Alle akzeptieren
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {showSettings && (
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60">
