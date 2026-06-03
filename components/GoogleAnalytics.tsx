@@ -27,10 +27,24 @@ export default function GoogleAnalytics() {
   const [consent, setConsentState] = useState<ConsentValue | null>(null)
 
   useEffect(() => {
+    // Startup diagnostic so it's obvious in DevTools which tags are wired up.
+    if (process.env.NODE_ENV !== 'test') {
+      console.info(
+        '[GA] tags configured →',
+        {
+          ga4: GA_ID ?? '(not set)',
+          ads: ADS_ID ?? '(not set)',
+        },
+        '— if either is "(not set)", add it as NEXT_PUBLIC_GA_ID / NEXT_PUBLIC_GOOGLE_ADS_ID in Vercel and redeploy.'
+      )
+    }
     setConsentState(getStoredConsent())
     function handler(e: Event) {
       const detail = (e as CustomEvent<ConsentValue>).detail
-      if (detail && typeof detail === 'object') setConsentState(detail)
+      if (detail && typeof detail === 'object') {
+        setConsentState(detail)
+        console.info('[GA] consent updated →', detail)
+      }
     }
     window.addEventListener(CONSENT_EVENT, handler)
     return () => window.removeEventListener(CONSENT_EVENT, handler)
